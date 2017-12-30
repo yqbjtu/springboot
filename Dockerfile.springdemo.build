@@ -1,0 +1,18 @@
+# Licensed Materials -
+# port 8080
+# (c) Copyright  2017. All Rights Reserved.
+
+
+FROM ibmjava:8-jre
+
+LABEL maintainer="yangqian"
+
+COPY  ./target/demo-0.0.1-SNAPSHOT.jar /opt/demo-0.0.1-SNAPSHOT.jar
+
+
+RUN pwd
+
+
+COPY demo_entrypoint.sh /opt/demo_entrypoint.sh
+
+ENTRYPOINT ["/opt/demo_entrypoint.sh"]
