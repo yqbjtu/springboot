@@ -11,6 +11,7 @@ public class PathVariableController {
     private int count = 0;
     private static final Log log = LogFactory.getLog(PathVariableController.class);
 
+
     @RequestMapping("/users/{username}")
     public String userProfile(@PathVariable("username") String username) {
         return String.format("Hi %s", username);
