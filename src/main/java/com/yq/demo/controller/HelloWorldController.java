@@ -1,12 +1,11 @@
 package com.yq.demo.controller;
 
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class HelloWorldController {
 
-    @RequestMapping("/")
+    /*@RequestMapping("/")
     public String index() {
         return "Welcome !";
     }
@@ -14,5 +13,5 @@ public class HelloWorldController {
     @RequestMapping("/hello")
     public String hello() {
         return "Hello World";
-    }
+    }*/
 }
