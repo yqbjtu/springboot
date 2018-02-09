@@ -14,6 +14,15 @@ public class RequestParamController {
     // Spring uses the Jackson JSON library to automatically marshal instances of type Greeting into JSON
     //@RequestMapping maps all HTTP operations by default. Use @RequestMapping(method=GET) to narrow this mapping.
 
+    //userDemo?id=001&name=Eric&email=bjxjsx@163.com
+    @RequestMapping("/userDemo")
+    public User userDemo(@RequestParam("id") Integer id,
+        @RequestParam("name") String name, @RequestParam String email) {
+
+        User user = new User(id, name, email, null);
+        return user;
+    }
+
     //arrayListIntegerDemo?id=1&id=3&id=7?
     @RequestMapping("/arrayListIntegerDemo")
     public User arrayListIntegerDemo(@RequestParam("id") List<Integer> ids){
