@@ -1,0 +1,27 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>hello</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+    <!--/*@thymesVar id="name" type="java.lang.String"*/-->
+    <p th:text="'Hello, ' + ${name} + '!'" >ZhangSanLiSiWangWu</p>
+
+    <!--@thymesVar id="user" type="com.yq.demo.domain.User"-->
+
+    <div th:if="${user}">
+    <div>
+        <p th:text="'User info: ' + ${user.getId()} + ' ' + ${user.name} + ' ' + ${user.email} + ' ' + ${user.description}+ '.'" >
+                     用户信息
+        </p>
+    </div>
+    </div>
+    <!-- ELSE -->
+    <div th:unless="${user}">
+        <p th:text="'built-in user does not exist'" >built-in user does not exist</p>
+    </div>
+
+    <a th:href="@{/home}">回到主页</a>
+</body>
+</html>

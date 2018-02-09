@@ -3,7 +3,7 @@ springboot learn
 
 
     在Eclispe中启动
-  选中DemoApplication.java, run as->Java Application, 然后登录http://localhost:8080/hello
+  选中DemoApplication.java, run as->Java Application, 然后登录http://localhost:8080
 
   或者命令行下面C:\E\git_repo\springboot2\springboot\target>java -jar demo-0.0.1-SNAPSHOT.jar
 
@@ -30,3 +30,7 @@ springboot learn
   {"id":3,"name":"defaultName","email":null,"description":"[1, 3, 7]"}
   http://localhost:8080//arrayDemo?id=1,5,9,34,67
   {"id":5,"name":"defaultName","email":null,"description":"[1, 5, 9, 34, 67]"}
+  
+  http://localhost:8080/thymeleafHello
+  http://localhost:8080/thymeleafHello2?name=Craig
+  http://www.thymeleaf.org/
