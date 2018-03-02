@@ -30,7 +30,18 @@ springboot learn
   {"id":3,"name":"defaultName","email":null,"description":"[1, 3, 7]"}
   http://localhost:8080//arrayDemo?id=1,5,9,34,67
   {"id":5,"name":"defaultName","email":null,"description":"[1, 5, 9, 34, 67]"}
-  
+
   http://localhost:8080/thymeleafHello
   http://localhost:8080/thymeleafHello2?name=Craig
   http://www.thymeleaf.org/
+
+  For I enable the security and loign with admin with ADMIN/USER roles, but no ACTUATOR role.
+  http://127.0.0.1:8080/  have the health check page link.
+  when accessing http://127.0.0.1:8080/env
+  app will show the following error:
+  Whitelabel Error Page
+This application has no explicit mapping for /error, so you are seeing this as a fallback.
+
+Fri Mar 02 10:46:40 CST 2018
+There was an unexpected error (type=Forbidden, status=403).
+Access is denied. User must have one of the these roles: ACTUATOR
