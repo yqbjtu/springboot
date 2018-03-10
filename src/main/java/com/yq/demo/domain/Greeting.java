@@ -2,13 +2,13 @@ package com.yq.demo.domain;
 
 public class Greeting {
 
-    private final long id;
-    private final String content;
+    private long id;
+    private String content;
 
-    public Greeting(long id, String content) {
+    /*public Greeting(long id, String content) {
         this.id = id;
         this.content = content;
-    }
+    }*/
 
     public long getId() {
         return id;
@@ -16,5 +16,13 @@ public class Greeting {
 
     public String getContent() {
         return content;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
     }
 }
