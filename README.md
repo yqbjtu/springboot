@@ -8,7 +8,7 @@ springboot learn
   或者命令行下面C:\E\git_repo\springboot2\springboot\target>java -jar demo-0.0.1-SNAPSHOT.jar
 
 　　the default user and password is 'admin' and 'admin'.
- 　　以admin登录， 就可以查看http://localhost:8080/admin
+　　以admin登录， 就可以查看http://localhost:8080/admin
 　　 而以user1/user1登录，查看http://localhost:8080/admin就会出现Access is denied
   http://localhost:8080
   http://localhost:8080/hello
@@ -35,6 +35,8 @@ springboot learn
   http://localhost:8080/thymeleafHello2?name=Craig
   http://www.thymeleaf.org/
 
+  http://localhost:8080/qutoe
+
   For I enable the security and loign with admin with ADMIN/USER roles, but no ACTUATOR role.
   http://127.0.0.1:8080/  have the health check page link.
   when accessing http://127.0.0.1:8080/env
@@ -45,3 +47,5 @@ This application has no explicit mapping for /error, so you are seeing this as a
 Fri Mar 02 10:46:40 CST 2018
 There was an unexpected error (type=Forbidden, status=403).
 Access is denied. User must have one of the these roles: ACTUATOR
+
+默认就支持热启动
