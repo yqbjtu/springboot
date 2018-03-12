@@ -1,24 +1,28 @@
 package com.yq.demo.domain;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+
+
+
+@Entity // This tells Hibernate to make a table out of this class
 public class User {
-    private  long id;
-    private  String name;
-    private  String email;
-    private  String description;
+    @Id
+    @GeneratedValue(strategy=GenerationType.AUTO)
+    private Integer id;
 
-    public User(long id, String name,String email, String desc) {
-        this.id = id;
-        this.name = name;
-        this.email = email;
-        this.description = desc;
-    }
+    private String name;
 
-    public User(long id, String name) {
-        this(id,name, null, null);
-    }
+    private String email;
 
-    public long getId() {
+    public Integer getId() {
         return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -36,13 +40,4 @@ public class User {
     public void setEmail(String email) {
         this.email = email;
     }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
 }
