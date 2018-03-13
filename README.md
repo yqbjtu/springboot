@@ -39,6 +39,11 @@ springboot learn
 
 http://127.0.0.1:8080/demo/add?name=u1&email=yqbjtu@163.com
 http://127.0.0.1:8080/demo/all
+http://127.0.0.1:8080/demo/delete
+http://127.0.0.1:8080/demo/init
+http://127.0.0.1:8080/demo/find?name=xxx
+http://127.0.0.1:8080/demo/find?name=%E5%BC%A0%E4%B8%89
+
   For I enable the security and loign with admin with ADMIN/USER roles, but no ACTUATOR role.
   http://127.0.0.1:8080/  have the health check page link.
   when accessing http://127.0.0.1:8080/env

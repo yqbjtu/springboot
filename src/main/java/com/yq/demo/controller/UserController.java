@@ -32,9 +32,43 @@ public class UserController {
         return "Saved";
     }
 
+    @GetMapping(path="/find") // Map ONLY GET Requests
+    public @ResponseBody Iterable<User> findByName (@RequestParam String name) {
+        // @ResponseBody means the returned String is the response, not a view name
+        // @RequestParam means it is a parameter from the GET or POST request
+        return userRepository.findByName(name);
+    }
+
     @GetMapping(path="/all")
     public @ResponseBody Iterable<User> getAllUsers() {
         // This returns a JSON or XML with the users
         return userRepository.findAll();
+    }
+
+    @GetMapping(path="/init")
+    public @ResponseBody Iterable<User> insertInitialUsers() {
+        // This returns a JSON or XML with the users
+        User user = new User();
+        user.setName("张三");
+        user.setEmail("zhangsan@qq.com");
+        userRepository.save(user);
+
+        user = new User();
+        user.setName("李四");
+        user.setEmail("lisi@qq.com");
+        userRepository.save(user);
+
+        user = new User();
+        user.setName("王五");
+        user.setEmail("wangwu@qq.com");
+        userRepository.save(user);
+
+        return userRepository.findAll();
+    }
+
+    @GetMapping(path="/delete")
+    public @ResponseBody String deleteAllUsers() {
+         userRepository.deleteAll();
+         return  "delete all";
     }
 }

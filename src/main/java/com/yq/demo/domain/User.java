@@ -5,8 +5,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
-
-
+/*
+ * This is the entity class which Hibernate will automatically translate into a table.
+ */
 @Entity // This tells Hibernate to make a table out of this class
 public class User {
     @Id
