@@ -76,10 +76,9 @@ public class UserController {
 
     @RequestMapping(value = "/all",method = RequestMethod.GET)
     public String getAllUsers(Model model) {
-        // This returns a JSON or XML with the users
         List<User> userList = userRepository.findAll();
         model.addAttribute("userList", userList);
-        return "admin/user/user";
+        return "admin/user/users";
     }
 
     @GetMapping(path="/init")

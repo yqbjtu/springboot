@@ -1,0 +1,40 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Show all the agents</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+
+    <div th:if="${agentList}">
+    <div>
+        There are <span th:text="${#lists.size(agentList)}"></span> agent(s).
+        <table class="table table-bordered table-hover table-striped">
+            <thead>
+                <tr>
+                <th>Name</th>
+                <th>Host</th>
+                <th>Port</th>
+                <th>Status</th>
+                <th>MaxBuild</th>
+                <th>Version</th>
+                <th>Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="currentAgent, stat : ${agentList}">
+                    <td th:text="${currentAgent.getName()}" ></td>
+                    <td th:text="${currentAgent.getHost()}" ></td>
+                    <td th:text="${currentAgent.getPort()}"></td>
+                    <td th:text="${currentAgent.getStatus()}" ></td>
+                    <td th:text="${currentAgent.getMaxbuild()}" ></td>
+                    <td th:text="${currentAgent.getVersion()}" ></td>
+                    <td th:text="${currentAgent.getDesc()}" ></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    </div>
+
+</body>
+</html>

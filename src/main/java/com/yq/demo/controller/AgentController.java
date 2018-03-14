@@ -1,9 +1,13 @@
 package com.yq.demo.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -34,9 +38,16 @@ public class AgentController {
         return agentService.getAgentByName(name);
     }
 
-    @GetMapping(path="/all")
+    /*@GetMapping(path="/all")
     public @ResponseBody Iterable<Agent> getAllAgents() {
         // This returns a JSON or XML with the users
         return agentService.getAllAgents();
+    }*/
+
+    @RequestMapping(value = "/all",method = RequestMethod.GET)
+    public String getAllAgents(Model model) {
+        List<Agent> agentList = agentService.getAllAgents();
+        model.addAttribute("agentList", agentList);
+        return "admin/agent/agents";
     }
 }
