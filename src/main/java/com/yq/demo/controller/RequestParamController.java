@@ -7,9 +7,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.yq.demo.domain.UserDemo;
+import com.yq.demo.other.UserDemo;
 
 @RestController
+@RequestMapping(path="/requestParaDemo") // This means URL's start with /demo (after Application path)
 public class RequestParamController {
     // Spring uses the Jackson JSON library to automatically marshal instances of type Greeting into JSON
     //@RequestMapping maps all HTTP operations by default. Use @RequestMapping(method=GET) to narrow this mapping.

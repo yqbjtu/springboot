@@ -1,5 +1,7 @@
-package com.yq.demo.domain;
-
+package com.yq.demo.other;
+/*
+ * this is only fro demo. there is no related table.
+ */
 public class UserDemo {
     private  long id;
     private  String name;

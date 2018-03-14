@@ -7,12 +7,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@RequestMapping(path="/pathVarDemo") // This means URL's start with /demo (after Application path)
 public class PathVariableController {
     private int count = 0;
     private static final Log log = LogFactory.getLog(PathVariableController.class);
 
 
-    @RequestMapping("/users/{username}")
+    @RequestMapping("/hello/{username}")
     public String userProfile(@PathVariable("username") String username) {
         return String.format("Hi %s", username);
     }

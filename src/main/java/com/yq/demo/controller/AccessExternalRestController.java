@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
-import com.yq.demo.domain.Quote;
+import com.yq.demo.other.Quote;
 
 @RestController
 public class AccessExternalRestController {

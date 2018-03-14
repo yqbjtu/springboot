@@ -1,4 +1,8 @@
-package com.yq.demo.domain;
+package com.yq.demo.other;
+
+/*
+ * this is only for demo. there is no related table.
+ */
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 

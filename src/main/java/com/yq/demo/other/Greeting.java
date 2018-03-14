@@ -1,4 +1,4 @@
-package com.yq.demo.domain;
+package com.yq.demo.other;
 
 public class Greeting {
 
