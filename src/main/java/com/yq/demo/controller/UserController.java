@@ -1,18 +1,22 @@
 package com.yq.demo.controller;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.yq.demo.dao.UserJpaRepository;
 import com.yq.demo.entity.User;
+import com.yq.demo.other.UserDemo;
 import com.yq.demo.service.UserService;
 
 @Controller    // This means that this class is a Controller
@@ -49,10 +53,33 @@ public class UserController {
         return userRepository.getByUserName(name);
     }
 
-    @GetMapping(path="/all")
+
+    /**
+     * 测试thymeleafHello2?name=zhangSan
+     * @return
+     */
+    @RequestMapping(value = "/thymeleafHello2",method = RequestMethod.GET)
+    public String hello2(Model model, @RequestParam("name") String name) {
+
+        UserDemo user = new UserDemo(3, "John", "john@163.com", "John is a designer");
+        model.addAttribute("name", name);
+        model.addAttribute("user", user);
+        return "thymeleafHello";
+    }
+
+    /*@GetMapping(path="/all")
     public @ResponseBody Iterable<User> getAllUsers() {
         // This returns a JSON or XML with the users
         return userRepository.findAll();
+    }
+    */
+
+    @RequestMapping(value = "/all",method = RequestMethod.GET)
+    public String getAllUsers(Model model) {
+        // This returns a JSON or XML with the users
+        List<User> userList = userRepository.findAll();
+        model.addAttribute("userList", userList);
+        return "admin/user/user";
     }
 
     @GetMapping(path="/init")

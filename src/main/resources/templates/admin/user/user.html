@@ -1,0 +1,34 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Show all the users</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+
+    <div th:if="${userList}">
+    <div>
+        There are <span th:text="${#lists.size(userList)}"></span> user(s).
+        <table class="table table-bordered table-hover table-striped">
+            <thead>
+                <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Lang</th>
+                <th>eMail</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="currentUser, stat : ${userList}">
+                    <td th:text="${currentUser.getId()}" ></td>
+                    <td th:text="${currentUser.getUsername()}" ></td>
+                    <td th:text="${currentUser.getLanguage()}"></td>
+                    <td th:text="${currentUser.getEmail()}" ></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    </div>
+
+</body>
+</html>
