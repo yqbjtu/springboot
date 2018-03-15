@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -16,7 +17,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.yq.demo.dao.UserJpaRepository;
 import com.yq.demo.entity.User;
-import com.yq.demo.other.UserDemo;
 import com.yq.demo.service.UserService;
 
 @Controller    // This means that this class is a Controller
@@ -29,7 +29,7 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @GetMapping(path="/add") // Map ONLY GET Requests
+    /*@GetMapping(path="/add") // Map ONLY GET Requests
     public @ResponseBody String addNewUser(@RequestParam String name
             , @RequestParam String email) {
         // @ResponseBody means the returned String is the response, not a view name
@@ -44,6 +44,27 @@ public class UserController {
 
         userRepository.save(user);
         return "Saved";
+    }*/
+
+    @PostMapping(path="/add") // Map ONLY POST Requests
+    public String addNewUser(@RequestParam String userName,@RequestParam String password,
+            @RequestParam String fullName, @RequestParam String email,
+            @RequestParam String language, Model model) {
+        // String means the returned String is the thymeleaf template,  a view name
+        // @RequestParam means it is a parameter from the GET or POST request
+
+        User user = new User();
+        user.setUsername(userName);
+        user.setFullname(fullName);
+        user.setEmail(email);
+        user.setLanguage(language);
+        user.setPassword(password);
+        user.setActive(1);
+        user.setUserType(1);
+        user.setCan_delete(1);
+        userRepository.save(user);
+
+        return "redirect:/user/all";
     }
 
     @GetMapping(path="/find") // Map ONLY GET Requests
@@ -53,19 +74,6 @@ public class UserController {
         return userRepository.getByUserName(name);
     }
 
-
-    /**
-     * 测试thymeleafHello2?name=zhangSan
-     * @return
-     */
-    @RequestMapping(value = "/thymeleafHello2",method = RequestMethod.GET)
-    public String hello2(Model model, @RequestParam("name") String name) {
-
-        UserDemo user = new UserDemo(3, "John", "john@163.com", "John is a designer");
-        model.addAttribute("name", name);
-        model.addAttribute("user", user);
-        return "thymeleafHello";
-    }
 
     /*@GetMapping(path="/all")
     public @ResponseBody Iterable<User> getAllUsers() {
