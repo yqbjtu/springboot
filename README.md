@@ -50,6 +50,9 @@ http://127.0.0.1:8080/user/init
 http://127.0.0.1:8080/user/find?name=xxx  
 http://127.0.0.1:8080/user/find?name=%E5%BC%A0%E4%B8%89  
 
+Pageable demo  
+http://localhost:8080/user/pages?pageNumber=1&pageSize=10  
+
   For I enable the security and loign with admin with ADMIN/USER roles, but no ACTUATOR role.  
   http://127.0.0.1:8080/  have the health check page link.  
   when accessing http://127.0.0.1:8080/env  

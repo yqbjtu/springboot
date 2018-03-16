@@ -5,6 +5,11 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -95,19 +100,45 @@ public class UserController {
         User user = new User();
         user.setUsername("张三");
         user.setEmail("zhangsan@qq.com");
+        user.setLanguage("zh_CN");
+        user.setPassword("password");
+        user.setActive(1);
+        user.setUserType(1);
+        user.setCan_delete(1);
         userRepository.save(user);
 
         user = new User();
         user.setUsername("李四");
+        user.setPassword("password");
         user.setEmail("lisi@qq.com");
+        user.setLanguage("zh_CN");
+        user.setActive(1);
+        user.setUserType(1);
+        user.setCan_delete(1);
         userRepository.save(user);
 
         user = new User();
         user.setUsername("王五");
+        user.setPassword("password");
+        user.setLanguage("zh_CN");
         user.setEmail("wangwu@qq.com");
+        user.setActive(1);
+        user.setUserType(1);
+        user.setCan_delete(1);
         userRepository.save(user);
 
         return userRepository.findAll();
+    }
+
+
+    @GetMapping(path="/pages")
+    public @ResponseBody Page<User> pagingUsers(@RequestParam(value = "pageNumber", defaultValue = "0") Integer pageNumber,
+            @RequestParam(value = "pageSize", defaultValue = "15") Integer pageSize) {
+        Sort sort = new Sort(Direction.DESC, "id");
+        Pageable pageable = new PageRequest(pageNumber, pageSize, sort);
+
+        Page<User> pageUsers = userRepository.findAll(pageable);
+        return pageUsers;
     }
 
     @GetMapping(path="/delete/{id}")
