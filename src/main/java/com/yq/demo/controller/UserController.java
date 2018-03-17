@@ -3,6 +3,7 @@ package com.yq.demo.controller;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TimeZone;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -54,6 +55,9 @@ public class UserController {
     @PostMapping(path="/add") // Map ONLY POST Requests
     public String addNewUser(@RequestParam String userName,@RequestParam String password,
             @RequestParam String fullName, @RequestParam String email,
+            @RequestParam String usertype, @RequestParam String dateformat,
+            @RequestParam(value = "timeforamt", defaultValue = "HH:mm:ss") String timeforamt,
+            @RequestParam(value = "timezone", defaultValue = "GMT+8") String timezone,
             @RequestParam String language, Model model) {
         // String means the returned String is the thymeleaf template,  a view name
         // @RequestParam means it is a parameter from the GET or POST request
@@ -67,6 +71,9 @@ public class UserController {
         user.setActive(1);
         user.setUserType(1);
         user.setCan_delete(1);
+        user.setTimeZone(timezone);
+        user.setTimeFormat(timeforamt);
+        user.setDateFormat(dateformat);
         userRepository.save(user);
 
         return "redirect:/user/all";
@@ -91,6 +98,11 @@ public class UserController {
     public String getAllUsers(Model model) {
         List<User> userList = userRepository.findAll();
         model.addAttribute("userList", userList);
+
+
+        String[] timezoneList = TimeZone.getAvailableIDs();
+        model.addAttribute("timezoneList", timezoneList);
+
         return "admin/user/users";
     }
 

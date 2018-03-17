@@ -36,9 +36,47 @@
         <p>Password: <input type="text" name="password" /></p>
         <p>FullName: <input type="text" name="fullName" /></p>
         <p>email: <input type="text" name="email" /></p>
-        <p>Language: <input type="text" name="language" /></p>
+
+        UserType:
+        <select name="usertype">
+           <option value ="1">Built-in</option>
+           <option value ="2" selected="selected">Added</option>
+           <option value ="3">LDAP</option>
+        </select> <br/>
+
+        Deletable:<input type="checkbox" name="can_detele" checked="checked" /> <br/>
+
+        DateFormat:
+        <select name="dateformat">
+           <option value ="yyyy-MM-dd">yyyy-MM-dd</option>
+           <option value ="yyyy/MM/dd" selected="selected">yyyy/MM/dd</option>
+           <option value ="yy-MM-dd">yy-MM-dd</option>
+        </select> <br/>
+    
+        TimeFormat:
+        <select name="timeforamt">
+           <option value ="HH:mm:ss" selected="selected">HH:mm:ss</option>
+           <option value ="hh:mm:ss a zzz">hh:mm:ss a zzz</option>
+           <option value ="HH:mm:ss Z">HH:mm:ss Z</option>
+           <option value ="hh:mm aaa">hh:mm aaa</option>
+        </select> <br/>
+
+        TimeZone:
+        <select name="timezone">
+            <option  th:each="zone:${timezoneList}" th:value="${zone}" th:text="${zone}"></option>
+        </select> <br/>
+
+        Language:
+        <select name="language">
+           <option value ="zh_CN">zh_CN</option>
+           <option value ="en_US" selected="selected">en_US</option>
+           <option value ="ja_JP">ja_JP</option>
+        </select> <br/>
+
         <p><input type="submit" value="Submit" /> <input type="reset" value="Reset" /></p>
     </form>
 
+
+    <a th:href="@{/home}">回到主页</a>
 </body>
 </html>
