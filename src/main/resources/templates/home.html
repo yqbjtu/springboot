@@ -14,5 +14,10 @@
         <p>Click <a th:href="@{/greeting}">here</a> to see greeting thymeleaf demo </p>
         <p>Click <a th:href="@{/user/all}">here</a> to see all users </p>
         <p>Click <a th:href="@{/agent/all}">here</a> to see all agents </p>
+
+        <p>Click <a th:href="@{/agentprop/all}">here</a> to see all agents properties </p>
+        <p>Click <a th:href="@{/agentprop/findByAgentUuid} + '?agentUuid=12345678xftreqazwert'">here</a> to see findByAgentUuid </p>
+        <p>Click <a th:href="@{/agentprop/findByName} + '?agentUuid=12345678xftreqazwert' + '&amp;name=agent/agent.id'">here</a> to see findByName </p>
+        <!-- &name=agent/agent.id must be &amp;name=agent/agent.id -->
     </body>
 </html>
