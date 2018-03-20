@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.yq.demo.dao.AgentJpaRepository;
 import com.yq.demo.entity.Agent;
 import com.yq.demo.service.AgentService;
 
@@ -21,6 +22,9 @@ public class AgentController {
 
     @Autowired
     private AgentService agentService;
+
+    @Autowired
+    private AgentJpaRepository agentJpaRepo;
 
     @GetMapping(path="/add") // Map ONLY GET Requests
     public @ResponseBody String addNewUser(@RequestParam String name
@@ -36,6 +40,21 @@ public class AgentController {
         // @ResponseBody means the returned String is the response, not a view name
         // @RequestParam means it is a parameter from the GET or POST request
         return agentService.getAgentByName(name);
+    }
+
+    @GetMapping(path="/findByArgOne") // Map ONLY GET Requests
+    public @ResponseBody Agent findByArgOne(@RequestParam String name) {
+        return agentJpaRepo.findByArgOne(name);
+    }
+
+    @GetMapping(path="/findByPortBetween") // Map ONLY GET Requests
+    public @ResponseBody Iterable<Agent> findByPortBetween() {
+        return agentJpaRepo.findByPortBetween(5000, 6000);
+    }
+
+    @GetMapping(path="/findByNameLike") // Map ONLY GET Requests
+    public @ResponseBody Iterable<Agent> findByPortBetween(@RequestParam String pattern) {
+        return agentJpaRepo.findByNameLike(pattern);
     }
 
     /*@GetMapping(path="/all")
