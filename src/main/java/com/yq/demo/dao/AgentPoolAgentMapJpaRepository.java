@@ -1,6 +1,7 @@
 package com.yq.demo.dao;
 
 
+import java.util.Collection;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -13,5 +14,5 @@ public interface AgentPoolAgentMapJpaRepository extends JpaRepository<AgentPoolA
 
     public void deleteByAgentPoolUuid(String poolUuid);
     public List<AgentPoolAgentMap> getByAgentPoolUuid(String poolUuid);
-
+    public Collection<UuidOnly> getAgentUuidByAgentPoolUuid(String poolUuid);
 }

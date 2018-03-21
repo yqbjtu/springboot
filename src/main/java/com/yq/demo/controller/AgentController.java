@@ -16,8 +16,8 @@ import com.yq.demo.entity.Agent;
 import com.yq.demo.service.AgentService;
 
 
-@Controller    // This means that this class is a Controller
-@RequestMapping(path="/agent") // This means URL's start with /demo (after Application path)
+@Controller
+@RequestMapping(path="/agent")
 public class AgentController {
 
     @Autowired
@@ -26,33 +26,22 @@ public class AgentController {
     @Autowired
     private AgentJpaRepository agentJpaRepo;
 
-    @GetMapping(path="/add") // Map ONLY GET Requests
-    public @ResponseBody String addNewUser(@RequestParam String name
-            , @RequestParam String email) {
-        // @ResponseBody means the returned String is the response, not a view name
-        // @RequestParam means it is a parameter from the GET or POST request
-
-        return "Saved";
-    }
-
-    @GetMapping(path="/find") // Map ONLY GET Requests
+    @GetMapping(path="/find")
     public @ResponseBody Agent findByName (@RequestParam String name) {
-        // @ResponseBody means the returned String is the response, not a view name
-        // @RequestParam means it is a parameter from the GET or POST request
         return agentService.getAgentByName(name);
     }
 
-    @GetMapping(path="/findByArgOne") // Map ONLY GET Requests
+    @GetMapping(path="/findByArgOne")
     public @ResponseBody Agent findByArgOne(@RequestParam String name) {
         return agentJpaRepo.findByArgOne(name);
     }
 
-    @GetMapping(path="/findByPortBetween") // Map ONLY GET Requests
+    @GetMapping(path="/findByPortBetween")
     public @ResponseBody Iterable<Agent> findByPortBetween() {
         return agentJpaRepo.findByPortBetween(5000, 6000);
     }
 
-    @GetMapping(path="/findByNameLike") // Map ONLY GET Requests
+    @GetMapping(path="/findByNameLike")
     public @ResponseBody Iterable<Agent> findByPortBetween(@RequestParam String pattern) {
         return agentJpaRepo.findByNameLike(pattern);
     }

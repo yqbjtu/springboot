@@ -5,6 +5,7 @@ package com.yq.demo.dao;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
@@ -28,6 +29,8 @@ public interface AgentJpaRepository extends JpaRepository<Agent, String> {
 
     //… where x.name=?1 order by x.name desc. 如果只是findOrderByNameDesc(String name)， 程序无法启动
     public List<Agent> findByNameOrderByNameDesc(String name);
+
+    @Modifying
     @Query(value = "update #{#entityName} a set a.status=?1", nativeQuery = true)
     public int updateAllAgentsStatus(AgentStatusEnum status);
 

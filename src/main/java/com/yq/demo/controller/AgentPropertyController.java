@@ -20,14 +20,12 @@ public class AgentPropertyController {
     @Autowired
     private AgentPropertyService agentPropSvc;
 
-    @GetMapping(path="/findByName") // Map ONLY GET Requests
+    @GetMapping(path="/findByName")
     public @ResponseBody AgentProperty findByName (@RequestParam String agentUuid, @RequestParam String name) {
-        // @ResponseBody means the returned String is the response, not a view name
-        // @RequestParam means it is a parameter from the GET or POST request
         return agentPropSvc.getAgentPropertyByAgentUuidAndName(agentUuid, name);
     }
 
-    @GetMapping(path="/findByAgentUuid") // Map ONLY GET Requests
+    @GetMapping(path="/findByAgentUuid")
     public @ResponseBody Iterable<AgentProperty> findByName (@RequestParam String agentUuid) {
         return agentPropSvc.getAgentPropertiesByAgentUuid(agentUuid);
     }
