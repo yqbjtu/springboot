@@ -13,6 +13,7 @@ https://docs.spring.io/spring-data/jpa/docs/1.11.0.RELEASE/reference/html/
 　　 而以user1/user1登录，查看http://localhost:8080/admin就会出现Access is denied  
   http://localhost:8080  
 
+domain对象是quickCD的domain
   PathVariableDemo  
   http://localhost:8080/pathVarDemo/{username}  
   http://localhost:8080/pathVarDemo/zhangsan  
