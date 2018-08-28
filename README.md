@@ -76,3 +76,29 @@ Access is denied. User must have one of the these roles: ACTUATOR
 2018-03-13 16:33:56,511 INFO  com.yq.demo.runner.MyRunner01 - my first runner order is 1. args:  
 2018-03-13 16:33:56,511 INFO  com.yq.demo.runner.myAppRunner02 - my second apprunner. order is 2. AppArgs:  
 2018-03-13 16:33:56,511 INFO  com.yq.demo.runner.MyRunner02 - my second runner order is 2. args:  
+
+
+只有启动netty的情况下，下面才能运行，
+package com.yq.controller;
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.web.reactive.function.server.RequestPredicates;
+import org.springframework.web.reactive.function.server.RouterFunction;
+import org.springframework.web.reactive.function.server.RouterFunctions;
+import org.springframework.web.reactive.function.server.ServerResponse;
+import reactor.core.publisher.Mono;
+
+/**
+ * Created by yangqian on 2018/8/7.
+ */
+@Configuration
+public class WebFluxRoutes {
+    public static final String RESULT = "flux";
+
+    @Bean(name = "flux-01")
+    public RouterFunction<ServerResponse> webFluxGet() {
+        Mono<String> date = Mono.just(RESULT);
+        return RouterFunctions.route(RequestPredicates.path("/p1/flux/get"), request -> ServerResponse.ok().body(date, String.class));
+    }
+}
