@@ -11,6 +11,12 @@ import java.util.List;
 
 @Service
 public class ConsulService {
+    private Consul consul = null;
+
+    public ConsulService() {
+        consul = Consul.builder().withUrl("http://x.y.z:8500").build();
+    }
+
 
     /**
      * 注册服务
@@ -19,7 +25,7 @@ public class ConsulService {
      * serviceId:没发现有什么作用
      */
     public void registerService(String serviceName, String serviceId) {
-        Consul consul = Consul.builder().build();            //建立consul实例
+
         AgentClient agentClient = consul.agentClient();        //建立AgentClient
 
         try {
@@ -27,7 +33,7 @@ public class ConsulService {
              * 注意该注册接口：
              * 需要提供一个健康检查的服务URL，以及每隔多长时间访问一下该服务（这里是3s）
              */
-            agentClient.register(8080, URI.create("http://localhost:8080/health").toURL(), 10L, serviceName, serviceId, "dev");
+            agentClient.register(8080, URI.create("http://127.0.0.1:8080/health").toURL(), 10L, serviceName, serviceId, "dev");
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
@@ -42,7 +48,7 @@ public class ConsulService {
      * 发现可用的服务
      */
     public List<ServiceHealth> findHealthyService(String servicename){
-        Consul consul = Consul.builder().build();
+
         HealthClient healthClient = consul.healthClient();//获取所有健康的服务
         return healthClient.getHealthyServiceInstances(servicename).getResponse();//寻找passing状态的节点
     }
@@ -51,7 +57,6 @@ public class ConsulService {
      * 存储KV
      */
     public void storeKV(String key, String value){
-        Consul consul = Consul.builder().build();
         KeyValueClient kvClient = consul.keyValueClient();
         kvClient.putValue(key, value);//存储KV
     }
@@ -60,7 +65,6 @@ public class ConsulService {
      * 根据key获取value
      */
     public String getKV(String key){
-        Consul consul = Consul.builder().build();
         KeyValueClient kvClient = consul.keyValueClient();
         return kvClient.getValueAsString(key).get();
     }
@@ -69,7 +73,7 @@ public class ConsulService {
      * 找出一致性的节点（应该是同一个DC中的所有server节点）
      */
     public List<String> findRaftPeers(){
-        StatusClient statusClient = Consul.builder().build().statusClient();
+        StatusClient statusClient = consul.statusClient();
         return statusClient.getPeers();
     }
 
@@ -77,7 +81,7 @@ public class ConsulService {
      * 获取leader
      */
     public String findRaftLeader(){
-        StatusClient statusClient = Consul.builder().build().statusClient();
+        StatusClient statusClient = consul.statusClient();
         return statusClient.getLeader();
     }
 
