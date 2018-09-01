@@ -1,6 +1,6 @@
 package com.yq.controller;
 
-import com.orbitz.consul.model.health.ServiceHealth;
+import com.ecwid.consul.v1.health.model.HealthService;
 import com.yq.service.IConsulService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -15,10 +15,11 @@ import java.util.List;
 
 @Api("consul API")
 @RestController
-@RequestMapping("/consul1")
-public class ConsulController {
+@RequestMapping("/consul2")
+public class EcwidConsulController {
+
     @Autowired
-    @Qualifier("orbitzConsulServiceImpl")
+    @Qualifier("ecwidConsulServiceImpl")
     private IConsulService consulService;
 
     @ApiOperation("register service")
@@ -28,10 +29,10 @@ public class ConsulController {
         consulService.registerService(svcName, svcId);
     }
 
-    @ApiOperation("discover service")
+    @ApiOperation("dicover service")
     @RequestMapping(value="/disSvc/{svcName}",method=RequestMethod.GET)
-    public List<ServiceHealth> discoverService(@PathVariable("svcName") String svcName) {
-        return consulService.findServiceHealthy(svcName);
+    public List<HealthService> discoverService(@PathVariable("svcName") String svcName) {
+        return consulService.findHealthyService(svcName);
     }
 
     @ApiOperation("store KV")
@@ -46,6 +47,7 @@ public class ConsulController {
     public String getKV(@PathVariable("key") String key) {
         return consulService.getKV(key);
     }
+
 
     @ApiOperation("获取同一个DC中的所有server节点")
     @RequestMapping(value="/raftpeers",method=RequestMethod.GET)
