@@ -38,7 +38,8 @@ public class OrbitzConsulServiceImpl implements IConsulService {
 
         try {
             //"本应用就在"http://127.0.0.1:" +  + "/health"，并且启用actuator，可以作为consul的监控服务检查
-            agentClient.register(8080, URI.create("http://127.0.0.1:8080/health").toURL(), 10L, serviceName, serviceId, "dev");
+            agentClient.register(8080, URI.create("http://127.0.0.1:8080/health").toURL(),
+                    10L, serviceName, serviceId, null, null);
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }

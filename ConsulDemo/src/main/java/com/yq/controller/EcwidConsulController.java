@@ -1,5 +1,6 @@
 package com.yq.controller;
 
+import com.alibaba.fastjson.JSONObject;
 import com.ecwid.consul.v1.health.model.HealthService;
 import com.yq.service.IConsulService;
 import io.swagger.annotations.Api;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Api("consul API")
@@ -31,8 +33,13 @@ public class EcwidConsulController {
 
     @ApiOperation("dicover service")
     @RequestMapping(value="/disSvc/{svcName}",method=RequestMethod.GET)
-    public List<HealthService> discoverService(@PathVariable("svcName") String svcName) {
-        return consulService.findHealthyService(svcName);
+    public String discoverService(@PathVariable("svcName") String svcName) {
+        List<HealthService> list = consulService.findHealthyService(svcName);
+        JSONObject jsonObj = new JSONObject();
+        jsonObj.put("currentTime", LocalDateTime.now().toString());
+        jsonObj.put("list", list);
+        jsonObj.put("size", list.size());
+        return jsonObj.toJSONString();
     }
 
     @ApiOperation("store KV")

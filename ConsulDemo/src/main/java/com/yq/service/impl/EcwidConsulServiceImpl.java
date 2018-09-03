@@ -70,7 +70,6 @@ public class EcwidConsulServiceImpl implements IConsulService {
         Response<GetValue> getValueResponse = client.getKVValue(key);
         //return getValueResponse.getValue().getValue();
         return getValueResponse.getValue().getDecodedValue();
-
     }
 
     @Override
