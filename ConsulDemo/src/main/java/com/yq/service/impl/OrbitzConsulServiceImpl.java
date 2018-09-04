@@ -27,7 +27,7 @@ public class OrbitzConsulServiceImpl implements IConsulService {
     public OrbitzConsulServiceImpl() {
         log.info("consulConfig={}", consulConfig);
         //String url = "http://" + consulConfig.getConsulIP() + ":" + consulConfig.getConsulPort();
-        String url = "http://127.0.0.1:8500";
+        String url = "http://x.y.z.a:8500";
         consul = Consul.builder().withUrl(url).build();
     }
 

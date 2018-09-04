@@ -16,6 +16,9 @@ spring-cloud-consul-core 1.3.0 使用的是com.ecwid.consul
 		</dependency>
 
  
+    @Autowired
+    private ConsulDiscoveryClient consulDiscoveryClient;
+    
 https://github.com/OrbitzWorldwide/consul-client，  0.13.10需要jersey
     <dependency>
     <groupId>com.orbitz.consul</groupId>
@@ -49,3 +52,9 @@ https://github.com/OrbitzWorldwide/consul-client，  0.13.10需要jersey
  
   https://github.com/silas/node-consul#documentation
   npm install consul
+  
+  
+3. consul properties
+#spring.cloud.consul.discovery.queryPassing=true
+加上后discoveryClient只查询heathy的服务
+https://github.com/spring-cloud/spring-cloud-consul/blob/master/spring-cloud-consul-discovery/src/main/java/org/springframework/cloud/consul/discovery/ConsulDiscoveryProperties.java

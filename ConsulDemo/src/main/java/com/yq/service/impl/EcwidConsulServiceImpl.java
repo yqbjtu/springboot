@@ -35,7 +35,7 @@ public class EcwidConsulServiceImpl implements IConsulService {
     public EcwidConsulServiceImpl() {
         log.info("consulConfig={}", consulConfig);
         //client = new ConsulClient(consulConfig.getConsulIP(), consulConfig.getConsulPort());
-        client = new ConsulClient("127.0.0.1", 8500);
+        client = new ConsulClient("x.y.z.a", 8500);
     }
 
     @Override
@@ -55,8 +55,8 @@ public class EcwidConsulServiceImpl implements IConsulService {
     }
 
     @Override
-    public List<HealthService> findHealthyService(String serviceName) {
-        Response<List<HealthService>> healthyServices = client.getHealthServices(serviceName, true, QueryParams.DEFAULT);
+    public List<HealthService> findHealthyService(String serviceName, boolean onlyPassing) {
+        Response<List<HealthService>> healthyServices = client.getHealthServices(serviceName, onlyPassing, QueryParams.DEFAULT);
         return healthyServices.getValue();
     }
 

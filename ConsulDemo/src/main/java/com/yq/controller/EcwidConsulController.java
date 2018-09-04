@@ -4,12 +4,15 @@ import com.alibaba.fastjson.JSONObject;
 import com.ecwid.consul.v1.health.model.HealthService;
 import com.yq.service.IConsulService;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDateTime;
@@ -32,9 +35,13 @@ public class EcwidConsulController {
     }
 
     @ApiOperation("dicover service")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "svcName", defaultValue = "svcName", value = "svcName", required = true, dataType = "string", paramType = "path"),
+            @ApiImplicitParam(name = "onlyPassing", defaultValue = "true", value = "onlyPassing", required = true, dataType = "boolean", paramType = "query")
+    })
     @RequestMapping(value="/disSvc/{svcName}",method=RequestMethod.GET)
-    public String discoverService(@PathVariable("svcName") String svcName) {
-        List<HealthService> list = consulService.findHealthyService(svcName);
+    public String discoverService(@PathVariable("svcName") String svcName, @RequestParam boolean onlyPassing) {
+        List<HealthService> list = consulService.findHealthyService(svcName,onlyPassing);
         JSONObject jsonObj = new JSONObject();
         jsonObj.put("currentTime", LocalDateTime.now().toString());
         jsonObj.put("list", list);

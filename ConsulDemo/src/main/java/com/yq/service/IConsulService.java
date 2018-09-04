@@ -25,7 +25,7 @@ public interface IConsulService {
     }
 
     // for ecwid
-    public default List<HealthService> findHealthyService(String serviceName){
+    public default List<HealthService> findHealthyService(String serviceName, boolean onlyPassing){
         return null;
     }
 

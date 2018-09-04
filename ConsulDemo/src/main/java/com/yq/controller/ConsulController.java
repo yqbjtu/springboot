@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
+import org.springframework.cloud.consul.discovery.ConsulDiscoveryClient;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -29,6 +30,10 @@ public class ConsulController {
     @Autowired
     private DiscoveryClient discoveryClient;
 
+    @Autowired
+    private ConsulDiscoveryClient consulDiscoveryClient;
+
+
     @ApiOperation("register service")
     @RequestMapping(value="/regSvc/{svcName}/{svcId}",method=RequestMethod.POST)
     public void registerService(@PathVariable("svcName") String svcName,
@@ -43,7 +48,19 @@ public class ConsulController {
 
         JSONObject jsonObj = new JSONObject();
         jsonObj.put("currentTime", LocalDateTime.now().toString());
-        jsonObj.put("list", list);
+        jsonObj.put("normallist", list);
+        jsonObj.put("size", list.size());
+        return jsonObj.toJSONString();
+    }
+
+    @ApiOperation("discover service by consulDiscoveryClient")
+    @RequestMapping(value="/disSvc3/{svcName}",method=RequestMethod.GET)
+    public String discoverServiceByConsulClient(@PathVariable("svcName") String svcName) {
+        List<ServiceInstance> list = consulDiscoveryClient.getInstances(svcName);
+
+        JSONObject jsonObj = new JSONObject();
+        jsonObj.put("currentTime", LocalDateTime.now().toString());
+        jsonObj.put("consullist", list);
         jsonObj.put("size", list.size());
         return jsonObj.toJSONString();
     }
@@ -59,7 +76,6 @@ public class ConsulController {
         jsonObj.put("size", list.size());
         return jsonObj.toJSONString();
     }
-
 
     @ApiOperation("store KV")
     @RequestMapping(value="/kv/{key}/{value}",method=RequestMethod.POST)
