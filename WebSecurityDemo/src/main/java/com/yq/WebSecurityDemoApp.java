@@ -10,9 +10,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 
 @SpringBootApplication(scanBasePackages = {"com.yq"})
-@EnableAutoConfiguration(exclude = {
-        org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration.class
-})
+//@EnableAutoConfiguration(exclude = {
+//        org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration.class
+//})
 public class WebSecurityDemoApp {
     private static final Logger log = LoggerFactory.getLogger(WebSecurityDemoApp.class);
 
