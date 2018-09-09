@@ -23,24 +23,18 @@ public class HelloController {
 
     @GetMapping("/port")
     @ApiOperation("get server port service")
-    @ApiImplicitParams({
-    })
     public String getPort() {
         return "server port " + serverConfig.getPort();
     }
 
     @GetMapping("/portByProperties")
     @ApiOperation("get server port config")
-    @ApiImplicitParams({
-    })
     public String getPortByConfig() {
         return "server port " + myConfig.getPort();
     }
 
     @GetMapping("/hello")
     @ApiOperation("hello world rest demo")
-    @ApiImplicitParams({
-    })
     public String handle() {
         return "Hello World";
     }
