@@ -1,5 +1,6 @@
 package com.yq.controller;
 
+import com.yq.config.MyConfig;
 import com.yq.config.ServerConfig;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -17,12 +18,23 @@ public class HelloController {
     @Autowired
     private ServerConfig serverConfig;
 
+    @Autowired
+    private MyConfig myConfig;
+
     @GetMapping("/port")
     @ApiOperation("get server port service")
     @ApiImplicitParams({
     })
     public String getPort() {
         return "server port " + serverConfig.getPort();
+    }
+
+    @GetMapping("/portByProperties")
+    @ApiOperation("get server port config")
+    @ApiImplicitParams({
+    })
+    public String getPortByConfig() {
+        return "server port " + myConfig.getPort();
     }
 
     @GetMapping("/hello")
