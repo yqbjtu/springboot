@@ -21,4 +21,8 @@ public class ConsulConfig {
     // the default port is 8500
     @Value("${consul.port:8500}")
     private int consulPort;
+
+    public ConsulConfig() {
+        System.out.println("ConsulConfig启动初始化。。。");
+    }
 }

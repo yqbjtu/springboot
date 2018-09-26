@@ -1,12 +1,16 @@
 package com.yq.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.ecwid.consul.v1.ConsulClient;
+
+import com.ecwid.consul.v1.health.model.Check;
 import com.ecwid.consul.v1.health.model.HealthService;
 import com.yq.service.IConsulService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,11 +22,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Api("consul API")
 @RestController
 @RequestMapping("/consul2")
+@Slf4j
 public class EcwidConsulController {
 
     @Autowired
@@ -49,11 +55,25 @@ public class EcwidConsulController {
     })
     @GetMapping(value="/disSvc/{svcName}", produces = "application/json;charset=UTF-8")
     public String discoverService(@PathVariable("svcName") String svcName, @RequestParam boolean onlyPassing) {
-        List<HealthService> list = consulService.findHealthyService(svcName,onlyPassing);
+        List<HealthService> list = consulService.findHealthyService(svcName, onlyPassing);
         JSONObject jsonObj = new JSONObject();
         jsonObj.put("currentTime", LocalDateTime.now().toString());
-        jsonObj.put("list", list);
         jsonObj.put("size", list.size());
+        jsonObj.put("list", list);
+
+        List<String> idlist = new ArrayList<>();
+        for(HealthService service : list) {
+            // 创建一个用来剔除无效实例的ConsulClient，连接到无效实例注册的agent
+            ConsulClient clearClient = new ConsulClient(service.getNode().getAddress(), 8500);
+            service.getChecks().forEach(check -> {
+                if(check.getStatus() != Check.CheckStatus.PASSING) {
+                    log.info("unregister : {}", check.getServiceId());
+                    // clearClient.agentServiceDeregister(check.getServiceId());
+                    idlist.add(check.getServiceId());
+                }
+            });
+        }
+        jsonObj.put("idlist", idlist);
         return jsonObj.toJSONString();
     }
 

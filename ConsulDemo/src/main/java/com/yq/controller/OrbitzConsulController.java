@@ -24,7 +24,7 @@ import java.util.List;
 @Api("consul API")
 @RestController
 @RequestMapping("/consul1")
-public class ConsulController {
+public class OrbitzConsulController {
     @Autowired
     @Qualifier("orbitzConsulServiceImpl")
     private IConsulService consulService;
@@ -56,8 +56,9 @@ public class ConsulController {
 
         JSONObject jsonObj = new JSONObject();
         jsonObj.put("currentTime", LocalDateTime.now().toString());
-        jsonObj.put("normallist", list);
         jsonObj.put("size", list.size());
+        jsonObj.put("normallist", list);
+
         return jsonObj.toJSONString();
     }
 

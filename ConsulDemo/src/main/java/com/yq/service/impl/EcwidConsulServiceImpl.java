@@ -19,7 +19,7 @@ import java.util.List;
 /**
  * Simple to Introduction
 
- *  本代码只是为了说明如何使用consul api，没有使用接口让两个service都集成接口
+ *  本代码只是为了说明如何使用consul api，两个consul客户端都是是吸纳了接口IConsulService
  * @version 2018/9/1 10:01
  */
 
