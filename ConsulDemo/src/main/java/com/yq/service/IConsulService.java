@@ -1,6 +1,7 @@
 package com.yq.service;
 
 import com.ecwid.consul.v1.health.model.HealthService;
+import com.orbitz.consul.AgentClient;
 import com.orbitz.consul.model.health.ServiceHealth;
 import lombok.extern.slf4j.Slf4j;
 
@@ -17,6 +18,8 @@ import java.util.List;
 public interface IConsulService {
 
     public void registerService(String serviceName, String serviceId) ;
+
+    public void deRegisterService(String serviceId);
 
     //Orbitz 和Ecwid提供的监控节点类型不同，这里也不进行二次封装了，因此使用接口的默认实现方法
     // for orbitz

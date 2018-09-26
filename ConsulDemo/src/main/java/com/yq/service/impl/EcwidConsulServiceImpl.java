@@ -35,7 +35,7 @@ public class EcwidConsulServiceImpl implements IConsulService {
     public EcwidConsulServiceImpl() {
         log.info("consulConfig={}", consulConfig);
         //client = new ConsulClient(consulConfig.getConsulIP(), consulConfig.getConsulPort());
-        client = new ConsulClient("x.y.z.a", 8500);
+        client = new ConsulClient("127.0.0.1", 8500);
     }
 
     @Override
@@ -52,6 +52,11 @@ public class EcwidConsulServiceImpl implements IConsulService {
         serviceCheck.setInterval("10s");
         newService.setCheck(serviceCheck);
         client.agentServiceRegister(newService);
+    }
+
+    @Override
+    public void deRegisterService(String serviceId) {
+        client.agentServiceDeregister(serviceId);
     }
 
     @Override

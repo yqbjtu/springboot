@@ -11,7 +11,9 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.cloud.consul.discovery.ConsulDiscoveryClient;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -35,14 +37,20 @@ public class ConsulController {
 
 
     @ApiOperation("register service")
-    @RequestMapping(value="/regSvc/{svcName}/{svcId}",method=RequestMethod.POST)
+    @PostMapping(value="/regSvc/{svcName}/{svcId}", produces = "application/json;charset=UTF-8")
     public void registerService(@PathVariable("svcName") String svcName,
                                 @PathVariable("svcId") String svcId) {
         consulService.registerService(svcName, svcId);
     }
 
+    @ApiOperation("deRegister service")
+    @PostMapping(value="/deRegSvc/{svcId}", produces = "application/json;charset=UTF-8")
+    public void deRegisterService(@PathVariable("svcId") String svcId) {
+        consulService.deRegisterService(svcId);
+    }
+
     @ApiOperation("discover service")
-    @RequestMapping(value="/disSvc1/{svcName}",method=RequestMethod.GET)
+    @GetMapping(value="/disSvc1/{svcName}", produces = "application/json;charset=UTF-8")
     public String discoverService(@PathVariable("svcName") String svcName) {
         List<ServiceHealth> list = consulService.findServiceHealthy(svcName);
 
@@ -54,7 +62,7 @@ public class ConsulController {
     }
 
     @ApiOperation("discover service by consulDiscoveryClient")
-    @RequestMapping(value="/disSvc3/{svcName}",method=RequestMethod.GET)
+    @GetMapping(value="/disSvc3/{svcName}", produces = "application/json;charset=UTF-8")
     public String discoverServiceByConsulClient(@PathVariable("svcName") String svcName) {
         List<ServiceInstance> list = consulDiscoveryClient.getInstances(svcName);
 
@@ -66,7 +74,7 @@ public class ConsulController {
     }
 
     @ApiOperation("discover service by discoveryClient")
-    @RequestMapping(value="/disSvc2/{svcName}",method=RequestMethod.GET)
+    @GetMapping(value="/disSvc2/{svcName}", produces = "application/json;charset=UTF-8")
     public String discoverServiceByClient(@PathVariable("svcName") String svcName) {
         List<ServiceInstance> list = discoveryClient.getInstances(svcName);
 
@@ -78,26 +86,26 @@ public class ConsulController {
     }
 
     @ApiOperation("store KV")
-    @RequestMapping(value="/kv/{key}/{value}",method=RequestMethod.POST)
+    @PostMapping(value="/kv/{key}/{value}", produces = "application/json;charset=UTF-8")
     public void storeKV(@PathVariable("key") String key,
                         @PathVariable("value") String value) {
         consulService.storeKV(key, value);
     }
 
     @ApiOperation("get KV")
-    @RequestMapping(value="/kv/{key}",method=RequestMethod.GET)
+    @PostMapping(value="/kv/{key}", produces = "application/json;charset=UTF-8")
     public String getKV(@PathVariable("key") String key) {
         return consulService.getKV(key);
     }
 
     @ApiOperation("获取同一个DC中的所有server节点")
-    @RequestMapping(value="/raftpeers",method=RequestMethod.GET)
+    @GetMapping(value="/raftpeers", produces = "application/json;charset=UTF-8")
     public List<String> findRaftPeers() {
         return consulService.findRaftPeers();
     }
 
     @ApiOperation("获取leader")
-    @RequestMapping(value="/leader",method=RequestMethod.GET)
+    @GetMapping(value="/leader", produces = "application/json;charset=UTF-8")
     public String leader() {
         return consulService.findRaftLeader();
     }

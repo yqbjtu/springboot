@@ -9,7 +9,9 @@ import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -28,18 +30,24 @@ public class EcwidConsulController {
     private IConsulService consulService;
 
     @ApiOperation("register service")
-    @RequestMapping(value="/regSvc/{svcName}/{svcId}",method=RequestMethod.POST)
+    @PostMapping(value="/regSvc/{svcName}/{svcId}", produces = "application/json;charset=UTF-8")
     public void registerService(@PathVariable("svcName") String svcName,
                                 @PathVariable("svcId") String svcId) {
         consulService.registerService(svcName, svcId);
     }
 
-    @ApiOperation("dicover service")
+    @ApiOperation("deRegister service")
+    @PostMapping(value="/deRegSvc/{svcId}", produces = "application/json;charset=UTF-8")
+    public void deRegisterService(@PathVariable("svcId") String svcId) {
+        consulService.deRegisterService(svcId);
+    }
+
+    @ApiOperation("discover service")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "svcName", defaultValue = "svcName", value = "svcName", required = true, dataType = "string", paramType = "path"),
             @ApiImplicitParam(name = "onlyPassing", defaultValue = "true", value = "onlyPassing", required = true, dataType = "boolean", paramType = "query")
     })
-    @RequestMapping(value="/disSvc/{svcName}",method=RequestMethod.GET)
+    @GetMapping(value="/disSvc/{svcName}", produces = "application/json;charset=UTF-8")
     public String discoverService(@PathVariable("svcName") String svcName, @RequestParam boolean onlyPassing) {
         List<HealthService> list = consulService.findHealthyService(svcName,onlyPassing);
         JSONObject jsonObj = new JSONObject();
@@ -50,27 +58,27 @@ public class EcwidConsulController {
     }
 
     @ApiOperation("store KV")
-    @RequestMapping(value="/kv/{key}/{value}",method=RequestMethod.POST)
+    @PostMapping(value="/kv/{key}/{value}",produces = "application/json;charset=UTF-8")
     public void storeKV(@PathVariable("key") String key,
                         @PathVariable("value") String value) {
         consulService.storeKV(key, value);
     }
 
     @ApiOperation("get KV")
-    @RequestMapping(value="/kv/{key}",method=RequestMethod.GET)
+    @GetMapping(value="/kv/{key}", produces = "application/json;charset=UTF-8")
     public String getKV(@PathVariable("key") String key) {
         return consulService.getKV(key);
     }
 
 
     @ApiOperation("获取同一个DC中的所有server节点")
-    @RequestMapping(value="/raftpeers",method=RequestMethod.GET)
+    @GetMapping(value="/raftpeers", produces = "application/json;charset=UTF-8")
     public List<String> findRaftPeers() {
         return consulService.findRaftPeers();
     }
 
     @ApiOperation("获取leader")
-    @RequestMapping(value="/leader",method=RequestMethod.GET)
+    @GetMapping(value="/leader", produces = "application/json;charset=UTF-8")
     public String leader() {
         return consulService.findRaftLeader();
     }

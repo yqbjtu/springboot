@@ -18,3 +18,6 @@
 1.5.x  到2.0.x关于security的变化
 
 https://github.com/spring-projects/spring-boot/wiki/Spring-Boot-2.0-Migration-Guide  
+
+https://github.com/spring-projects/spring-boot/wiki/Spring-Boot-2.0-Configuration-Changelog  
+security.basic.enabled 被取消了
