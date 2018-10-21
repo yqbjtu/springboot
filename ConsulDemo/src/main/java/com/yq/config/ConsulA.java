@@ -1,10 +1,13 @@
 package com.yq.config;
 
 import lombok.Data;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Bean;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
+import org.springframework.stereotype.Component;
 
 /**
  * Simple to Introduction
@@ -13,19 +16,16 @@ import org.springframework.core.annotation.Order;
  * @author EricYang
  * @version 2018/9/1 10:04
  */
-@Configuration
+
 @Data
 @Order(1)
-public class ConsulConfig {
-    //the default ip is 127.0.0.1
-    @Value("${consul.ip:127.0.0.1}")
-    private String consulIP;
+@Slf4j
+@Component
+public class ConsulA {
+    @Autowired
+    private ApplicationContext context;
 
-    // the default port is 8500
-    @Value("${consul.port:8500}")
-    private int consulPort;
-
-    public ConsulConfig() {
-        System.out.println("ConsulConfig启动初始化。。。");
+    public ConsulA() {
+       log.info("ConsulConfigA启动初始化。。。 context={}", context);
     }
 }

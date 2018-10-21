@@ -1,11 +1,14 @@
 package com.yq.service.impl;
 
+import com.ecwid.consul.v1.ConsulClient;
 import com.orbitz.consul.*;
 import com.orbitz.consul.model.health.ServiceHealth;
 import com.yq.config.ConsulConfig;
+import com.yq.config.SpringContextHolder;
 import com.yq.service.IConsulService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
@@ -22,12 +25,30 @@ public class OrbitzConsulServiceImpl implements IConsulService {
     @Autowired
     private ConsulConfig consulConfig;
 
+    @Autowired
+    private ApplicationContext context;
+
     private Consul consul = null;
 
     public OrbitzConsulServiceImpl() {
         log.info("consulConfig={}", consulConfig);
-        //String url = "http://" + consulConfig.getConsulIP() + ":" + consulConfig.getConsulPort();
-        String url = "http:/127.0.0.1:8500";
+        log.info("context={}", context);
+        if (consulConfig == null && context != null) {
+            consulConfig = (ConsulConfig) context.getBean("consulConfig");
+        }
+        else if (consulConfig == null) {
+            consulConfig = (ConsulConfig) SpringContextHolder.getBean("consulConfig");
+            log.info("consulConfig={} gotten by SpringContextHolder.", consulConfig);
+        }
+
+        String url = null;
+        if (consulConfig == null) {
+            url = "http:/127.0.0.1:8500";
+        }
+        else {
+            url = "http://" + consulConfig.getConsulIP() + ":" + consulConfig.getConsulPort();
+        }
+
         consul = Consul.builder().withUrl(url).build();
     }
 
