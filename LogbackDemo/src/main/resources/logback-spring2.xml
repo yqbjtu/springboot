@@ -50,7 +50,6 @@
     <root level="DEBUG">
         <appender-ref ref="CONSOLE"/>
         <appender-ref ref="ERROR_FILE"/>
-        <appender-ref ref="FILE" />
     </root>
 
 
@@ -59,6 +58,10 @@
     </logger>
 
     <logger name="com.yq.service" level="info" additivity="false">
+        <appender-ref ref="FILE" />
+    </logger>
+
+    <logger name="org.springframework.beans" level="debug" additivity="false">
         <appender-ref ref="FILE" />
     </logger>
 

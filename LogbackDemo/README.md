@@ -374,7 +374,7 @@ Cleared thread-bound request context: org.apache.catalina.connector.RequestFacad
 结论   
     info1.txt记录了很多springboot的日志包括debug级别的日志， 而com.yq部分记录了debug部分  
     com.yq.controller包下面的所有trace级别以上信息   
-    com.yq.service包下面的素有info级别以上的信息  
+    com.yq.service包下面的所有info级别以上的信息  
     console中controller包和servcie包都没有记录  
     
 info1.txt内容为  
@@ -451,7 +451,7 @@ console中controller和servcie都没有记录
     info1.txt记录了很多springboot的日志包括debug级别的日志， 而com.yq部分  
      com.yq记录了error和warn（<logger name="com.yq" level="warn" additivity="false">规定级别）
     com.yq.controller包下面的所有trace级别以上信息   
-    com.yq.service包下面的素有info级别以上的信息  
+    com.yq.service包下面的所有info级别以上的信息  
     error1.txt为空
     console中controller包和servcie包都没有记录  
     
@@ -497,3 +497,89 @@ Cleared thread-bound request context: org.apache.catalina.connector.RequestFacad
 
 error1.txt为空
 console中controller和servcie都没有记录
+
+
+
+#case9  
+使用logback-spring2.xml， 也就是FILE中没有定义级别  
+
+然后配置  
+```xml
+    <!-- 基础日志输出级别 -->
+    <root level="DEBUG">
+        <appender-ref ref="CONSOLE"/>
+        <appender-ref ref="ERROR_FILE"/>
+    </root>
+
+
+    <logger name="com.yq.controller" level="trace" additivity="false">
+        <appender-ref ref="FILE" />
+    </logger>
+
+    <logger name="com.yq.service" level="info" additivity="false">
+        <appender-ref ref="FILE" />
+    </logger>
+
+    <logger name="org.springframework.beans" level="debug" additivity="false">
+        <appender-ref ref="FILE" />
+    </logger>
+```
+
+结论   
+    info1.txt记录了很多springboot的日志包括debug级别的日志， 
+        com.yq.controller包下面的所有trace级别以上信息   
+        com.yq.service包下面的所有info级别以上的信息  
+        org.springframework.beans包下面的所有debug级别以上的信息  
+    error1.txt只记录com.yq.LogbackApplication的错误日志，没有com.yq.controller和com.yq.controller的错误
+    console中controller包和servcie包都没有记录， 只有springboot的com.yq.LogbackApplication的日志  
+    
+info1.txt内容为  
+Returning cached instance of singleton bean 'mvcViewResolver'
+2018-11-10 15:23:26,769 DEBUG [DESKTOP-8S2E5H7 http-nio-9090-exec-1] Caller+0	 at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:251)
+Returning cached instance of singleton bean 'defaultViewResolver'
+2018-11-10 15:23:26,769 DEBUG [DESKTOP-8S2E5H7 http-nio-9090-exec-1] Caller+0	 at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:251)
+Returning cached instance of singleton bean 'viewResolver'
+2018-11-10 15:23:26,769 DEBUG [DESKTOP-8S2E5H7 http-nio-9090-exec-1] Caller+0	 at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:251)
+Returning cached instance of singleton bean 'thymeleafViewResolver'
+2018-11-10 15:23:26,770 DEBUG [DESKTOP-8S2E5H7 http-nio-9090-exec-1] Caller+0	 at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:449)
+Creating instance of bean 'org.springframework.web.servlet.support.SessionFlashMapManager'
+2018-11-10 15:23:26,776 DEBUG [DESKTOP-8S2E5H7 http-nio-9090-exec-1] Caller+0	 at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:485)
+Finished creating instance of bean 'org.springframework.web.servlet.support.SessionFlashMapManager'
+2018-11-10 15:23:26,807 DEBUG [DESKTOP-8S2E5H7 http-nio-9090-exec-1] Caller+0	 at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:251)
+Returning cached instance of singleton bean 'userController'
+2018-11-10 15:23:26,829 ERROR [DESKTOP-8S2E5H7 http-nio-9090-exec-1] Caller+0	 at com.yq.service.impl.UserServiceImpl.getById(UserServiceImpl.java:40)
+error find user=2 by id=User(id=2, name=Tom2, mail=qq2@163.com, regDate=Sat Nov 10 15:23:18 CST 2018)
+2018-11-10 15:23:26,830 WARN  [DESKTOP-8S2E5H7 http-nio-9090-exec-1] Caller+0	 at com.yq.service.impl.UserServiceImpl.getById(UserServiceImpl.java:41)
+warn find user=2 by id=User(id=2, name=Tom2, mail=qq2@163.com, regDate=Sat Nov 10 15:23:18 CST 2018)
+2018-11-10 15:23:26,830 INFO  [DESKTOP-8S2E5H7 http-nio-9090-exec-1] Caller+0	 at com.yq.service.impl.UserServiceImpl.getById(UserServiceImpl.java:42)
+info find user=2 by id=User(id=2, name=Tom2, mail=qq2@163.com, regDate=Sat Nov 10 15:23:18 CST 2018)
+2018-11-10 15:23:26,830 ERROR [DESKTOP-8S2E5H7 http-nio-9090-exec-1] Caller+0	 at com.yq.controller.UserController.getUser(UserController.java:37)
+error rest get user=User(id=2, name=Tom2, mail=qq2@163.com, regDate=Sat Nov 10 15:23:18 CST 2018) by id=2
+2018-11-10 15:23:26,830 WARN  [DESKTOP-8S2E5H7 http-nio-9090-exec-1] Caller+0	 at com.yq.controller.UserController.getUser(UserController.java:38)
+warn rest get user=User(id=2, name=Tom2, mail=qq2@163.com, regDate=Sat Nov 10 15:23:18 CST 2018) by id=2
+2018-11-10 15:23:26,830 INFO  [DESKTOP-8S2E5H7 http-nio-9090-exec-1] Caller+0	 at com.yq.controller.UserController.getUser(UserController.java:39)
+info rest get user=User(id=2, name=Tom2, mail=qq2@163.com, regDate=Sat Nov 10 15:23:18 CST 2018) by id=2
+2018-11-10 15:23:26,830 DEBUG [DESKTOP-8S2E5H7 http-nio-9090-exec-1] Caller+0	 at com.yq.controller.UserController.getUser(UserController.java:40)
+debug rest get user=User(id=2, name=Tom2, mail=qq2@163.com, regDate=Sat Nov 10 15:23:18 CST 2018) by id=2
+2018-11-10 15:23:26,830 TRACE [DESKTOP-8S2E5H7 http-nio-9090-exec-1] Caller+0	 at com.yq.controller.UserController.getUser(UserController.java:41)
+trace rest get user=User(id=2, name=Tom2, mail=qq2@163.com, regDate=Sat Nov 10 15:23:18 CST 2018) by id=2  
+
+error1.txt内容为  
+2018-11-10 15:23:20,428 ERROR [DESKTOP-8S2E5H7 restartedMain] Caller+0	 at com.yq.LogbackApplication.main(LogbackApplication.java:19)
+error LogbackApplication Start done.
+
+
+控制台的内容为  
+Starting application com.yq.LogbackApplication with URLs [file:/D:/E/workspaceGitub/springboot/LogbackDemo/target/classes/]
+2018-11-10 15:23:20,428 INFO  [DESKTOP-8S2E5H7 restartedMain] Caller+0	 at org.springframework.boot.StartupInfoLogger.logStarted(StartupInfoLogger.java:57)
+Started LogbackApplication in 6.774 seconds (JVM running for 7.439)
+2018-11-10 15:23:20,428 ERROR [DESKTOP-8S2E5H7 restartedMain] Caller+0	 at com.yq.LogbackApplication.main(LogbackApplication.java:19)
+error LogbackApplication Start done.
+2018-11-10 15:23:20,428 WARN  [DESKTOP-8S2E5H7 restartedMain] Caller+0	 at com.yq.LogbackApplication.main(LogbackApplication.java:20)
+warn LogbackApplication Start done.
+2018-11-10 15:23:20,428 INFO  [DESKTOP-8S2E5H7 restartedMain] Caller+0	 at com.yq.LogbackApplication.main(LogbackApplication.java:21)
+info LogbackApplication Start done.
+2018-11-10 15:23:20,428 DEBUG [DESKTOP-8S2E5H7 restartedMain] Caller+0	 at com.yq.LogbackApplication.main(LogbackApplication.java:22)
+debug LogbackApplication Start done.
+2018-11-10 15:23:26,749 DEBUG [DESKTOP-8S2E5H7 http-nio-9090-exec-1] Caller+0	 at org.springframework.web.servlet.HttpServletBean.init(HttpServletBean.java:149)
+Initializing servlet 'dispatcherServlet'  
