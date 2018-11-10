@@ -1,5 +1,7 @@
 package com.yq.config;
 
+import com.yq.bean.BeanOrderedA;
+import com.yq.bean.BeanOrderedB;
 import com.yq.service.UserServiceA;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
@@ -16,12 +18,18 @@ import org.springframework.core.annotation.Order;
 @Configuration
 @Order(3)
 @Slf4j
-public class ConfigA {
+public class ConfigOrderedInterface {
 
     @Bean
-    public UserServiceA userServiceA() {
-        log.info("ConfigA 执行 order 3");
-        return new UserServiceA("order 3, userA");
+    public BeanOrderedA beanOrderedA() {
+        log.info("BeanOrderedA 生成");
+        return new BeanOrderedA();
+    }
+
+    @Bean
+    public BeanOrderedB beanOrderedB() {
+        log.info("BeanOrderedB 生成");
+        return new BeanOrderedB();
     }
 }
 

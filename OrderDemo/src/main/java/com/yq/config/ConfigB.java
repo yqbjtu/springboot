@@ -26,7 +26,7 @@ public class ConfigB {
     //方法名称必须不同，要不然configA和configB只有一个userService方法执行了
     @Bean
     public UserServiceB userServiceB() {
-        log.info("ConfigB 执行");
+        log.info("ConfigB 执行. order 2");
         return new UserServiceB("order 2. userB");
     }
 }

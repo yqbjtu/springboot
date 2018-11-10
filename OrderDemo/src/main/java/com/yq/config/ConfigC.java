@@ -30,7 +30,7 @@ public class ConfigC {
     @Bean
     public UserServiceB userServiceC() {
         String note = userServiceA.getUserName();
-        log.info("ConfigC 执行");
+        log.info("ConfigC 执行. order 1");
         return new UserServiceB("order 1." + note);
     }
 }

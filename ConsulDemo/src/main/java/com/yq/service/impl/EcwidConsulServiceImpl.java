@@ -28,7 +28,6 @@ import java.util.List;
 
 @Service
 @Slf4j
-@Component
 public class EcwidConsulServiceImpl implements IConsulService {
     @Autowired
     private ConsulConfig consulConfig;

@@ -1,5 +1,6 @@
 package com.yq;
 
+import com.alibaba.fastjson.JSONObject;
 import lombok.extern.slf4j.Slf4j;
 
 import java.text.DateFormat;
@@ -17,6 +18,11 @@ import java.util.Date;
 public class TestMain {
 
     public static void main(String[] args) {
+        String jsonStr = "{\"row\":[],\"totalPage\":0,\"totalSize\":0}";
+        JSONObject json = (JSONObject) JSONObject.parse(jsonStr);
+        int dataRuleCount = (Integer) json.get("totalSize");
+        log.info("dataRuleCount={}", dataRuleCount);
+
         String workerPath ="/myWorkerList/sub-service-8082-1135504170";
         String myConstant = "/myWorkerList";
         String workerId = workerPath.substring(myConstant.length() + 1);

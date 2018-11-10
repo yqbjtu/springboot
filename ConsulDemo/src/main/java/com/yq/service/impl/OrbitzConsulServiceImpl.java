@@ -17,7 +17,6 @@ import java.net.URI;
 import java.util.List;
 
 
-@Component
 @Service
 @Slf4j
 public class OrbitzConsulServiceImpl implements IConsulService {
