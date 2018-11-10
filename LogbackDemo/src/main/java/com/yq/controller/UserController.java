@@ -38,6 +38,7 @@ public class UserController {
         log.warn("warn rest get user={} by id={}", user, userId);
         log.info("info rest get user={} by id={}", user, userId);
         log.debug("debug rest get user={} by id={}", user, userId);
+        log.trace("trace rest get user={} by id={}", user, userId);
         return user;
     }
 

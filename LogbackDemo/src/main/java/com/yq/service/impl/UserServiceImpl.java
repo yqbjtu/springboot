@@ -36,8 +36,12 @@ public class UserServiceImpl implements IUserService {
 
     @Override
     public User getById(String id) {
-         User user = userMap.get(id);
-         log.info("find user={} by id={}", id, user);
+        User user = userMap.get(id);
+        log.error("error find user={} by id={}", id, user);
+        log.warn("warn find user={} by id={}", id, user);
+        log.info("info find user={} by id={}", id, user);
+        log.debug("debug find user={} by id={}", id, user);
+        log.trace("trace find user={} by id={}", id, user);
         return user;
     }
 

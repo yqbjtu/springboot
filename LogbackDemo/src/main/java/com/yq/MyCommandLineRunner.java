@@ -16,7 +16,10 @@ public class MyCommandLineRunner implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        log.info("myCLR");
-        log.debug("myCLR");
+        log.error("error myCLR");
+        log.warn("warn myCLR");
+        log.info("info myCLR");
+        log.debug("debug myCLR");
+        log.trace("trace myCLR");
     }
 }

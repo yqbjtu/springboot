@@ -16,7 +16,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class LogbackApplication {
     public static void main(String[] args) {
         SpringApplication.run(LogbackApplication.class, args);
-        log.info("LogbackApplication Start done.");
-        log.debug("LogbackApplication Start done.");
+        log.error("error LogbackApplication Start done.");
+        log.warn("warn LogbackApplication Start done.");
+        log.info("info LogbackApplication Start done.");
+        log.debug("debug LogbackApplication Start done.");
+        log.trace("trace LogbackApplication Start done.");
     }
 }
