@@ -15,3 +15,6 @@ https://docs.spring.io/spring-boot/docs/1.5.12.RELEASE/reference/html/boot-featu
   
   https://docs.oracle.com/javase/8/
   
+  https://docs.oracle.com/javase/8/docs/technotes/guides/security/index.html
+  
+  

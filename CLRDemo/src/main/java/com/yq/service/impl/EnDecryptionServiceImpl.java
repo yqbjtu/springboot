@@ -59,7 +59,7 @@ public class EnDecryptionServiceImpl implements IEnDecryptionService{
     }
 
     @Autowired
-    public void SetMySecretKey(String secretKey) {
+    public void setMySecretKey(String secretKey) {
         mySecretKey = secretKey;
         log.info("set mySecretKey={}", mySecretKey);
         init();

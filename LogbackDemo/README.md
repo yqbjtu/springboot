@@ -8,6 +8,9 @@ info
 debug 
 trace 
    
+   https://www.mkyong.com/logging/logback-xml-example/    
+   https://stackoverflow.com/questions/48657071/logback-logger-name-with-wildcard  
+   
 #case1
 ```xml
     <!-- 基础日志输出级别 -->
