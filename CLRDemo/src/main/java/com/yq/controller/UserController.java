@@ -25,7 +25,7 @@ public class UserController {
     private Logger log = LoggerFactory.getLogger(UserController.class);
 
     @Autowired
-    IUserService  userSvc;
+    IUserService userSvc;
 
     @ApiOperation(value = "按用户id查询", notes="private")
     @ApiImplicitParams({

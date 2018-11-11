@@ -13,6 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -31,7 +32,12 @@ import java.util.Collection;
 public class EnDecryptController {
 
     @Autowired
+    @Qualifier("enDecryptionServiceImpl")
     IEnDecryptionService enDecryptionSvc;
+
+    @Autowired
+    @Qualifier("twoEnDecryptionServiceImpl")
+    IEnDecryptionService twoEnDecryptionSvc;
 
     /*
     get请求不能使用body，因此必须修改为其他method
@@ -43,6 +49,24 @@ public class EnDecryptController {
     @PostMapping(value = "/encrypt/", produces = "application/json;charset=UTF-8")
     public String encryptRest(@RequestBody String plaintext) {
         String ciphertext = enDecryptionSvc.encrypt(plaintext);
+        log.info("plaintext={}, ciphertext={}", plaintext, ciphertext);
+
+        JSONObject jsonObj = new JSONObject();
+        jsonObj.put("currentTime", LocalDateTime.now().toString());
+        jsonObj.put("ciphertext", ciphertext);
+        return jsonObj.toString();
+    }
+
+    /*
+     get请求不能使用body，因此必须修改为其他method
+     */
+    @ApiOperation(value = "加密byTwo")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "plaintext", defaultValue = "qazwsxedc", value = "plaintext", required = true, dataType = "string", paramType = "body"),
+    })
+    @PostMapping(value = "/encryptByTwo/", produces = "application/json;charset=UTF-8")
+    public String encryptRestByTwo(@RequestBody String plaintext) {
+        String ciphertext = twoEnDecryptionSvc.encrypt(plaintext);
         log.info("plaintext={}, ciphertext={}", plaintext, ciphertext);
 
         JSONObject jsonObj = new JSONObject();
@@ -65,5 +89,4 @@ public class EnDecryptController {
         jsonObj.put("plaintext", plaintext);
         return jsonObj.toString();
     }
-
 }
