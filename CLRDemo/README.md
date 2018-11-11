@@ -9,3 +9,9 @@ https://docs.spring.io/spring-boot/docs/1.5.12.RELEASE/reference/html/boot-featu
   use the org.springframework.core.annotation.Order annotation if several CommandLineRunner or  
   ApplicationRunner beans are defined that must be called in a specific order.
   
+  
+  
+  https://www.mkyong.com/java/jce-encryption-data-encryption-standard-des-tutorial/  
+  
+  https://docs.oracle.com/javase/8/
+  

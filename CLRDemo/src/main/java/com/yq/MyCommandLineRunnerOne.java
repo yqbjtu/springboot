@@ -17,6 +17,7 @@ import org.springframework.stereotype.Component;
 
 @Slf4j
 @Component
+//@Order(value=1)
 public class MyCommandLineRunnerOne implements CommandLineRunner, ApplicationContextAware {
     private ApplicationContext applicationContext = null;
 
