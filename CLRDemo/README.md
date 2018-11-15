@@ -1,4 +1,4 @@
-#CLRDEmo
+#CLRDemo
 
 http://127.0.0.1:9091/swagger-ui.html
 
@@ -26,4 +26,24 @@ https://docs.spring.io/spring-boot/docs/1.5.12.RELEASE/reference/html/boot-featu
   
   https://docs.oracle.com/javase/8/docs/technotes/guides/security/crypto/CryptoSpec.html#SecretKeyFactory  
   
+  第三种办法解决Autowired annotation is not supported on static fields
+  Using @PostConstruct to hand value over to static field
   
+  The idea here is to hand over a bean to a static field after bean is configured by spring.
+  
+  @Component
+  public class Boo {
+  
+      private static Foo foo;
+      @Autowired
+      private Foo tFoo;
+  
+      @PostConstruct
+      public void init() {
+          Boo.foo = tFoo;
+      }
+  
+      public static void randomMethod() {
+           foo.doStuff();
+      }
+  }
