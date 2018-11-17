@@ -11,8 +11,10 @@ https://www.baeldung.com/jackson-ignore-properties-on-serialization
 @JsonIgnoreProperties({ "internalId", "secretKey" })
 指定的字段不会被序列化和反序列化。
 
+https://github.com/yqbjtu/springboot/tree/master/JSONDemo
 
-创建user的json  
+创建user的json  , 没有配置spring.jackson.date-format=yyyy-MM-dd HH:mm:ss
+                   spring.jackson.time-zone=GMT+8，  所以可以创建成功
 ```json
 {
   "comment": "comment1",
@@ -24,3 +26,50 @@ https://www.baeldung.com/jackson-ignore-properties-on-serialization
   "regDate": "2018-11-16T14:55:38.244Z"
 }
 ```
+
+
+在application.properties中配置了
+spring.jackson.date-format=yyyy-MM-dd HH:mm:ss
+spring.jackson.time-zone=GMT+8
+
+之后，默认的User对象的private Date reg2Date;会按照yyyy-MM-dd HH:mm:ss输出，
+如果create输入
+```json
+{
+  "address": "06",
+  "comment": "张三",
+  "fullName": "tomFull",
+  "id": "099",
+  "mail": "06",
+  "name": "tom",
+  "reg2Date": "2018-11-17T02:46:25.793Z",
+  "regDate": "2018-11-16 16:07:08"
+}
+```
+
+
+就会报
+{
+  "timestamp": "2018-11-17 10:46:49",
+  "status": 400,
+  "error": "Bad Request",
+  "exception": "org.springframework.http.converter.HttpMessageNotReadableException",
+  "message": "JSON parse error: Can not deserialize value of type java.util.Date from String \"2018-11-17T02:46:25.793Z\": not a valid representation (error: Failed to parse Date value '2018-11-17T02:46:25.793Z': Unparseable date: \"2018-11-17T02:46:25.793Z\"); nested exception is com.fasterxml.jackson.databind.exc.InvalidFormatException: Can not deserialize value of type java.util.Date from String \"2018-11-17T02:46:25.793Z\": not a valid representation (error: Failed to parse Date value '2018-11-17T02:46:25.793Z': Unparseable date: \"2018-11-17T02:46:25.793Z\")\n at [Source: java.io.PushbackInputStream@29925daf; line: 8, column: 15] (through reference chain: com.yq.domain.vo.UserVO[\"reg2Date\"])",
+  "path": "/user/users"
+}
+
+修改成
+```json
+{
+  "address": "06",
+  "comment": "张三",
+  "fullName": "tomFull",
+  "id": "099",
+  "mail": "06",
+  "name": "tom",
+  "reg2Date": "2018-11-06 16:07:08",
+  "regDate": "2018-11-16 16:07:08"
+}
+```
+
+这样就可以创建成功

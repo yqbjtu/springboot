@@ -44,7 +44,7 @@ public class UserController {
         return user;
     }
 
-    @ApiOperation(value = "按用户id查询", notes="private")
+    @ApiOperation(value = "按用户id删除", notes="private")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "userId", defaultValue = "2", value = "userID", required = true, dataType = "string", paramType = "path"),
     })

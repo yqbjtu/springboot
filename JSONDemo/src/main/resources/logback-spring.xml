@@ -21,7 +21,7 @@
             <pattern>%date %-5level [${HOSTNAME} %thread] %caller{1}%msg%n</pattern><!-- 格式化输出 -->
             <charset>utf8</charset> <!-- 输出编码 -->
         </encoder>
-        <file>./logs/info1.log</file><!-- 文件存放路径 -->
+        <file>./logs/json_info1.log</file><!-- 文件存放路径 -->
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <fileNamePattern>/logs/info/%d{yyyy-MM-dd}.log</fileNamePattern><!-- 每天归档 -->
             <maxHistory>7</maxHistory><!-- 日志存放周期（天） -->
@@ -37,7 +37,7 @@
             <pattern>%date %-5level [${HOSTNAME} %thread] %caller{1}%msg%n</pattern><!-- 格式化输出 -->
             <charset>utf8</charset> <!-- 输出编码 -->
         </encoder>
-        <file>./logs/error1.log</file><!-- 文件存放路径 -->
+        <file>./logs/json_error1.log</file><!-- 文件存放路径 -->
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <fileNamePattern>/logs/error/%d{yyyy-MM-dd}.log</fileNamePattern><!-- 每天归档 -->
             <maxHistory>7</maxHistory><!-- 日志存放周期（天） -->
