@@ -33,6 +33,238 @@ If you would like to indicate per job whether a JTA transaction should wrap its 
 
 Aside from Quartz automatically wrapping Job executions in JTA transactions, calls you make on the Scheduler interface also participate in transactions when using JobStoreCMT. Just make sure you’ve started a transaction before calling a method on the scheduler. You can do this either directly, through the use of UserTransaction, or by putting your code that uses the scheduler within a SessionBean that uses container managed transactions.
 
+  
+  Example 13 - Clustered Quartz 	Demonstrates how Quartz can be used in a clustered environment and how Quartz can use the database to persist scheduling information
+  Example 14 - Trigger Priorities 	Demonstrates how Trigger priorities can be used to manage firing order for Triggers with the same fire time
+  Example 15 - TC Clustered Quartz 	Demonstrates how Quartz can be clustered with Terracotta, rather than with a database 
+
+db init script
+```
+
+# In your Quartz properties file, you'll need to set 
+# org.quartz.jobStore.driverDelegateClass = org.quartz.impl.jdbcjobstore.StdJDBCDelegate
+#
+#
+# By: Ron Cordell - roncordell
+#  I didn't see this anywhere, so I thought I'd post it here. This is the script from Quartz to create the tables in a MySQL database, modified to use INNODB instead of MYISAM.
+
+DROP TABLE IF EXISTS QRTZ_FIRED_TRIGGERS;
+DROP TABLE IF EXISTS QRTZ_PAUSED_TRIGGER_GRPS;
+DROP TABLE IF EXISTS QRTZ_SCHEDULER_STATE;
+DROP TABLE IF EXISTS QRTZ_LOCKS;
+DROP TABLE IF EXISTS QRTZ_SIMPLE_TRIGGERS;
+DROP TABLE IF EXISTS QRTZ_SIMPROP_TRIGGERS;
+DROP TABLE IF EXISTS QRTZ_CRON_TRIGGERS;
+DROP TABLE IF EXISTS QRTZ_BLOB_TRIGGERS;
+DROP TABLE IF EXISTS QRTZ_TRIGGERS;
+DROP TABLE IF EXISTS QRTZ_JOB_DETAILS;
+DROP TABLE IF EXISTS QRTZ_CALENDARS;
+
+CREATE TABLE QRTZ_JOB_DETAILS(
+SCHED_NAME VARCHAR(120) NOT NULL,
+JOB_NAME VARCHAR(200) NOT NULL,
+JOB_GROUP VARCHAR(200) NOT NULL,
+DESCRIPTION VARCHAR(250) NULL,
+JOB_CLASS_NAME VARCHAR(250) NOT NULL,
+IS_DURABLE VARCHAR(1) NOT NULL,
+IS_NONCONCURRENT VARCHAR(1) NOT NULL,
+IS_UPDATE_DATA VARCHAR(1) NOT NULL,
+REQUESTS_RECOVERY VARCHAR(1) NOT NULL,
+JOB_DATA BLOB NULL,
+PRIMARY KEY (SCHED_NAME,JOB_NAME,JOB_GROUP))
+ENGINE=InnoDB;
+
+CREATE TABLE QRTZ_TRIGGERS (
+SCHED_NAME VARCHAR(120) NOT NULL,
+TRIGGER_NAME VARCHAR(200) NOT NULL,
+TRIGGER_GROUP VARCHAR(200) NOT NULL,
+JOB_NAME VARCHAR(200) NOT NULL,
+JOB_GROUP VARCHAR(200) NOT NULL,
+DESCRIPTION VARCHAR(250) NULL,
+NEXT_FIRE_TIME BIGINT(13) NULL,
+PREV_FIRE_TIME BIGINT(13) NULL,
+PRIORITY INTEGER NULL,
+TRIGGER_STATE VARCHAR(16) NOT NULL,
+TRIGGER_TYPE VARCHAR(8) NOT NULL,
+START_TIME BIGINT(13) NOT NULL,
+END_TIME BIGINT(13) NULL,
+CALENDAR_NAME VARCHAR(200) NULL,
+MISFIRE_INSTR SMALLINT(2) NULL,
+JOB_DATA BLOB NULL,
+PRIMARY KEY (SCHED_NAME,TRIGGER_NAME,TRIGGER_GROUP),
+FOREIGN KEY (SCHED_NAME,JOB_NAME,JOB_GROUP)
+REFERENCES QRTZ_JOB_DETAILS(SCHED_NAME,JOB_NAME,JOB_GROUP))
+ENGINE=InnoDB;
+
+CREATE TABLE QRTZ_SIMPLE_TRIGGERS (
+SCHED_NAME VARCHAR(120) NOT NULL,
+TRIGGER_NAME VARCHAR(200) NOT NULL,
+TRIGGER_GROUP VARCHAR(200) NOT NULL,
+REPEAT_COUNT BIGINT(7) NOT NULL,
+REPEAT_INTERVAL BIGINT(12) NOT NULL,
+TIMES_TRIGGERED BIGINT(10) NOT NULL,
+PRIMARY KEY (SCHED_NAME,TRIGGER_NAME,TRIGGER_GROUP),
+FOREIGN KEY (SCHED_NAME,TRIGGER_NAME,TRIGGER_GROUP)
+REFERENCES QRTZ_TRIGGERS(SCHED_NAME,TRIGGER_NAME,TRIGGER_GROUP))
+ENGINE=InnoDB;
+
+CREATE TABLE QRTZ_CRON_TRIGGERS (
+SCHED_NAME VARCHAR(120) NOT NULL,
+TRIGGER_NAME VARCHAR(200) NOT NULL,
+TRIGGER_GROUP VARCHAR(200) NOT NULL,
+CRON_EXPRESSION VARCHAR(120) NOT NULL,
+TIME_ZONE_ID VARCHAR(80),
+PRIMARY KEY (SCHED_NAME,TRIGGER_NAME,TRIGGER_GROUP),
+FOREIGN KEY (SCHED_NAME,TRIGGER_NAME,TRIGGER_GROUP)
+REFERENCES QRTZ_TRIGGERS(SCHED_NAME,TRIGGER_NAME,TRIGGER_GROUP))
+ENGINE=InnoDB;
+
+CREATE TABLE QRTZ_SIMPROP_TRIGGERS
+  (          
+    SCHED_NAME VARCHAR(120) NOT NULL,
+    TRIGGER_NAME VARCHAR(200) NOT NULL,
+    TRIGGER_GROUP VARCHAR(200) NOT NULL,
+    STR_PROP_1 VARCHAR(512) NULL,
+    STR_PROP_2 VARCHAR(512) NULL,
+    STR_PROP_3 VARCHAR(512) NULL,
+    INT_PROP_1 INT NULL,
+    INT_PROP_2 INT NULL,
+    LONG_PROP_1 BIGINT NULL,
+    LONG_PROP_2 BIGINT NULL,
+    DEC_PROP_1 NUMERIC(13,4) NULL,
+    DEC_PROP_2 NUMERIC(13,4) NULL,
+    BOOL_PROP_1 VARCHAR(1) NULL,
+    BOOL_PROP_2 VARCHAR(1) NULL,
+    PRIMARY KEY (SCHED_NAME,TRIGGER_NAME,TRIGGER_GROUP),
+    FOREIGN KEY (SCHED_NAME,TRIGGER_NAME,TRIGGER_GROUP) 
+    REFERENCES QRTZ_TRIGGERS(SCHED_NAME,TRIGGER_NAME,TRIGGER_GROUP))
+ENGINE=InnoDB;
+
+CREATE TABLE QRTZ_BLOB_TRIGGERS (
+SCHED_NAME VARCHAR(120) NOT NULL,
+TRIGGER_NAME VARCHAR(200) NOT NULL,
+TRIGGER_GROUP VARCHAR(200) NOT NULL,
+BLOB_DATA BLOB NULL,
+PRIMARY KEY (SCHED_NAME,TRIGGER_NAME,TRIGGER_GROUP),
+INDEX (SCHED_NAME,TRIGGER_NAME, TRIGGER_GROUP),
+FOREIGN KEY (SCHED_NAME,TRIGGER_NAME,TRIGGER_GROUP)
+REFERENCES QRTZ_TRIGGERS(SCHED_NAME,TRIGGER_NAME,TRIGGER_GROUP))
+ENGINE=InnoDB;
+
+CREATE TABLE QRTZ_CALENDARS (
+SCHED_NAME VARCHAR(120) NOT NULL,
+CALENDAR_NAME VARCHAR(200) NOT NULL,
+CALENDAR BLOB NOT NULL,
+PRIMARY KEY (SCHED_NAME,CALENDAR_NAME))
+ENGINE=InnoDB;
+
+CREATE TABLE QRTZ_PAUSED_TRIGGER_GRPS (
+SCHED_NAME VARCHAR(120) NOT NULL,
+TRIGGER_GROUP VARCHAR(200) NOT NULL,
+PRIMARY KEY (SCHED_NAME,TRIGGER_GROUP))
+ENGINE=InnoDB;
+
+CREATE TABLE QRTZ_FIRED_TRIGGERS (
+SCHED_NAME VARCHAR(120) NOT NULL,
+ENTRY_ID VARCHAR(95) NOT NULL,
+TRIGGER_NAME VARCHAR(200) NOT NULL,
+TRIGGER_GROUP VARCHAR(200) NOT NULL,
+INSTANCE_NAME VARCHAR(200) NOT NULL,
+FIRED_TIME BIGINT(13) NOT NULL,
+SCHED_TIME BIGINT(13) NOT NULL,
+PRIORITY INTEGER NOT NULL,
+STATE VARCHAR(16) NOT NULL,
+JOB_NAME VARCHAR(200) NULL,
+JOB_GROUP VARCHAR(200) NULL,
+IS_NONCONCURRENT VARCHAR(1) NULL,
+REQUESTS_RECOVERY VARCHAR(1) NULL,
+PRIMARY KEY (SCHED_NAME,ENTRY_ID))
+ENGINE=InnoDB;
+
+CREATE TABLE QRTZ_SCHEDULER_STATE (
+SCHED_NAME VARCHAR(120) NOT NULL,
+INSTANCE_NAME VARCHAR(200) NOT NULL,
+LAST_CHECKIN_TIME BIGINT(13) NOT NULL,
+CHECKIN_INTERVAL BIGINT(13) NOT NULL,
+PRIMARY KEY (SCHED_NAME,INSTANCE_NAME))
+ENGINE=InnoDB;
+
+CREATE TABLE QRTZ_LOCKS (
+SCHED_NAME VARCHAR(120) NOT NULL,
+LOCK_NAME VARCHAR(40) NOT NULL,
+PRIMARY KEY (SCHED_NAME,LOCK_NAME))
+ENGINE=InnoDB;
+
+CREATE INDEX IDX_QRTZ_J_REQ_RECOVERY ON QRTZ_JOB_DETAILS(SCHED_NAME,REQUESTS_RECOVERY);
+CREATE INDEX IDX_QRTZ_J_GRP ON QRTZ_JOB_DETAILS(SCHED_NAME,JOB_GROUP);
+
+CREATE INDEX IDX_QRTZ_T_J ON QRTZ_TRIGGERS(SCHED_NAME,JOB_NAME,JOB_GROUP);
+CREATE INDEX IDX_QRTZ_T_JG ON QRTZ_TRIGGERS(SCHED_NAME,JOB_GROUP);
+CREATE INDEX IDX_QRTZ_T_C ON QRTZ_TRIGGERS(SCHED_NAME,CALENDAR_NAME);
+CREATE INDEX IDX_QRTZ_T_G ON QRTZ_TRIGGERS(SCHED_NAME,TRIGGER_GROUP);
+CREATE INDEX IDX_QRTZ_T_STATE ON QRTZ_TRIGGERS(SCHED_NAME,TRIGGER_STATE);
+CREATE INDEX IDX_QRTZ_T_N_STATE ON QRTZ_TRIGGERS(SCHED_NAME,TRIGGER_NAME,TRIGGER_GROUP,TRIGGER_STATE);
+CREATE INDEX IDX_QRTZ_T_N_G_STATE ON QRTZ_TRIGGERS(SCHED_NAME,TRIGGER_GROUP,TRIGGER_STATE);
+CREATE INDEX IDX_QRTZ_T_NEXT_FIRE_TIME ON QRTZ_TRIGGERS(SCHED_NAME,NEXT_FIRE_TIME);
+CREATE INDEX IDX_QRTZ_T_NFT_ST ON QRTZ_TRIGGERS(SCHED_NAME,TRIGGER_STATE,NEXT_FIRE_TIME);
+CREATE INDEX IDX_QRTZ_T_NFT_MISFIRE ON QRTZ_TRIGGERS(SCHED_NAME,MISFIRE_INSTR,NEXT_FIRE_TIME);
+CREATE INDEX IDX_QRTZ_T_NFT_ST_MISFIRE ON QRTZ_TRIGGERS(SCHED_NAME,MISFIRE_INSTR,NEXT_FIRE_TIME,TRIGGER_STATE);
+CREATE INDEX IDX_QRTZ_T_NFT_ST_MISFIRE_GRP ON QRTZ_TRIGGERS(SCHED_NAME,MISFIRE_INSTR,NEXT_FIRE_TIME,TRIGGER_GROUP,TRIGGER_STATE);
+
+CREATE INDEX IDX_QRTZ_FT_TRIG_INST_NAME ON QRTZ_FIRED_TRIGGERS(SCHED_NAME,INSTANCE_NAME);
+CREATE INDEX IDX_QRTZ_FT_INST_JOB_REQ_RCVRY ON QRTZ_FIRED_TRIGGERS(SCHED_NAME,INSTANCE_NAME,REQUESTS_RECOVERY);
+CREATE INDEX IDX_QRTZ_FT_J_G ON QRTZ_FIRED_TRIGGERS(SCHED_NAME,JOB_NAME,JOB_GROUP);
+CREATE INDEX IDX_QRTZ_FT_JG ON QRTZ_FIRED_TRIGGERS(SCHED_NAME,JOB_GROUP);
+CREATE INDEX IDX_QRTZ_FT_T_G ON QRTZ_FIRED_TRIGGERS(SCHED_NAME,TRIGGER_NAME,TRIGGER_GROUP);
+CREATE INDEX IDX_QRTZ_FT_TG ON QRTZ_FIRED_TRIGGERS(SCHED_NAME,TRIGGER_GROUP);
+
+commit; 
+
+```
+
+What clustering capabilities exist with Quartz?
+
+Quartz ships with well-proven clustering capabilities that offer scaling and high availability features. You can read about these features in the Quartz Configuration Reference.
+
+Additional clustering features that do not rely upon a backing database are available (free of cost) from Terracotta.
+
+http://www.quartz-scheduler.org/documentation/faq#FAQ-jdbcPerf
+
+How do I improve the performance of JDBC-JobStore?
+
+There are a few known ways to speed up JDBC-JobStore, only one of which is very practical.
+
+First, the obvious, but not-so-practical:
+
+    Buy a better (faster) network between the machine that runs Quartz, and the machine that runs your RDBMS.
+    Buy a better (more powerful) machine to run your database on.
+    Buy a better RDBMS.
+
+Now for something simple, but effective: Build indexes on the Quartz tables.
+
+Most database systems will automatically put indexes on the primary-key fields, many will also automatically do it for the foreign-key field. Make sure yours does this, or make the indexes on all key fields of every table manually.
+
+Next, manually add some additional indexes: most important to index are the TRIGGER table's "next_fire_time" and "state" fields. Last (but not as important), add indexes to every column on the FIRED_TRIGGERS table.
+
+create index idx_qrtz_t_next_fire_time on qrtz_triggers(NEXT_FIRE_TIME);
+create index idx_qrtz_t_state on qrtz_triggers(TRIGGER_STATE);
+create index idx_qrtz_t_nf_st on qrtz_triggers(TRIGGER_STATE,NEXT_FIRE_TIME);
+create index idx_qrtz_ft_trig_name on qrtz_fired_triggers(TRIGGER_NAME);
+create index idx_qrtz_ft_trig_group on qrtz_fired_triggers(TRIGGER_GROUP);
+create index idx_qrtz_ft_trig_name on qrtz_fired_triggers(TRIGGER_NAME);
+create index idx_qrtz_ft_trig_n_g on \
+    qrtz_fired_triggers(TRIGGER_NAME,TRIGGER_GROUP);
+create index idx_qrtz_ft_trig_inst_name on qrtz_fired_triggers(INSTANCE_NAME);
+create index idx_qrtz_ft_job_name on qrtz_fired_triggers(JOB_NAME);
+create index idx_qrtz_ft_job_group on qrtz_fired_triggers(JOB_GROUP);
+create index idx_qrtz_t_next_fire_time_misfire on \
+    qrtz_triggers(MISFIRE_INSTR,NEXT_FIRE_TIME);
+create index idx_qrtz_t_nf_st_misfire on \
+    qrtz_triggers(MISFIRE_INSTR,NEXT_FIRE_TIME,TRIGGER_STATE);
+create index idx_qrtz_t_nf_st_misfire_grp on \
+    qrtz_triggers(MISFIRE_INSTR,NEXT_FIRE_TIME,TRIGGER_GROUP,TRIGGER_STATE);
+
+The clustering feature works best for scaling out long-running and/or cpu-intensive jobs (distributing the work-load over multiple nodes). If you need to scale out to support thousands of short-running (e.g 1 second) jobs, consider partitioning the set of jobs by using multiple distinct schedulers (and hence multiple sets of tables (with distinct prefixes)). Using one scheduler forces the use of a cluster-wide lock, a pattern that degrades performance as you add more clients.
 
 
 计划使用的属性

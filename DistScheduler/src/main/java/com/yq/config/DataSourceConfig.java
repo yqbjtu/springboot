@@ -27,13 +27,13 @@ public class DataSourceConfig {
     @Value("${spring.datasource.password:password}")
     private String password;
 
-    @Value("${spring.datasource.initialSize:5}")
+    @Value("${spring.datasource.initialSize:6}")
     private int initialSize;
 
-    @Value("${spring.datasource.minIdle:5}")
+    @Value("${spring.datasource.minIdle:6}")
     private int minIdle;
 
-    @Value("${pring.datasource.maxActive:20}")
+    @Value("${pring.datasource.maxActive:24}")
     private int maxActive;
 
     @Value("${spring.datasource.maxWait:60000}")
