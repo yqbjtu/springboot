@@ -38,7 +38,9 @@ public class PermissionCheckController {
     @ApiOperation(value = "查询所有的controller类", notes="测试")
     @GetMapping(value = "/controllers", produces = "application/json;charset=UTF-8")
     public List<Class<?>> getController() {
-        List<Class<?>> clsList = getClassesWithAnnotationFromPackage("com.yq.controller", RestController.class);
+        Package packageObj = this.getClass().getPackage();
+        String packageName = packageObj.getName();
+        List<Class<?>> clsList = getClassesWithAnnotationFromPackage(packageName, RestController.class);
 
         return clsList;
     }
