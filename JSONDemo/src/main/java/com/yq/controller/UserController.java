@@ -12,6 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,7 +25,7 @@ import javax.validation.Valid;
 import java.util.Collection;
 
 
-@RestController
+@Controller
 @RequestMapping("/user")
 public class UserController {
     private Logger log = LoggerFactory.getLogger(UserController.class);

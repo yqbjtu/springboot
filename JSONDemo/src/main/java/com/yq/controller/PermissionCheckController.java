@@ -17,6 +17,7 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
+import java.net.JarURLConnection;
 import java.net.URL;
 import java.net.URLDecoder;
 import java.nio.file.DirectoryStream;
@@ -28,6 +29,8 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.jar.JarEntry;
+import java.util.jar.JarFile;
 
 
 @RestController
@@ -72,7 +75,7 @@ public class PermissionCheckController {
             URL url = dirs.nextElement();//file:/D:/E/workspaceGitub/springboot/JSONDemo/target/classes/com/yq/controller
             String protocol = url.getProtocol();//file
 
-            if ("file".equals(protocol)) {
+            if ("file".equals(protocol) ) {
                 String filePath = null;
                 try {
                     filePath = URLDecoder.decode(url.getFile(), "UTF-8");///D:/E/workspaceGitub/springboot/JSONDemo/target/classes/com/yq/controller
@@ -84,11 +87,69 @@ public class PermissionCheckController {
                 filePath = filePath.substring(1);
                 getClassesWithAnnotationFromFilePath(packageName, filePath, classList, annotation);
             }
-        }
 
+            if ("jar".equals(protocol)) {
+                JarFile jar = null;
+                try {
+                    jar = ((JarURLConnection) url.openConnection()).getJarFile();
+                    //扫描jar包文件 并添加到集合中
+                }
+                catch (Exception e) {
+                    log.error("Failed to decode class jar", e);
+                }
+
+                List<Class<?>> alClassList = new ArrayList<Class<?>>();
+                findClassesByJar(packageName, jar, alClassList);
+                getClassesWithAnnotationFromAllClasses(alClassList, annotation, classList);
+            }
+        }
 
         return classList;
     }
+
+    private static void findClassesByJar(String pkgName, JarFile jar, List<Class<?>> classes) {
+        String pkgDir = pkgName.replace(".", "/");
+        Enumeration<JarEntry> entry = jar.entries();
+
+        while (entry.hasMoreElements()) {
+            // 获取jar里的一个实体 可以是目录 和一些jar包里的其他文件 如META-INF等文
+            JarEntry jarEntry = entry.nextElement();
+            String name = jarEntry.getName();
+            // 如果是以/开头的
+            if (name.charAt(0) == '/') {
+                // 获取后面的字符串
+                name = name.substring(1);
+            }
+
+            if (jarEntry.isDirectory() || !name.startsWith(pkgDir) || !name.endsWith(".class")) {
+                continue;
+            }
+            //如果是一个.class文件 而且不是目录
+            // 去掉后面的".class" 获取真正的类名
+            String className = name.substring(0, name.length() - 6);
+            Class<?> tempClass = loadClass(className.replace("/", "."));
+            // 添加到集合中去
+            if (tempClass != null) {
+                classes.add(tempClass);
+            }
+        }
+    }
+
+    /**
+     * 加载类
+     * @param fullClzName 类全名
+     * @return
+     */
+    private static Class<?> loadClass(String fullClzName) {
+        try {
+            return Thread.currentThread().getContextClassLoader().loadClass(fullClzName);
+        } catch (ClassNotFoundException e) {
+            log.error("PkgClsPath loadClass", e);
+        }
+        return null;
+    }
+
+
     //filePath is like this 'D:/E/workspaceGitub/springboot/JSONDemo/target/classes/com/yq/controller'
     private void getClassesWithAnnotationFromFilePath(String packageName, String filePath, List<Class<?>> classList,
                                            Class<? extends Annotation> annotation) {
@@ -128,6 +189,14 @@ public class PermissionCheckController {
         }
     }
 
+    private void getClassesWithAnnotationFromAllClasses(List<Class<?>> inClassList,
+                                                      Class<? extends Annotation> annotation, List<Class<?>> outClassList) {
+        for(Class<?> myClasss : inClassList) {
+            if (null != myClasss && null != myClasss.getAnnotation(annotation)) {
+                outClassList.add(myClasss);
+            }
+        }
+    }
 
     private void geMethodWithAnnotationFromFilePath(String fullClassPath, Map<String, String> checkIdMethodMap,
                                                              Class<? extends Annotation> methodAnnotation) {
