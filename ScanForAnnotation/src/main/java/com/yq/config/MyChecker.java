@@ -12,7 +12,7 @@ import java.lang.annotation.Target;
 
 /**
  * Simple to Introduction
- * className: PermissionCheck
+ * className: MyChecker
  *
  * @author EricYang
  * @version 2018/11/29 15:24
@@ -22,7 +22,7 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 @RequestMapping(method = RequestMethod.GET)
-public @interface PermissionCheck {
+public @interface MyChecker {
 
     String id() default "";
 

@@ -2,7 +2,8 @@
 
 package com.yq.controller;
 
-import com.yq.config.PermissionCheck;
+import com.alibaba.fastjson.JSONObject;
+import com.yq.config.MyChecker;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
@@ -24,6 +25,7 @@ import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashMap;
@@ -36,26 +38,31 @@ import java.util.jar.JarFile;
 @RestController
 @RequestMapping("/check")
 @Slf4j
-public class PermissionCheckController {
+public class ScanAnnotationController {
 
-    @ApiOperation(value = "查询所有的controller类", notes="测试")
+    @ApiOperation(value = "查询所有的controller类", notes="测试, 必须返回String， 要不然返回List<Class<?>>时，swagger报错")
     @GetMapping(value = "/controllers", produces = "application/json;charset=UTF-8")
-    public List<Class<?>> getController() {
+    public String getController() {
         Package packageObj = this.getClass().getPackage();
         String packageName = packageObj.getName();
         List<Class<?>> clsList = getClassesWithAnnotationFromPackage(packageName, RestController.class);
 
-        return clsList;
+        String getTimestamp = LocalDateTime.now().toString();
+        JSONObject jsonObj = new JSONObject();
+        jsonObj.put("currentTime", getTimestamp);
+        jsonObj.put("clsList", clsList);
+
+        return jsonObj.toJSONString();
     }
 
-    @ApiOperation(value = "按controller查询所有拥有@PermissionCheck注解的方法", notes="测试")
+    @ApiOperation(value = "按controller查询所有拥有@MyChecker注解的方法", notes="测试")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "controller", defaultValue = "com.yq.controller.helloworld.HelloWorldRestController", value = "controller", required = true, dataType = "string", paramType = "path"),
     })
     @GetMapping(value = "/controllers/{controller}/method", produces = "application/json;charset=UTF-8")
     public Map<String, String> getMethod(@PathVariable String controller) {
         Map<String, String> checkIdMethodMap = new HashMap<String, String>();
-        geMethodWithAnnotationFromFilePath(controller, checkIdMethodMap, PermissionCheck.class);
+        geMethodWithAnnotationFromFilePath(controller, checkIdMethodMap, MyChecker.class);
         return checkIdMethodMap;
     }
 
@@ -69,12 +76,16 @@ public class PermissionCheckController {
         }
         catch (IOException e) {
             log.error("Failed to get resource", e);
+            return null;
         }
 
         while (dirs.hasMoreElements()) {
             URL url = dirs.nextElement();//file:/D:/E/workspaceGitub/springboot/JSONDemo/target/classes/com/yq/controller
             String protocol = url.getProtocol();//file
 
+            //https://docs.oracle.com/javase/7/docs/api/java/net/URL.html
+            //http, https, ftp, file, and jar
+            //本文只需要处理file和jar
             if ("file".equals(protocol) ) {
                 String filePath = null;
                 try {
@@ -86,9 +97,7 @@ public class PermissionCheckController {
 
                 filePath = filePath.substring(1);
                 getClassesWithAnnotationFromFilePath(packageName, filePath, classList, annotation);
-            }
-
-            if ("jar".equals(protocol)) {
+            } else if ("jar".equals(protocol)) {
                 JarFile jar = null;
                 try {
                     jar = ((JarURLConnection) url.openConnection()).getJarFile();
@@ -101,6 +110,9 @@ public class PermissionCheckController {
                 List<Class<?>> alClassList = new ArrayList<Class<?>>();
                 findClassesByJar(packageName, jar, alClassList);
                 getClassesWithAnnotationFromAllClasses(alClassList, annotation, classList);
+            }
+            else {
+                log.warn("can't process the protocol={}", protocol);
             }
         }
 
@@ -155,9 +167,7 @@ public class PermissionCheckController {
                                            Class<? extends Annotation> annotation) {
         Path dir = Paths.get(filePath);//D:\E\workspaceGitub\springboot\JSONDemo\target\classes\com\yq\controller
 
-        DirectoryStream<Path> stream = null;
-        try{
-            stream = Files.newDirectoryStream(dir);
+        try (DirectoryStream<Path> stream = Files.newDirectoryStream(dir)) {
             for(Path path : stream) {
                 String fileName = String.valueOf(path.getFileName()); // for current dir , it is 'helloworld'
                 //如果path是目录的话， 此处需要递归，
@@ -208,7 +218,7 @@ public class PermissionCheckController {
             Method[] methods = classes.getDeclaredMethods();
 
             for (Method method : methods) {
-                PermissionCheck myAnnotation = method.getAnnotation(PermissionCheck.class);
+                MyChecker myAnnotation = method.getAnnotation(MyChecker.class);
                 if (null != myAnnotation) {
                     checkIdMethodMap.put (myAnnotation.id(), method.getName() );
                 }

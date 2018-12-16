@@ -2,7 +2,7 @@
 
 package com.yq.controller;
 
-import com.yq.config.PermissionCheck;
+import com.yq.config.MyChecker;
 import com.yq.domain.User;
 import com.yq.domain.vo.UserVO;
 import com.yq.service.IUserService;
@@ -38,7 +38,7 @@ public class UserPermissionCheckDemoController {
             @ApiImplicitParam(name = "userVO", value = "UserVO", required = true, dataType = "UserVO", paramType = "body")
     })
     @PostMapping(value = "/users", produces = "application/json;charset=UTF-8")
-    @PermissionCheck(id="001", description = "my user desc")
+    @MyChecker(id="001", description = "my user desc")
     public User createUser(@Valid @RequestBody UserVO userVO) {
         User user = new User();
         BeanUtils.copyProperties(userVO, user);
@@ -51,7 +51,7 @@ public class UserPermissionCheckDemoController {
             @ApiImplicitParam(name = "userId", defaultValue = "2", value = "userID", required = true, dataType = "string", paramType = "path"),
     })
     @DeleteMapping(value = "/users/{userId}", produces = "application/json;charset=UTF-8")
-    @PermissionCheck(id="002", description = "my user desc")
+    @MyChecker(id="002", description = "my user desc")
     public User delUser(@PathVariable String userId) {
         User user = (User)userSvc.deleteById(userId);
         log.info("rest del user={} by id={}", user, userId);
@@ -60,7 +60,7 @@ public class UserPermissionCheckDemoController {
 
     @ApiOperation(value = "查询所有用户")
     @GetMapping(value = "/users", produces = "application/json;charset=UTF-8")
-    @PermissionCheck(id="003", description = "my user desc")
+    @MyChecker(id="003", description = "my user desc")
     public Iterable<User> findAllUsers() {
         Collection<User> users = userSvc.getAllUsers();
         log.info("rest get all users");
