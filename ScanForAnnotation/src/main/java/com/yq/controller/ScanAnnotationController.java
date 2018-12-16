@@ -149,12 +149,12 @@ public class ScanAnnotationController {
 
     /**
      * 加载类
-     * @param fullClzName 类全名
+     * @param fullClsName 类全名
      * @return
      */
-    private static Class<?> loadClass(String fullClzName) {
+    private static Class<?> loadClass(String fullClsName) {
         try {
-            return Thread.currentThread().getContextClassLoader().loadClass(fullClzName);
+            return Thread.currentThread().getContextClassLoader().loadClass(fullClsName);
         } catch (ClassNotFoundException e) {
             log.error("PkgClsPath loadClass", e);
         }

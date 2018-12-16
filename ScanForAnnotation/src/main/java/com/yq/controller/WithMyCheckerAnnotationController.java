@@ -27,8 +27,8 @@ import java.util.Collection;
 
 @RestController
 @RequestMapping("/userCheck")
-public class UserPermissionCheckDemoController {
-    private Logger log = LoggerFactory.getLogger(UserPermissionCheckDemoController.class);
+public class WithMyCheckerAnnotationController {
+    private Logger log = LoggerFactory.getLogger(WithMyCheckerAnnotationController.class);
 
     @Autowired
     IUserService userSvc;
