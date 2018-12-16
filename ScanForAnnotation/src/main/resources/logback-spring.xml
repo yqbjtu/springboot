@@ -14,16 +14,6 @@
         </encoder>
     </appender>
 
-    <appender name="LOGSTASH" class="net.logstash.logback.appender.LogstashTcpSocketAppender">
-        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
-            <level>DEBUG</level> <!-- 日志过滤级别 -->
-        </filter>
-        <remoteHost>10.76.3.79</remoteHost>
-        <port>5003</port>
-        <encoder class="net.logstash.logback.encoder.LogstashEncoder">
-        </encoder>
-    </appender>
-
     <!-- 文件输出 -->
     <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <encoder>
@@ -31,7 +21,7 @@
             <pattern>%date %-5level [${HOSTNAME} %thread] %caller{1}%msg%n</pattern><!-- 格式化输出 -->
             <charset>utf8</charset> <!-- 输出编码 -->
         </encoder>
-        <file>./logs/info1.log</file><!-- 文件存放路径 -->
+        <file>./logs/scan_info1.log</file><!-- 文件存放路径 -->
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <fileNamePattern>/logs/info/%d{yyyy-MM-dd}.log</fileNamePattern><!-- 每天归档 -->
             <maxHistory>7</maxHistory><!-- 日志存放周期（天） -->
@@ -47,7 +37,7 @@
             <pattern>%date %-5level [${HOSTNAME} %thread] %caller{1}%msg%n</pattern><!-- 格式化输出 -->
             <charset>utf8</charset> <!-- 输出编码 -->
         </encoder>
-        <file>./logs/error1.log</file><!-- 文件存放路径 -->
+        <file>./logs/scan_error1.log</file><!-- 文件存放路径 -->
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <fileNamePattern>/logs/error/%d{yyyy-MM-dd}.log</fileNamePattern><!-- 每天归档 -->
             <maxHistory>7</maxHistory><!-- 日志存放周期（天） -->
@@ -59,20 +49,15 @@
     <!-- 基础日志输出级别 -->
     <root level="DEBUG">
         <appender-ref ref="CONSOLE"/>
-        <appender-ref ref="LOGSTASH"/>
         <appender-ref ref="ERROR_FILE"/>
     </root>
 
 
-    <logger name="com.yq.controller" level="trace" additivity="false">
+    <logger name="com.yq.controller" level="info" additivity="false">
         <appender-ref ref="FILE" />
     </logger>
 
     <logger name="com.yq.service" level="info" additivity="false">
-        <appender-ref ref="FILE" />
-    </logger>
-
-    <logger name="org.springframework.beans" level="debug" additivity="false">
         <appender-ref ref="FILE" />
     </logger>
 
