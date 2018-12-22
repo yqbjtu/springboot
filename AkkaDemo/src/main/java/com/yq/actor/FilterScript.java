@@ -67,7 +67,7 @@ public class FilterScript extends AbstractActor {
                     Rule rule1 = new Rule();
                     rule1.setId("001");
                     //Filter(msg,  metadata, msgType)
-                    rule1.setFunctionContent("return msg.temperature < -40 || msg.temperature > 80;");
+                    rule1.setFunctionContent("return msg.temperature < -40 || msg.temperature > 80 || msg.humidity > 30;");
                     rule1.setDescription("测试温度是否高于37度");
 
 

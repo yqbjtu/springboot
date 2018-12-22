@@ -28,7 +28,8 @@ public class AkkaAlarmDemo {
 
             //#main-send-messages
             Map<String, Object> sensorDataMap = new HashMap<>();
-            sensorDataMap.put("temperature", 90);
+            sensorDataMap.put("temperature", 60);
+            sensorDataMap.put("humidity", 20);
 
             FilterScript.DeviceDataEvent deviceDataAndRule = new FilterScript.DeviceDataEvent("device001", sensorDataMap);
             filterScript.tell(deviceDataAndRule, ActorRef.noSender());

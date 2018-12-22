@@ -10,6 +10,7 @@
         <akka.version>2.5.19</akka.version>
         <lombok.version>1.16.20</lombok.version>
         <fastjson.version>1.2.31</fastjson.version>
+        <logback-version>1.1.2</logback-version>
     </properties>
 
     <dependencies>
@@ -31,6 +32,22 @@
             <scope>test</scope>
         </dependency>
 
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>1.7.21</version>
+        </dependency>
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-core</artifactId>
+            <version>1.1.7</version>
+        </dependency>
+
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>1.1.7</version>
+        </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
@@ -68,7 +85,7 @@
                     <arguments>
                         <argument>-classpath</argument>
                         <classpath />
-                        <argument>com.lightbend.akka.sample.AkkaQuickstart</argument>
+                        <argument>com.yq.AkkaAlarmDemo</argument>
                     </arguments>
                 </configuration>
             </plugin>
