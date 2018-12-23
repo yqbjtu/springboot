@@ -12,8 +12,10 @@ import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
 import java.io.File;
+import java.io.FileReader;
 import java.io.Reader;
 import java.io.StringWriter;
+import java.net.URL;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -152,6 +154,7 @@ public class JavaJSDemo {
             log.info("Current dir={}", System.getProperty("user.dir"));
             //\AkkaDemo\src\main\resources\demo.js
             File file = new File("./AkkaDemo/src/main/resources/demo.js");
+
             Reader reader = Files.newBufferedReader(file.toPath(), Charset.defaultCharset());
 
             engine.put("user", "{name:'张三',age:18,city:['陕西','台湾']};");
@@ -160,6 +163,15 @@ public class JavaJSDemo {
             log.info("get age={}", engine.get("age"));
 
             log.info("function result={}", obj);
+
+            URL resource = this.getClass().getClassLoader().getResource("demo2.js");
+            FileReader fileReader = new FileReader(resource.getPath());
+            engine.eval(fileReader);
+            //执行js函数
+            Invocable jsInvoke = (Invocable)engine;
+            obj = jsInvoke.invokeFunction("myAdd", 1, 2);
+            log.info("myAdd obj={}", obj);
+
         }
         catch(Exception ex) {
             log.warn("exception", ex);
