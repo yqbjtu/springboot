@@ -21,8 +21,8 @@ public class FilterScriptActor extends AbstractActor {
 
     private LoggingAdapter log = Logging.getLogger(getContext().getSystem(), this);
 
-    static public Props props(String message, ActorRef createAlarmActor, ActorRef clearAlarmActor) {
-        return Props.create(FilterScriptActor.class, () -> new FilterScriptActor(message, createAlarmActor, clearAlarmActor));
+    static public Props props(String message) {
+        return Props.create(FilterScriptActor.class, () -> new FilterScriptActor(message));
     }
 
     static public class DeviceDataEvent {
@@ -39,14 +39,11 @@ public class FilterScriptActor extends AbstractActor {
 
 
     private final String message;
-    private final ActorRef createAlarmActor;
-    private final ActorRef clearAlarmActor;
+
     private String greeting = "";
 
-    public FilterScriptActor(String message, ActorRef createAlarmActor, ActorRef clearAlarmActor) {
-        this.message = message;
-        this.createAlarmActor = createAlarmActor;
-        this.clearAlarmActor = clearAlarmActor;
+    public FilterScriptActor(String message) {
+        this.message = message;;
     }
 
     /*
@@ -75,10 +72,12 @@ public class FilterScriptActor extends AbstractActor {
                     JSONObject json = JSON.parseObject(jsonStr);
                     boolean result = executeFilterFunction(json, null, "DeviceData",rule1.getFunctionContent());
                     if (result) {
-                        createAlarmActor.tell(new CreateAlarmActionActor.AlarmMessage(deviceDataEvent.deviceId, deviceDataEvent.deviceName), getSelf());
+                        //createAlarmActor.tell(new CreateAlarmActionActor.AlarmMessage(deviceDataEvent.deviceId, deviceDataEvent.deviceName), getSelf());
+                        log.info("true");
                     }
                     else {
-                        clearAlarmActor.tell(new SendMailActionActor.ClearAlarmMessage(deviceDataEvent.deviceId, "ruleId"), getSelf());
+                        //clearAlarmActor.tell(new SendMailActionActor.ClearAlarmMessage(deviceDataEvent.deviceId, "ruleId"), getSelf());
+                        log.info("true");
                     }
                 })
                 .build();

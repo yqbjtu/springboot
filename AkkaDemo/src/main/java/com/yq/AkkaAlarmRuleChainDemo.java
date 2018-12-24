@@ -11,6 +11,10 @@ import com.yq.rule.FilterRule;
 import com.yq.rule.RuleChain;
 import com.yq.rule.RuleRelation;
 import com.yq.rule.SendMailRule;
+import com.yq.ruleActor.CreateAlarmActionActor;
+import com.yq.ruleActor.FilterScriptActor;
+import com.yq.ruleActor.SendMailActionActor;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -19,18 +23,18 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-
+@Slf4j
 public class AkkaAlarmRuleChainDemo {
     public static void main(String[] args) {
         final ActorSystem system = ActorSystem.create("AlarmDemo");
         try {
 
             final ActorRef createAlarmActor =
-                    system.actorOf(CreateAlarmAction.props(), "createAlarmActor");
-            final ActorRef clearAlarmActor =
-                    system.actorOf(ClearAlarmAction.props(), "clearAlarmActor");
+                    system.actorOf(CreateAlarmActionActor.props(), "createAlarmActionActor");
+            final ActorRef sendMailActor =
+                    system.actorOf(SendMailActionActor.props(), "sendMailActor");
             final ActorRef filterScript =
-                    system.actorOf(FilterScript.props("filterScriptActor", createAlarmActor, clearAlarmActor), "filterScript");
+                    system.actorOf(FilterScriptActor.props("filterScriptActor", createAlarmActor, clearAlarmActor), "filterScript");
 
 
             //#create-actors
@@ -86,14 +90,24 @@ public class AkkaAlarmRuleChainDemo {
                 BaseRule baseRule = itr.next();
                 if (Objects.equals(rootRuleNodeId, baseRule.getId())) {
                     String ruleNodeType = baseRule.getType();
-                    String ruleNodeActualClass =
+                    String ruleNodeActualClass = baseRule.getNodeActualClass();
+
                     FilterScript.DeviceDataEvent deviceDataAndRule = new FilterScript.DeviceDataEvent("device001", sensorDataMap);
-                    filterScript.tell(deviceDataAndRule, ActorRef.noSender());
+                    switch (ruleNodeActualClass) {
+                        case "com.yq.rule.FilterRule":
+                            filterScript.tell(deviceDataAndRule, ActorRef.noSender());
+                            break;
+                        case "com.yq.rule.CreateAlarmRule":
+                            createAlarmActor.tell(deviceDataAndRule, ActorRef.noSender());
+                            break;
+                        default:
+                            log.info("no root rule Node");
+
+                    }
+
                     break;
                 }
             }
-
-
 
 
             System.out.println(">>> Press ENTER to exit <<<");
