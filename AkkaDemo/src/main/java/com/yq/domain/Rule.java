@@ -5,7 +5,7 @@ import lombok.NoArgsConstructor;
 
 /**
  * Simple to Introduction
- * className: Rule
+ * className: rule
  *
  * @author EricYang
  * @version 2018/12/21 16:50
