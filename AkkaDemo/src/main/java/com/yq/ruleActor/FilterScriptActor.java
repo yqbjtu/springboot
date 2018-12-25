@@ -8,12 +8,25 @@ import akka.event.LoggingAdapter;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.yq.domain.Rule;
+import com.yq.context.IoTContext;
+
+import com.yq.rule.BaseRule;
+import com.yq.rule.node.FilterRule;
+import com.yq.rule.RuleChain;
+
+
+import com.yq.rule.node.CreateAlarmRule;
+import com.yq.rule.RuleRelation;
+import com.yq.rule.node.SendMailRule;
 
 import javax.script.Invocable;
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
+import java.util.Iterator;
 import java.util.Map;
+import java.util.Objects;
+
+import java.util.List;
 
 //import org.codehaus.jackson.map.ObjectMapper;
 
@@ -21,29 +34,33 @@ public class FilterScriptActor extends AbstractActor {
 
     private LoggingAdapter log = Logging.getLogger(getContext().getSystem(), this);
 
-    static public Props props(String message) {
-        return Props.create(FilterScriptActor.class, () -> new FilterScriptActor(message));
+    static public Props props(IoTContext context) {
+        return Props.create(FilterScriptActor.class, () -> new FilterScriptActor(context));
     }
 
     static public class DeviceDataEvent {
         public final String deviceName;
         public final String deviceId;
+        public final String currentRuleNodeId;
+        public final RuleChain ruleChain;
+
         public  Map<String, Object> sensorDataMap;
 
-        public DeviceDataEvent(String deviceName, Map<String, Object> sensorDataMap) {
+        public DeviceDataEvent(String deviceName, Map<String, Object> sensorDataMap, String currentRuleNodeId, RuleChain ruleChain) {
             this.deviceName = deviceName;
             this.sensorDataMap = sensorDataMap;
+            this.currentRuleNodeId = currentRuleNodeId;
+            this.ruleChain = ruleChain;
             deviceId = (String)sensorDataMap.get("deviceId");
         }
     }
 
-
-    private final String message;
+    private final IoTContext context;
 
     private String greeting = "";
 
-    public FilterScriptActor(String message) {
-        this.message = message;;
+    public FilterScriptActor(IoTContext context) {
+        this.context = context;
     }
 
     /*
@@ -55,51 +72,116 @@ public class FilterScriptActor extends AbstractActor {
         return receiveBuilder()
                 .match(DeviceDataEvent.class, deviceDataEvent -> {
                     long threadId = Thread.currentThread().getId();
-                    this.greeting = message + ", " + deviceDataEvent.deviceName;
+                    this.greeting = deviceDataEvent.deviceName;
                     log.info("match DeviceDataEvent. receiveBuilder greeting={}, threadId={}", greeting, threadId);
 
                     //遍历设备的所规则，然后逐条进行运行， 获取规则内容，进行js运算，如果是true就报警，否则就停止
-                    Rule rule1 = new Rule();
-                    rule1.setId("001");
-                    //Filter(msg,  metadata, msgType)
-                    rule1.setFunctionContent("return msg.temperature < -40 || msg.temperature > 80 || msg.humidity > 30;");
-                    rule1.setDescription("测试温度是否高于37度");
+
 
 
                     ObjectMapper objectMapper = new ObjectMapper();
                     String jsonStr = objectMapper.writeValueAsString(deviceDataEvent.sensorDataMap);
 
                     JSONObject json = JSON.parseObject(jsonStr);
-                    boolean result = executeFilterFunction(json, null, "DeviceData",rule1.getFunctionContent());
+
+                    RuleChain ruleChain = deviceDataEvent.ruleChain;
+
+                    //遍历ruleChain找到currentRuleNodeId对应的rule
+
+                    List<BaseRule> ruleList = ruleChain.getRuleList();
+                    Map<String, BaseRule> nodeIdRuleNodeMap = ruleChain.getNodeIdRuleNodeMap();
+                    Iterator<BaseRule> itr = ruleList.iterator();
+                    String currentRuleNodeId = deviceDataEvent.currentRuleNodeId;
+                    FilterRule filterRule = null;
+
+                    while(itr.hasNext()) {
+                        BaseRule baseRule = itr.next();
+                        if (Objects.equals(currentRuleNodeId, baseRule.getId())) {
+                            String ruleNodeType = baseRule.getType();
+                            String ruleNodeActualClass = baseRule.getNodeActualClass();
+                            filterRule = (FilterRule)(baseRule);
+                            break;
+                        }
+                    }
+
+                    String funcContent = filterRule.getContent();
+                    boolean result = executeFilterFunction(json, null,"DeviceData", funcContent);
                     if (result) {
-                        //createAlarmActor.tell(new CreateAlarmActionActor.AlarmMessage(deviceDataEvent.deviceId, deviceDataEvent.deviceName), getSelf());
+                        //查询filterRule自己关联的ruleNode关系
+
+                        List<RuleRelation> relationList = filterRule.getRelationList();
+                        Iterator<RuleRelation> itrRelation = relationList.iterator();
+                        while(itrRelation.hasNext()) {
+                            RuleRelation relation = (RuleRelation) itrRelation.next();
+                            //如果true关闭配置成向多个Actor进行输出，就一个一个遍历然后发送定制消息进行输出
+                            if (Objects.equals(relation.getFromId(), currentRuleNodeId)) {
+                                String toId = relation.getToId();
+                                String relationName = relation.getRelationType();
+                                if (Objects.equals("true", relationName)) {
+                                    //找到toId，然后tell给toId
+                                    //从context中找到对应actor，然后调用该actor的tell， 每个RuleId是什么类型已经很清楚了，因此只需要
+                                    BaseRule toRuleNode = nodeIdRuleNodeMap.get(toId);
+                                    String className = toRuleNode.getClass().getCanonicalName();
+                                    sendToNext(className, context, toRuleNode, deviceDataEvent);
+                                }
+
+                            }
+                        }
                         log.info("true");
                     }
                     else {
-                        //clearAlarmActor.tell(new SendMailActionActor.ClearAlarmMessage(deviceDataEvent.deviceId, "ruleId"), getSelf());
-                        log.info("true");
+                        List<RuleRelation> relationList = filterRule.getRelationList();
+                        Iterator<RuleRelation> itrRelation = relationList.iterator();
+                        while(itrRelation.hasNext()) {
+                            RuleRelation relation = (RuleRelation) itrRelation.next();
+                            //如果true关闭配置成向多个Actor进行输出，就一个一个遍历然后发送定制消息进行输出
+                            if (Objects.equals(relation.getFromId(), currentRuleNodeId)) {
+                                String toId = relation.getToId();
+                                String relationName = relation.getRelationType();
+                                if (Objects.equals("false", relationName)) {
+                                    //找到toId，然后tell给toId
+                                    //从context中找到对应actor，然后调用该actor的tell， 每个RuleId是什么类型已经很清楚了，因此只需要
+                                    BaseRule toRuleNode = nodeIdRuleNodeMap.get(toId);
+                                    String className = toRuleNode.getClass().getCanonicalName();
+                                    sendToNext(className, context, toRuleNode, deviceDataEvent);
+                                }
+                            }
+                        }
+
+                        log.info("false");
                     }
                 })
                 .build();
     }
 
+    private void sendToNext(String ruleNodeActualClass, IoTContext context, BaseRule toRuleNode, DeviceDataEvent deviceDataEvent) {
+        switch (ruleNodeActualClass) {
+            case "com.yq.rule.node.FilterRule":
+                log.info("no filter worker now for class={}", ruleNodeActualClass);
+                break;
+            case "com.yq.rule.node.CreateAlarmRule":
+                CreateAlarmActionActor.AlarmMessage temp =
+                        new CreateAlarmActionActor.AlarmMessage(deviceDataEvent.deviceId,
+                                deviceDataEvent.deviceName, (CreateAlarmRule)toRuleNode);
+                context.getCreateAlarmActor().tell(temp, getSelf());
+                break;
+            case "com.yq.rule.node.SendMailRule":
+                SendMailActionActor.MailMessage tempMail =
+                        new SendMailActionActor.MailMessage(deviceDataEvent.deviceId,
+                                deviceDataEvent.deviceName, (SendMailRule)toRuleNode);
+                context.getSendMailActor().tell(tempMail, getSelf());
+                break;
+
+            default:
+                log.info("no found root rule Node class={}", ruleNodeActualClass);
+        }
+    }
     private boolean executeFilterFunction(JSONObject msg, JSONObject metadata, String msgType, String func) {
         boolean result = true;
         try {
             ScriptEngineManager sem = new ScriptEngineManager();
             ScriptEngine engine = sem.getEngineByName("javascript");
             System.out.println(engine.getClass().getName());
-            engine.put("msg", "hello world!");
-            String str = "var user = {name:'张三',age:18,city:['陕西','台湾']};";
-
-            engine.eval(str);
-            engine.eval("msg = 'hi !';");
-            System.out.println(engine.get("msg"));
-            //获取变量
-            engine.eval("var sum = eval('1+222+33*4');");
-            //调用js的eval的方法完成运算
-            System.out.println(engine.get("sum"));
-            // 获取变量
 
             //定义函数
             engine.eval("function filter(msg, metadata, msgType){ " + func + "}");

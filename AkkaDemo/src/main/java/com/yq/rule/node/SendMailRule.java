@@ -1,5 +1,6 @@
-package com.yq.rule;
+package com.yq.rule.node;
 
+import com.yq.rule.BaseRule;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -14,15 +15,15 @@ import lombok.extern.slf4j.Slf4j;
 public class SendMailRule extends BaseRule {
     String nodeActualClass  = SendMailRule.class.getCanonicalName();
     @Override
-    void init() {
+    public void init() {
         log.info("SendMailRule init");
     };
-    void process() {
+    public void process() {
         String alarmContent = this.content;
         log.info("SendMailRule process");
     };
 
-    void destroy() {
+    public void destroy() {
         log.info("SendMailRule destroy");
     };
 

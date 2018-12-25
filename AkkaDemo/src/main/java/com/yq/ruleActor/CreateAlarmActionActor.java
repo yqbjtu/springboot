@@ -4,6 +4,7 @@ import akka.actor.AbstractActor;
 import akka.actor.Props;
 import akka.event.Logging;
 import akka.event.LoggingAdapter;
+import com.yq.rule.node.CreateAlarmRule;
 
 
 public class CreateAlarmActionActor extends AbstractActor {
@@ -16,9 +17,12 @@ public class CreateAlarmActionActor extends AbstractActor {
         public final String deviceId;
         public final String deviceName;
 
-        public AlarmMessage(String deviceId, String deviceName) {
+        public final CreateAlarmRule rule;
+
+        public AlarmMessage(String deviceId, String deviceName, CreateAlarmRule rule) {
             this.deviceId = deviceId;
             this.deviceName = deviceName;
+            this.rule = rule;
         }
     }
 
@@ -35,9 +39,12 @@ public class CreateAlarmActionActor extends AbstractActor {
     @Override
     public Receive createReceive() {
         return receiveBuilder()
-                .match(AlarmMessage.class, greeting -> {
+                .match(AlarmMessage.class, alarmMessage -> {
                     long threadId = Thread.currentThread().getId();
-                    log.info("deviceName={}, threadId={}, create an alarm if not created", greeting.deviceName ,threadId);
+                    CreateAlarmRule createAlarmRule = alarmMessage.rule;
+                    String alarmMsgContent = createAlarmRule.getContent();
+                    log.info("alarmMsgContent={}, deviceName={}, threadId={}, create an alarm if not created",
+                            alarmMsgContent, alarmMessage.deviceName ,threadId);
                 })
                 .build();
     }

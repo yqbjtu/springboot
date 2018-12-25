@@ -1,5 +1,6 @@
-package com.yq.rule;
+package com.yq.rule.node;
 
+import com.yq.rule.BaseRule;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -13,15 +14,17 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class FilterRule extends BaseRule {
     String nodeActualClass  = FilterRule.class.getCanonicalName();
+
     @Override
-    void init() {
+    public void init() {
         log.info("FilterRule init");
     };
-    void process() {
+
+    public void process() {
         log.info("FilterRule process");
     };
 
-    void destroy() {
+    public void destroy() {
         log.info("FilterRule destroy");
     };
 

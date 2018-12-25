@@ -3,7 +3,9 @@ package com.yq.rule;
 import lombok.Data;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Simple to Introduction
@@ -19,8 +21,13 @@ public class RuleChain {
     private String id;
     private List<BaseRule> ruleList = new ArrayList<>();
     private List<RuleRelation> relationList = new ArrayList<>();
+    private Map<String, BaseRule> nodeIdRuleNodeMap = new HashMap<>();
 
     public void addRuleNode(BaseRule baseRule) {
         ruleList.add(baseRule);
+    }
+
+    public void putMapEntry(String nodeId, BaseRule baseRule) {
+        nodeIdRuleNodeMap.put(nodeId, baseRule);
     }
 }

@@ -1,5 +1,6 @@
-package com.yq.rule;
+package com.yq.rule.node;
 
+import com.yq.rule.BaseRule;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -15,15 +16,18 @@ public class CreateAlarmRule extends BaseRule {
     String nodeActualClass  = CreateAlarmRule.class.getCanonicalName();
 
     @Override
-    void init() {
+    public void init() {
         log.info("CreateAlarmRule init");
     };
-    void process() {
+
+    @Override
+    public void process() {
         String alarmContent = this.content;
         log.info("CreateAlarmRule process");
     };
 
-    void destroy() {
+    @Override
+    public void destroy() {
         log.info("CreateAlarmRule destroy");
     };
 

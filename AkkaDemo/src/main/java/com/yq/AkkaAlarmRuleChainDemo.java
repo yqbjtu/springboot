@@ -2,19 +2,16 @@ package com.yq;
 
 import akka.actor.ActorRef;
 import akka.actor.ActorSystem;
-import com.yq.actor.ClearAlarmAction;
-import com.yq.actor.CreateAlarmAction;
-import com.yq.actor.FilterScript;
+
+
+import com.yq.context.IoTContext;
 import com.yq.rule.BaseRule;
-import com.yq.rule.CreateAlarmRule;
-import com.yq.rule.FilterRule;
 import com.yq.rule.RuleChain;
-import com.yq.rule.RuleRelation;
-import com.yq.rule.SendMailRule;
 import com.yq.ruleActor.CreateAlarmActionActor;
 import com.yq.ruleActor.FilterScriptActor;
 import com.yq.ruleActor.SendMailActionActor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -33,81 +30,67 @@ public class AkkaAlarmRuleChainDemo {
                     system.actorOf(CreateAlarmActionActor.props(), "createAlarmActionActor");
             final ActorRef sendMailActor =
                     system.actorOf(SendMailActionActor.props(), "sendMailActor");
-            final ActorRef filterScript =
-                    system.actorOf(FilterScriptActor.props("filterScriptActor", createAlarmActor, clearAlarmActor), "filterScript");
 
+            IoTContext ioTContext = new IoTContext();
+            ioTContext.setCreateAlarmActor(createAlarmActor);
+            ioTContext.setSendMailActor(sendMailActor);
+
+            final ActorRef filterScript =
+                    system.actorOf(FilterScriptActor.props(ioTContext), "filterScript");
 
             //#create-actors
 
             //#main-send-messages
             Map<String, Object> sensorDataMap = new HashMap<>();
-            sensorDataMap.put("temperature", 60);
+            sensorDataMap.put("temperature", 160);
             sensorDataMap.put("humidity", 20);
 
 
-            RuleChain ruleChainOne = new RuleChain();
+            RuleChainDemo1 demo1 = new RuleChainDemo1();
+            RuleChainDemo2 demo2 = new RuleChainDemo2();
+            //RuleChain ruleChain = demo1.getRuleChain();
+            RuleChain ruleChainOne = demo2.getRuleChain();
 
-            FilterRule filterRule = new FilterRule();
-            filterRule.setId("001");
-            filterRule.setType("FilterType");
-
-
-            CreateAlarmRule createAlarmRule = new CreateAlarmRule();
-            createAlarmRule.setId("002");
-            createAlarmRule.setType("ActionType");
-            createAlarmRule.setContent("send alarm to DB");
-
-            SendMailRule sendMailRule = new SendMailRule();
-            sendMailRule.setId("003");
-            sendMailRule.setType("ActionType");
-            sendMailRule.setContent("send mail to user");
-
-            RuleRelation relation1 = new RuleRelation();
-            relation1.setFromId("001");
-            relation1.setFromId("002");
-            relation1.setRelationType("true");
-            filterRule.addRuleRelation(relation1);
-
-            RuleRelation relation2 = new RuleRelation();
-            relation2.setFromId("001");
-            relation2.setFromId("003");
-            relation2.setRelationType("false");
-            filterRule.addRuleRelation(relation1);
-
-
-            ruleChainOne.addRuleNode(filterRule);
-            ruleChainOne.addRuleNode(createAlarmRule);
-            ruleChainOne.addRuleNode(sendMailRule);
-
-            //find all rules and send device sensor data
-            ruleChainOne.setRootRuleNodeId("001");
 
             //得到第一个RuleNode
             List<BaseRule> ruleList = ruleChainOne.getRuleList();
             Iterator<BaseRule> itr = ruleList.iterator();
             String rootRuleNodeId = ruleChainOne.getRootRuleNodeId();
+            Map<String, BaseRule> nodeIdRuleNodeMap = ruleChainOne.getNodeIdRuleNodeMap();
+
+            String ruleNodeType = null;
+            String ruleNodeActualClass = null;
             while(itr.hasNext()) {
+
                 BaseRule baseRule = itr.next();
+                ruleChainOne.putMapEntry(baseRule.getId(), baseRule);
                 if (Objects.equals(rootRuleNodeId, baseRule.getId())) {
-                    String ruleNodeType = baseRule.getType();
-                    String ruleNodeActualClass = baseRule.getNodeActualClass();
-
-                    FilterScript.DeviceDataEvent deviceDataAndRule = new FilterScript.DeviceDataEvent("device001", sensorDataMap);
-                    switch (ruleNodeActualClass) {
-                        case "com.yq.rule.FilterRule":
-                            filterScript.tell(deviceDataAndRule, ActorRef.noSender());
-                            break;
-                        case "com.yq.rule.CreateAlarmRule":
-                            createAlarmActor.tell(deviceDataAndRule, ActorRef.noSender());
-                            break;
-                        default:
-                            log.info("no root rule Node");
-
-                    }
-
-                    break;
+                    ruleNodeType = baseRule.getType();
+                    ruleNodeActualClass = baseRule.getClass().getCanonicalName();
                 }
             }
+
+            if (StringUtils.isNotBlank(ruleNodeActualClass)) {
+                FilterScriptActor.DeviceDataEvent deviceDataAndRule =
+                        new FilterScriptActor.DeviceDataEvent("device001", sensorDataMap, "001", ruleChainOne);
+                switch (ruleNodeActualClass) {
+                    case "com.yq.rule.node.FilterRule":
+                        filterScript.tell(deviceDataAndRule, ActorRef.noSender());
+                        break;
+                    case "com.yq.rule.node.CreateAlarmRule":
+                        createAlarmActor.tell(deviceDataAndRule, ActorRef.noSender());
+                        break;
+                    case "com.yq.rule.node.SendMailRule":
+                        sendMailActor.tell(deviceDataAndRule, ActorRef.noSender());
+                        break;
+                    default:
+                        log.warn("no found root rule Node class={}", ruleNodeActualClass);
+                }
+            }
+            else {
+                log.warn("no root rule Node");
+            }
+
 
 
             System.out.println(">>> Press ENTER to exit <<<");
