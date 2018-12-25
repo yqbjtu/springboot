@@ -1,7 +1,6 @@
 package com.yq.ruleActor;
 
 import akka.actor.AbstractActor;
-import akka.actor.ActorRef;
 import akka.actor.Props;
 import akka.event.Logging;
 import akka.event.LoggingAdapter;
@@ -9,24 +8,20 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.yq.context.IoTContext;
-
 import com.yq.rule.BaseRule;
-import com.yq.rule.node.FilterRule;
 import com.yq.rule.RuleChain;
-
-
-import com.yq.rule.node.CreateAlarmRule;
 import com.yq.rule.RuleRelation;
-import com.yq.rule.node.SendMailRule;
+import com.yq.rule.node.action.CreateAlarmRule;
+import com.yq.rule.node.filter.FilterScriptRuleNode;
+import com.yq.rule.node.action.SendMailRule;
 
 import javax.script.Invocable;
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-
-import java.util.List;
 
 //import org.codehaus.jackson.map.ObjectMapper;
 
@@ -92,14 +87,14 @@ public class FilterScriptActor extends AbstractActor {
                     Map<String, BaseRule> nodeIdRuleNodeMap = ruleChain.getNodeIdRuleNodeMap();
                     Iterator<BaseRule> itr = ruleList.iterator();
                     String currentRuleNodeId = deviceDataEvent.currentRuleNodeId;
-                    FilterRule filterRule = null;
+                    FilterScriptRuleNode filterRule = null;
 
                     while(itr.hasNext()) {
                         BaseRule baseRule = itr.next();
                         if (Objects.equals(currentRuleNodeId, baseRule.getId())) {
                             String ruleNodeType = baseRule.getType();
                             String ruleNodeActualClass = baseRule.getNodeActualClass();
-                            filterRule = (FilterRule)(baseRule);
+                            filterRule = (FilterScriptRuleNode)(baseRule);
                             break;
                         }
                     }
@@ -122,7 +117,7 @@ public class FilterScriptActor extends AbstractActor {
                                     //从context中找到对应actor，然后调用该actor的tell， 每个RuleId是什么类型已经很清楚了，因此只需要
                                     BaseRule toRuleNode = nodeIdRuleNodeMap.get(toId);
                                     String className = toRuleNode.getClass().getCanonicalName();
-                                    sendToNext(className, context, toRuleNode, deviceDataEvent);
+                                    sendToNext(className, context, toRuleNode, toId, ruleChain, deviceDataEvent);
                                 }
 
                             }
@@ -143,7 +138,7 @@ public class FilterScriptActor extends AbstractActor {
                                     //从context中找到对应actor，然后调用该actor的tell， 每个RuleId是什么类型已经很清楚了，因此只需要
                                     BaseRule toRuleNode = nodeIdRuleNodeMap.get(toId);
                                     String className = toRuleNode.getClass().getCanonicalName();
-                                    sendToNext(className, context, toRuleNode, deviceDataEvent);
+                                    sendToNext(className, context, toRuleNode, toId, ruleChain, deviceDataEvent);
                                 }
                             }
                         }
@@ -154,18 +149,19 @@ public class FilterScriptActor extends AbstractActor {
                 .build();
     }
 
-    private void sendToNext(String ruleNodeActualClass, IoTContext context, BaseRule toRuleNode, DeviceDataEvent deviceDataEvent) {
+    private void sendToNext(String ruleNodeActualClass, IoTContext context, BaseRule toRuleNode, String toId,
+                             RuleChain ruleChain, DeviceDataEvent deviceDataEvent) {
         switch (ruleNodeActualClass) {
-            case "com.yq.rule.node.FilterRule":
+            case "com.yq.rule.node.filter.FilterScriptRuleNode":
                 log.info("no filter worker now for class={}", ruleNodeActualClass);
                 break;
-            case "com.yq.rule.node.CreateAlarmRule":
+            case "com.yq.rule.node.action.CreateAlarmRule":
                 CreateAlarmActionActor.AlarmMessage temp =
                         new CreateAlarmActionActor.AlarmMessage(deviceDataEvent.deviceId,
-                                deviceDataEvent.deviceName, (CreateAlarmRule)toRuleNode);
+                                deviceDataEvent.deviceName, (CreateAlarmRule)toRuleNode, toId, ruleChain);
                 context.getCreateAlarmActor().tell(temp, getSelf());
                 break;
-            case "com.yq.rule.node.SendMailRule":
+            case "com.yq.rule.node.action.SendMailRule":
                 SendMailActionActor.MailMessage tempMail =
                         new SendMailActionActor.MailMessage(deviceDataEvent.deviceId,
                                 deviceDataEvent.deviceName, (SendMailRule)toRuleNode);
@@ -176,6 +172,7 @@ public class FilterScriptActor extends AbstractActor {
                 log.info("no found root rule Node class={}", ruleNodeActualClass);
         }
     }
+
     private boolean executeFilterFunction(JSONObject msg, JSONObject metadata, String msgType, String func) {
         boolean result = true;
         try {

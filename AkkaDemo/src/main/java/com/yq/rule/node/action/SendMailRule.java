@@ -1,11 +1,11 @@
-package com.yq.rule.node;
+package com.yq.rule.node.action;
 
 import com.yq.rule.BaseRule;
 import lombok.extern.slf4j.Slf4j;
 
 /**
  * Simple to Introduction
- * className: FilterRule
+ * className: FilterScriptRuleNode
  *
  * @author EricYang
  * @version 2018/12/24 15:52

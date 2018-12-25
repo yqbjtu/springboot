@@ -2,9 +2,9 @@ package com.yq;
 
 import com.yq.rule.RuleChain;
 import com.yq.rule.RuleRelation;
-import com.yq.rule.node.CreateAlarmRule;
-import com.yq.rule.node.FilterRule;
-import com.yq.rule.node.SendMailRule;
+import com.yq.rule.node.filter.FilterScriptRuleNode;
+import com.yq.rule.node.action.CreateAlarmRule;
+import com.yq.rule.node.action.SendMailRule;
 import lombok.Data;
 
 /**
@@ -23,7 +23,7 @@ public class RuleChainDemo1 {
     }
 
     private void init() {
-        FilterRule filterRule = new FilterRule();
+        FilterScriptRuleNode filterRule = new FilterScriptRuleNode();
         filterRule.setId("001");
         filterRule.setType("FilterType");
         filterRule.setContent("return msg.temperature < -40 || msg.temperature > 80 || msg.humidity > 30;");

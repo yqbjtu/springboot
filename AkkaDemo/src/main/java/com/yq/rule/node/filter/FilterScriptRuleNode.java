@@ -1,31 +1,30 @@
-package com.yq.rule.node;
+package com.yq.rule.node.filter;
 
 import com.yq.rule.BaseRule;
 import lombok.extern.slf4j.Slf4j;
 
 /**
  * Simple to Introduction
- * className: FilterRule
+ * className: FilterScriptRuleNode
  *
  * @author EricYang
  * @version 2018/12/24 15:52
  */
 
 @Slf4j
-public class FilterRule extends BaseRule {
-    String nodeActualClass  = FilterRule.class.getCanonicalName();
+public class FilterScriptRuleNode extends BaseRule {
 
     @Override
     public void init() {
-        log.info("FilterRule init");
+        log.info("FilterScriptRuleNode init");
     };
 
     public void process() {
-        log.info("FilterRule process");
+        log.info("FilterScriptRuleNode process");
     };
 
     public void destroy() {
-        log.info("FilterRule destroy");
+        log.info("FilterScriptRuleNode destroy");
     };
 
 }

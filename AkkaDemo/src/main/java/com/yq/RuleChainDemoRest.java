@@ -2,9 +2,10 @@ package com.yq;
 
 import com.yq.rule.RuleChain;
 import com.yq.rule.RuleRelation;
-import com.yq.rule.node.filter.FilterScriptRuleNode;
 import com.yq.rule.node.action.CreateAlarmRule;
 import com.yq.rule.node.action.SendMailRule;
+import com.yq.rule.node.external.RestHttpRuleNode;
+import com.yq.rule.node.filter.FilterScriptRuleNode;
 import lombok.Data;
 
 /**
@@ -15,10 +16,10 @@ import lombok.Data;
  * @version 2018/12/25 11:23
  */
 @Data
-public class RuleChainDemo2 {
+public class RuleChainDemoRest {
     private RuleChain ruleChain = new RuleChain();
 
-    RuleChainDemo2() {
+    RuleChainDemoRest() {
         init();
     }
 
@@ -39,6 +40,17 @@ public class RuleChainDemo2 {
         sendMailRule.setType("ActionType");
         sendMailRule.setContent("send mail to user 003");
 
+        RestHttpRuleNode restNode = new RestHttpRuleNode();
+        restNode.setId("004");
+        restNode.setType("ExternalType");
+        restNode.setContent("send mail to user {deviceName}");
+        restNode.setUrl("http://www.v.com/dbMsg");
+        restNode.setMethod("post");
+        restNode.setUsername("user1");
+        restNode.setPassword("passw0rd!");
+
+        //filter-----true---> CreateAlarmRule
+        //filter-----true---> relation2
         RuleRelation relation1 = new RuleRelation();
         relation1.setFromId("001");
         relation1.setToId("002");
@@ -51,10 +63,17 @@ public class RuleChainDemo2 {
         relation2.setRelationType("true");
         filterRule.addRuleRelation(relation2);
 
+        //alarmMessage---true ---restRuleNode
+        RuleRelation relationAlarm2Rest = new RuleRelation();
+        relationAlarm2Rest.setFromId("002");
+        relationAlarm2Rest.setToId("004");
+        relationAlarm2Rest.setRelationType("true");
+        createAlarmRule.addRuleRelation(relationAlarm2Rest);
 
         ruleChain.addRuleNode(filterRule);
         ruleChain.addRuleNode(createAlarmRule);
         ruleChain.addRuleNode(sendMailRule);
+        ruleChain.addRuleNode(restNode);
 
         //find all rules and send device sensor data
         ruleChain.setRootRuleNodeId("001");

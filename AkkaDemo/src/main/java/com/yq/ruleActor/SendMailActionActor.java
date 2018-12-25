@@ -4,13 +4,14 @@ import akka.actor.AbstractActor;
 import akka.actor.Props;
 import akka.event.Logging;
 import akka.event.LoggingAdapter;
-import com.yq.rule.node.SendMailRule;
+import com.yq.context.IoTContext;
+import com.yq.rule.node.action.SendMailRule;
 
 //#printer-messages
 public class SendMailActionActor extends AbstractActor {
     //#printer-messages
-    static public Props props() {
-        return Props.create(SendMailActionActor.class, () -> new SendMailActionActor());
+    static public Props props(IoTContext context) {
+        return Props.create(SendMailActionActor.class, () -> new SendMailActionActor(context));
     }
 
     //#printer-messages
@@ -29,8 +30,10 @@ public class SendMailActionActor extends AbstractActor {
     //#printer-messages
 
     private LoggingAdapter log = Logging.getLogger(getContext().getSystem(), this);
+    private final IoTContext context;
 
-    public SendMailActionActor() {
+    public SendMailActionActor(IoTContext context) {
+        this.context = context;
     }
 
     /*
@@ -40,9 +43,13 @@ public class SendMailActionActor extends AbstractActor {
     @Override
     public Receive createReceive() {
         return receiveBuilder()
-                .match(MailMessage.class, greeting -> {
+                .match(MailMessage.class, mailMessage -> {
                     long threadId = Thread.currentThread().getId();
-                    log.info("deviceId={}, ruleId={}, threadId={}. clear latest alarm", greeting.deviceId ,greeting.ruleId, threadId);
+                    SendMailRule mailMessageRule = mailMessage.rule;
+                    String mailContent = mailMessageRule.getContent();
+                    log.info("mailContent={}, deviceId={}, ruleId={}, threadId={}. send mail",
+                            mailContent, mailMessage.deviceId ,mailMessage.ruleId, threadId);
+
                 })
                 .build();
     }

@@ -1,6 +1,7 @@
 package com.yq.context;
 
 import akka.actor.ActorRef;
+import com.yq.ruleActor.RestHttpActor;
 import lombok.Data;
 
 /**
@@ -14,4 +15,5 @@ import lombok.Data;
 public class IoTContext {
     private ActorRef createAlarmActor;
     private ActorRef sendMailActor;
+    private ActorRef restActor;
 }
