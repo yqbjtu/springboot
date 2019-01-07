@@ -45,7 +45,7 @@ public class AkkaAlarmRuleChainDemo {
 
 
             Map<String, Object> sensorDataMap = new HashMap<>();
-            sensorDataMap.put("temperature", 610);
+            sensorDataMap.put("temperature", 91);
             sensorDataMap.put("humidity", 20);
 
 
@@ -53,8 +53,8 @@ public class AkkaAlarmRuleChainDemo {
             RuleChainDemo2 demo2 = new RuleChainDemo2();
             RuleChainDemoRest restDemo = new RuleChainDemoRest();
             //RuleChain ruleChain = demo1.getRuleChain();
-            //RuleChain ruleChain = demo2.getRuleChain();
-            RuleChain ruleChain = restDemo.getRuleChain();
+           // RuleChain ruleChain = demo2.getRuleChain();
+           RuleChain ruleChain = restDemo.getRuleChain();
 
 
             //得到第一个RuleNode

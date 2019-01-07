@@ -73,7 +73,6 @@ public class FilterScriptActor extends AbstractActor {
                     //遍历设备的所规则，然后逐条进行运行， 获取规则内容，进行js运算，如果是true就报警，否则就停止
 
 
-
                     ObjectMapper objectMapper = new ObjectMapper();
                     String jsonStr = objectMapper.writeValueAsString(deviceDataEvent.sensorDataMap);
 
