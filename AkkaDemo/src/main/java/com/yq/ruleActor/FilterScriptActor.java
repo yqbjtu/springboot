@@ -145,6 +145,7 @@ public class FilterScriptActor extends AbstractActor {
                         log.info("false");
                     }
                 })
+                .matchAny(msg -> log.info("received unknown message={}", msg))
                 .build();
     }
 
@@ -177,7 +178,6 @@ public class FilterScriptActor extends AbstractActor {
         try {
             ScriptEngineManager sem = new ScriptEngineManager();
             ScriptEngine engine = sem.getEngineByName("javascript");
-            System.out.println(engine.getClass().getName());
 
             //定义函数
             engine.eval("function filter(msg, metadata, msgType){ " + func + "}");
@@ -185,7 +185,7 @@ public class FilterScriptActor extends AbstractActor {
             Invocable jsInvoke = (Invocable) engine;
             Object obj = jsInvoke.invokeFunction("filter", msg, metadata, msgType);
             //方法的名字，参数
-            System.out.println(obj);
+           log.info("jsResult={}", obj);
             result = (Boolean)obj;
         }
         catch(Exception ex) {
