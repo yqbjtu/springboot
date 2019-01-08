@@ -145,6 +145,9 @@ public class FilterScriptActor extends AbstractActor {
                         log.info("false");
                     }
                 })
+                .matchEquals("done", m ->
+                        getContext().stop(getSelf())
+                )
                 .matchAny(msg -> log.info("received unknown message={}", msg))
                 .build();
     }

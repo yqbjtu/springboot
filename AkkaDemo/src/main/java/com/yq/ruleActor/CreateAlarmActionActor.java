@@ -1,6 +1,7 @@
 package com.yq.ruleActor;
 
 import akka.actor.AbstractActor;
+import akka.actor.ActorRef;
 import akka.actor.Props;
 import akka.event.Logging;
 import akka.event.LoggingAdapter;
@@ -53,6 +54,8 @@ public class CreateAlarmActionActor extends AbstractActor {
     public Receive createReceive() {
         return receiveBuilder()
                 .match(AlarmMessage.class, alarmMessage -> {
+                    ActorRef senderActor = getSender();
+                    log.info("senderActor={}", senderActor);
                     long threadId = Thread.currentThread().getId();
                     CreateAlarmRule createAlarmRule = alarmMessage.rule;
                     String alarmMsgContent = createAlarmRule.getContent();

@@ -39,6 +39,9 @@ public class AkkaAlarmDemo {
 
             FilterScriptActor.DeviceDataEvent deviceDataAndRule =
                     new FilterScriptActor.DeviceDataEvent("device001", sensorDataMap, null, null);
+            //filterScriptActor.tell("done", ActorRef.noSender());
+            filterScriptActor.tell(akka.actor.PoisonPill.getInstance(), ActorRef.noSender());
+            filterScriptActor.tell("done1", ActorRef.noSender());
             filterScriptActor.tell("other Message", ActorRef.noSender());
 
 
