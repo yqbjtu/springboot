@@ -4,23 +4,27 @@ import akka.actor.ActorRef;
 import akka.actor.ActorSystem;
 import akka.actor.Props;
 import akka.actor.TypedActor;
+import com.typesafe.config.ConfigFactory;
 import com.yq.context.IoTContext;
 import com.yq.ruleActor.HotSwapActor;
-import com.yq.ruleActor.TimerActor;
 
 import java.io.IOException;
 
+import com.typesafe.config.Config;
+import com.typesafe.config.ConfigFactory;
+public class AkkaActorConfigDemo {
+    private static final String AKKA_CONF_FILE_NAME = "actor-system.conf";
+    private static final String ACTOR_SYSTEM_NAME = "TimerActorDemo";
 
-public class AkkaBecomeActorDemo {
     public static void main(String[] args) {
-        final ActorSystem system = ActorSystem.create("TimerActorDemo");
+        Config config = ConfigFactory.parseResources(AKKA_CONF_FILE_NAME).withFallback(ConfigFactory.load());
+        final ActorSystem system = ActorSystem.create(ACTOR_SYSTEM_NAME, config);
+
         try {
-            IoTContext ioTContext = new IoTContext();
 
-            Props superprops = Props.create(TypedActor.Supervisor.class);
-            ActorRef supervisor = system.actorOf(superprops, "supervisor");
-
-            ActorRef hotSwapActor = system.actorOf(Props.create(HotSwapActor.class), "hotSwapActor");
+            ActorRef hotSwapActor =
+                    system.actorOf(Props.create(HotSwapActor.class).withDispatcher("my-dispatcher"),
+                            "myactor");
 
             hotSwapActor.tell("foo",ActorRef.noSender());
 
