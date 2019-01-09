@@ -39,6 +39,7 @@ public class TimerActor extends AbstractActorWithTimers {
                 .match(FirstTick.class, message -> {
                     // do something useful here
                     log.info("FirstTick");
+                    //这里每个10秒给自己发送了Tick消息，然后就出发出自己的match(Tick.class, message 执行
                     getTimers().startPeriodicTimer(TICK_KEY, new Tick(), Duration.ofSeconds(10));
                 })
                 .match(Tick.class, message -> {
