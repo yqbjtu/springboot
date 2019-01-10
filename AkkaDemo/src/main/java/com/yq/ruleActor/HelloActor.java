@@ -49,7 +49,7 @@ public class HelloActor extends AbstractActor {
         return receiveBuilder()
                 .matchEquals("exception", msg -> {
                     long threadId = Thread.currentThread().getId();
-                    log.info("match exception. receiveBuilder, threadId={}", msg, threadId);
+                    log.info("match exception. receiveBuilder, threadId={}", threadId);
                     throw new Exception("actor process message exception");
 
                 })

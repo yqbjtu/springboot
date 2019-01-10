@@ -17,8 +17,8 @@ public class AkkaBecomeActorDemo {
         try {
             IoTContext ioTContext = new IoTContext();
 
-            Props superprops = Props.create(TypedActor.Supervisor.class);
-            ActorRef supervisor = system.actorOf(superprops, "supervisor");
+            //Props superprops = Props.create(TypedActor.Supervisor.class);
+            //ActorRef supervisor = system.actorOf(superprops, "supervisor");
 
             ActorRef hotSwapActor = system.actorOf(Props.create(HotSwapActor.class), "hotSwapActor");
 

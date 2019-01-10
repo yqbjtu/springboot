@@ -45,7 +45,7 @@ public class JavaJSSandBoxDemo {
      */
     JavaJSSandBoxDemo() {
         sandbox.setMaxCPUTime(100);
-        //sandbox.setMaxMemory(200 * 1024);
+        sandbox.setMaxMemory(50*1024);
         sandbox.allowNoBraces(false);
         sandbox.setMaxPreparedStatements(30); // because preparing scripts for execution is expensive
         sandbox.setExecutor(Executors.newSingleThreadExecutor());
@@ -161,11 +161,16 @@ public class JavaJSSandBoxDemo {
 /*
  sandbox.setMaxMemory(50*1024);
 
-14:18:55.304 [pool-1-thread-1] DEBUG delight.nashornsandbox.NashornSandbox - --- JS END ---
-14:18:55.312 [main] WARN com.yq.js.JavaJSSandBoxDemo - exception
-java.lang.ClassCastException: delight.nashornsandbox.internal.NashornSandboxImpl cannot be cast to javax.script.Invocable
-	at com.yq.js.JavaJSSandBoxDemo.invokeFunctionDemo(JavaJSSandBoxDemo.java:146)
+16:59:11.083 [main] WARN com.yq.js.JavaJSSandBoxDemo - exception
+javax.script.ScriptException: delight.nashornsandbox.exceptions.ScriptMemoryAbuseException: Script used more than the allowed [51200 B] of memory.
+	at delight.nashornsandbox.internal.NashornSandboxImpl$1.invokeFunction(NashornSandboxImpl.java:353)
+	at com.yq.js.JavaJSSandBoxDemo.invokeFunctionDemo(JavaJSSandBoxDemo.java:145)
 	at com.yq.js.JavaJSSandBoxDemo.main(JavaJSSandBoxDemo.java:39)
+Caused by: delight.nashornsandbox.exceptions.ScriptMemoryAbuseException: Script used more than the allowed [51200 B] of memory.
+	at delight.nashornsandbox.internal.NashornSandboxImpl.executeSandboxedOperation(NashornSandboxImpl.java:169)
+	at delight.nashornsandbox.internal.NashornSandboxImpl.access$000(NashornSandboxImpl.java:36)
+	at delight.nashornsandbox.internal.NashornSandboxImpl$1.invokeFunction(NashornSandboxImpl.java:349)
+	... 2 common frames omitted
 
 Process finished with exit code 1
  */
