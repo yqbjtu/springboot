@@ -34,6 +34,7 @@ public class JavaJSDemo {
 
     private static final String JS_ENGINE_NAME= "nashorn";
     private final ScriptEngineManager sem = new ScriptEngineManager();
+    //NashornScriptEngineFactory
     private final ScriptEngine engine = sem.getEngineByName(JS_ENGINE_NAME);
 
     public static void main(String[] args) {
