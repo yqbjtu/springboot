@@ -1,5 +1,24 @@
 ##
 
+http://127.0.0.1:9901/p1/flux/get
+http://127.0.0.1:9901/hello
+
+http://127.0.0.1:9901/api/users  get
+http://127.0.0.1:9901/api/users  post  content-type "application/json"  body ({
+                                                "id": 3,
+                                                "name": "WangWu@163.com",
+                                                "mail": "WangWu",
+                                                "regDate": 1550305127268
+                                              })
+http://127.0.0.1:9901/api/users/2  get  
+http://127.0.0.1:9901/api/users/2  del 
+http://127.0.0.1:9901/api/users/2  put content-type "application/json" body ({
+                                                      "name": "222@163.com",
+                                                       "mail": "WangWu",
+                                                      "regDate": 1550305127268
+                                     })
+
+
 Consider defining a bean of type 'org.springframework.web.reactive.DispatcherHandler' in your configuration.
 
         <dependency>
@@ -54,3 +73,6 @@ Consider defining a bean of type 'org.springframework.web.reactive.DispatcherHan
             <artifactId>javax.servlet-api</artifactId>
             <version>3.1.0</version>
         </dependency>
+        
+        
+        /p1/flux/get

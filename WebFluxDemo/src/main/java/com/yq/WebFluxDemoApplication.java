@@ -9,11 +9,11 @@ import org.springframework.web.reactive.config.EnableWebFlux;
 
 @SpringBootApplication
 @EnableWebFlux
-public class WebFluxHWDemoApplication {
-    private static final Logger log = LoggerFactory.getLogger(WebFluxHWDemoApplication.class);
+public class WebFluxDemoApplication {
+    private static final Logger log = LoggerFactory.getLogger(WebFluxDemoApplication.class);
 
     public static void main(String[] args) {
-        SpringApplication.run(WebFluxHWDemoApplication.class, args);
+        SpringApplication.run(WebFluxDemoApplication.class, args);
     }
 
 
