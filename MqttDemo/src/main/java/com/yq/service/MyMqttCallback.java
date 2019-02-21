@@ -14,6 +14,8 @@ import org.eclipse.paho.client.mqttv3.MqttMessage;
  */
 @Slf4j
 public class MyMqttCallback implements MqttCallback {
+    //threadIdClass和controller的本地运行的线程id一致，每次请求都会在新线程中调用controller对象， controller对象只有一个
+    long threadIdClass = Thread.currentThread().getId();
 
     public void connectionLost(Throwable cause) {
         //如果设置了自动重连，会自动重连。而且会自动订阅之前的topic
@@ -25,8 +27,10 @@ public class MyMqttCallback implements MqttCallback {
     }
 
     public void messageArrived(String topic, MqttMessage message) throws Exception {
+        long threadId = Thread.currentThread().getId();
         // 订阅topic后，如果有消息到达，会接收到消息
-        log.info("msg arrived. topic={}, QoS={}, msgBody={}", topic, message.getQos(), new String(message.getPayload()));
+        log.info("msg arrived. topic={}, QoS={}, msgBody={}. threadIdClass={}, threadId={}", topic, message.getQos(), new String(message.getPayload()),
+                threadIdClass, threadId);
     }
 
 }
