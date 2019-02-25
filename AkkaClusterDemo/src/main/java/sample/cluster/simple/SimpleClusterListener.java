@@ -42,6 +42,10 @@ public class SimpleClusterListener extends AbstractActor {
       .match(MemberEvent.class, message -> {
         // ignore
       })
+      .match(String.class, msg -> {
+              long threadId = Thread.currentThread().getId();
+              log.info("msg={}, threadId={}.", msg, threadId);
+      })
       .build();
   }
 }

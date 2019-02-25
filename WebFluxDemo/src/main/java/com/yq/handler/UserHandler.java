@@ -28,9 +28,9 @@ public class UserHandler {
      * GET ALL Users
      */
     public Mono<ServerResponse> getAll(ServerRequest request) {
-        Flux<User> customers = userRepository.getAllUsers();
+        Flux<User> users = userRepository.getAllUsers();
 
-        return ServerResponse.ok().contentType(MediaType.APPLICATION_JSON).body(customers, User.class);
+        return ServerResponse.ok().contentType(MediaType.APPLICATION_JSON).body(users, User.class);
     }
     
     /**
@@ -42,7 +42,7 @@ public class UserHandler {
         Mono<ServerResponse> notFound = ServerResponse.notFound().build();
         Mono<User> userMono = userRepository.getUserById(userId);
         return userMono
-                .flatMap(customer -> ServerResponse.ok().contentType(MediaType.APPLICATION_JSON).body(fromObject(customer)))
+                .flatMap(user -> ServerResponse.ok().contentType(MediaType.APPLICATION_JSON).body(fromObject(user)))
                 .switchIfEmpty(notFound);
     }
     
@@ -67,7 +67,7 @@ public class UserHandler {
         Mono<User> responseMono = userRepository.updateUser(userId, userMono);
 
         return responseMono
-                .flatMap(cust -> ServerResponse.ok().contentType(MediaType.APPLICATION_JSON).body(fromObject(cust)));
+                .flatMap(user -> ServerResponse.ok().contentType(MediaType.APPLICATION_JSON).body(fromObject(user)));
     }
 
     /**

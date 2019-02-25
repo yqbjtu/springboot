@@ -29,7 +29,8 @@ public class MyMqttCallback implements MqttCallback {
     public void messageArrived(String topic, MqttMessage message) throws Exception {
         long threadId = Thread.currentThread().getId();
         // 订阅topic后，如果有消息到达，会接收到消息
-        log.info("msg arrived. topic={}, QoS={}, msgBody={}. threadIdClass={}, threadId={}", topic, message.getQos(), new String(message.getPayload()),
+        log.info("msg arrived. topic={}, QoS={}, msgBody={}. threadIdClass={}, threadId={}",
+                topic, message.getQos(), new String(message.getPayload()),
                 threadIdClass, threadId);
     }
 

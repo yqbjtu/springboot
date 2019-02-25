@@ -14,12 +14,9 @@ import akka.event.LoggingAdapter;
 import akka.routing.FromConfig;
 import com.typesafe.config.Config;
 
-public class SimpleClusterListener2 extends AbstractActor {
+public class WorkActor extends AbstractActor {
   LoggingAdapter log = Logging.getLogger(getContext().system(), this);
   Cluster cluster = Cluster.get(getContext().system());
-
-  ActorRef otherActor = getContext().actorOf(FromConfig.getInstance().props(),
-          "workerActorRouter");
 
   //subscribe to cluster changes
   @Override
@@ -52,16 +49,13 @@ public class SimpleClusterListener2 extends AbstractActor {
         // ignore
 
       })
-     .match(String.class, msg -> {
-         long threadId = Thread.currentThread().getId();
-         ClusterSettings setting = cluster.settings();
-         Config config = setting.config();
-         String port = config.getString("akka.remote.artery.canonical.port");
-         log.info("msg={}, objectStr={}, port={}, threadId={}.", msg, this.toString(), port, threadId);
-         String newMsg = msg + ", OriginPort_"+ port;
-         otherActor.tell(newMsg, self());
-         otherActor.tell(newMsg, self());
-     })
+    .match(String.class, msg -> {
+        long threadId = Thread.currentThread().getId();
+        ClusterSettings setting = cluster.settings();
+        Config config = setting.config();
+        String port = config.getString("akka.remote.artery.canonical.port");
+        log.info("msg={}, objectStr={}, receivedPort={}, threadId={}.", msg, this.toString(), port, threadId);
+    })
       .build();
   }
 }
