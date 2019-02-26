@@ -21,13 +21,11 @@ public class AkkaActorConfigDemo {
         final ActorSystem system = ActorSystem.create(ACTOR_SYSTEM_NAME, config);
 
         try {
-
             ActorRef hotSwapActor =
                     system.actorOf(Props.create(HotSwapActor.class).withDispatcher("my-dispatcher"),
                             "myactor");
 
             hotSwapActor.tell("foo",ActorRef.noSender());
-
             hotSwapActor.tell("bar",ActorRef.noSender());
             hotSwapActor.tell("foo",ActorRef.noSender());
             hotSwapActor.tell("bar",ActorRef.noSender());
