@@ -31,29 +31,13 @@ public class WorkActor extends AbstractActor {
   @Override
   public Receive createReceive() {
     return receiveBuilder()
-      .match(CurrentClusterState.class, state -> {
-        log.info("Current members: {}", state.members());
-      })
-      .match(MemberUp.class, mUp -> {
-        log.info("Member is Up: {}", mUp.member());
-      })
-      .match(UnreachableMember.class, mUnreachable -> {
-        log.info("Member detected as unreachable: {}", mUnreachable.member());
-      })
-      .match(MemberRemoved.class, mRemoved -> {
-        log.info("Member is Removed: {}", mRemoved.member());
-      })
-      .match(MemberEvent.class, message -> {
-        // ignore
-
-      })
-    .match(String.class, msg -> {
-        long threadId = Thread.currentThread().getId();
-        ClusterSettings setting = cluster.settings();
-        Config config = setting.config();
-        String port = config.getString("akka.remote.artery.canonical.port");
-        log.info("msg={}, objectStr={}, receivedPort={}, threadId={}.", msg, this.toString(), port, threadId);
-    })
-      .build();
+            .match(String.class, msg -> {
+              long threadId = Thread.currentThread().getId();
+              ClusterSettings setting = cluster.settings();
+              Config config = setting.config();
+              String port = config.getString("akka.remote.artery.canonical.port");
+              log.info("msg={}, objectStr={}, receivedPort={}, threadId={}.", msg, this.toString(), port, threadId);
+            })
+            .build();
   }
 }

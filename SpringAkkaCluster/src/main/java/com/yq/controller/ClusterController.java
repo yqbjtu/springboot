@@ -1,6 +1,7 @@
 package com.yq.controller;
 
 import akka.actor.ActorRef;
+import akka.actor.ActorSystem;
 import akka.cluster.ClusterEvent;
 import akka.util.Timeout;
 import com.alibaba.fastjson.JSONObject;
@@ -37,12 +38,15 @@ import static akka.pattern.Patterns.ask;
 public class ClusterController {
 
     @Autowired
+    private ActorSystem actorSystem;
+
+    @Autowired
     private MyContextService myContextService;
 
     private final static String counterActorPath = "akka://Hello/user/counterActor";
     private final static String helloActorPath = "akka://Hello/user/helloActor";
 
-    @ApiOperation(value = "演示使用，未考虑线程安全", notes="private")
+    @ApiOperation(value = "演示使用 向集群发送消息，未考虑线程安全", notes="private")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "msg", defaultValue = "testFrom0", value = "testFrom0", required = true, dataType = "string", paramType = "query")
     })
@@ -58,9 +62,27 @@ public class ClusterController {
         return jsonObj.toJSONString();
     }
 
+    @ApiOperation(value = "演示使用，未考虑线程安全", notes="private")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "msg", defaultValue = "testFromNode0_Node0", value = "testFrom0", required = true, dataType = "string", paramType = "query"),
+            @ApiImplicitParam(name = "nodeAddress", defaultValue = "akka://ClusterDemo@127.0.0.1:3000", value = "nodeAddress", required = true, dataType = "string", paramType = "query")
+    })
+    @GetMapping(value = "/actor/send", produces = "application/json;charset=UTF-8")
+    public String sendMsg2SpecificNode(@RequestParam String msg, @RequestParam String nodeAddress) {
+        Long threadId = Thread.currentThread().getId();
+
+        ActorRef clusterActorRef = myContextService.getActor(ClusterWorkerActor.class.getCanonicalName());
+        actorSystem.actorSelection(nodeAddress + "/user/workerActor")
+                .tell(msg + " "+ clusterActorRef.toString(), ActorRef.noSender());
+
+        JSONObject jsonObj = new JSONObject();
+        jsonObj.put("currentTime", LocalDateTime.now().toString());
+        return jsonObj.toJSONString();
+    }
+
     @ApiOperation(value = "获取集群基本信息", notes="private")
     @GetMapping(value = "/cluster/info", produces = "application/json;charset=UTF-8")
-    public String addIncrement() {
+    public String getClusterInfo() {
         ActorRef clusterActorRef = myContextService.getActor(ClusterWorkerActor.class.getCanonicalName());
 
         // print the result
@@ -78,5 +100,4 @@ public class ClusterController {
         jsonObj.put("result", result.toString());
         return jsonObj.toJSONString();
     }
-
 }

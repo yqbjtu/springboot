@@ -80,6 +80,9 @@ public class ActorController {
         scala.collection.immutable.Iterable<String> itrElements = actorPath.elements();
         String name = actorPath.name();
 
+        ActorSelection as = actorSystem.actorSelection(helloActorPath);
+        as.tell("hello", ActorRef.noSender());
+
         //可以获取到helloActor
 
         ActorRef counterActor0;

@@ -20,6 +20,7 @@ import com.typesafe.config.Config;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 public class ClusterWorkerActor extends AbstractActor {
     LoggingAdapter log = Logging.getLogger(getContext().system(), this);
@@ -47,6 +48,7 @@ public class ClusterWorkerActor extends AbstractActor {
 
     @Override
     public Receive createReceive() {
+        long threadId = Thread.currentThread().getId();
         return receiveBuilder()
                 .match(CurrentClusterState.class, state -> {
                     log.info("Current members: {}", state.members());
@@ -81,12 +83,18 @@ public class ClusterWorkerActor extends AbstractActor {
                     memberList.remove(mRemoved.member());
                 })
                 .match(MemberEvent.class, message -> {
-                    // ignore  memberList
+                    //ignore  memberList
+                    Member member = message.member();
+                    String memberHostPort = member.address().hostPort();
+                    Set<String> roles = member.getRoles();
 
-
+                    StringBuffer stringBuffer = new StringBuffer();
+                    stringBuffer.append("message:" + message);
+                    stringBuffer.append(",memberHostPort:" + memberHostPort);
+                    stringBuffer.append(",roles:" + roles);
+                    log.info("event={}, threadId={}.", stringBuffer.toString(),threadId);
                 })
                 .match(GetClusterInfo.class, get -> {
-                    long threadId = Thread.currentThread().getId();
                     ClusterSettings setting = cluster.settings();
 
                     StringBuffer stringBuffer = new StringBuffer();
@@ -113,7 +121,6 @@ public class ClusterWorkerActor extends AbstractActor {
                     this.sender().tell(stringBuffer.toString(), getSelf());
                 })
                 .match(String.class, msg -> {
-                    long threadId = Thread.currentThread().getId();
                     ClusterSettings setting = cluster.settings();
                     Config config = setting.config();
                     String port = config.getString("akka.remote.artery.canonical.port");
