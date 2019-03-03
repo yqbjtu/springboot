@@ -15,7 +15,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @Slf4j
 public class SpringAkkaClusterApplication {
     public static void main(String[] args) {
+        long threadId = Thread.currentThread().getId();
+        log.info("SpringAkkaClusterApplication Start ... threadId={}", threadId);
         SpringApplication.run(SpringAkkaClusterApplication.class, args);
-        log.info("SpringAkkaClusterApplication Start done.");
+        log.info("SpringAkkaClusterApplication Start done. threadId={}", threadId);
     }
 }

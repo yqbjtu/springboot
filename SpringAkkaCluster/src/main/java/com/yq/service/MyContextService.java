@@ -14,7 +14,7 @@ import akka.actor.ActorRef;
  */
 public interface MyContextService {
 
-    public void init();
+    public boolean init();
     public ActorRef getActor(String actorName);
     public ActorRef getWorkerActor();
 

@@ -34,7 +34,7 @@ public class ClusterWorkerActor extends AbstractActor {
     public static class GetClusterInfo {
     }
 
-    //subscribe to cluster changes
+    //将节点注册到集群
     @Override
     public void preStart() {
         cluster.subscribe(self(), MemberEvent.class, UnreachableMember.class);

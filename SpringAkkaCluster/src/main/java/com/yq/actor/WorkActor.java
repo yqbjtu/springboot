@@ -16,7 +16,7 @@ public class WorkActor extends AbstractActor {
   LoggingAdapter log = Logging.getLogger(getContext().system(), this);
   Cluster cluster = Cluster.get(getContext().system());
 
-  //subscribe to cluster changes
+  ///将节点注册到集群
   @Override
   public void preStart() {
     cluster.subscribe(self(), MemberEvent.class, UnreachableMember.class);

@@ -7,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.DependsOn;
 import org.springframework.core.annotation.Order;
 
 /**
@@ -28,17 +29,18 @@ public class ClusterConfigBean {
 
     @Bean
     public SpringClusterConfig springClusterConfig() {
-        log.info("Create a springClusterConfig");
+        log.info("Create a springClusterConfig bean");
         return new SpringClusterConfig();
     }
 
     @Bean
     public ActorSystem actorSystem() {
+        log.info("create a bean for actorSystem, myClusterConfig={}", myClusterConfig);
         String port = myClusterConfig.getPort();
 
         Config config = ConfigFactory.parseString(
                 "akka.remote.artery.canonical.port=" + port)
-                .withFallback(ConfigFactory.parseString("akka.cluster.roles = [backend]"))
+                .withFallback(ConfigFactory.parseString("akka.cluster.roles=[rule1]"))
                 .withFallback(ConfigFactory.load());
 
         // Create an Akka system

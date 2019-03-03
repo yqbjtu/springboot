@@ -12,6 +12,10 @@ import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+import org.springframework.context.annotation.DependsOn;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.core.annotation.Order;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -28,26 +32,26 @@ import java.util.Map;
 
 @Service
 @Slf4j
+@Lazy
+@Order(4)
 public class MyContextServiceImpl implements MyContextService {
-    private static final String ACTOR_SYSTEM_NAME = "ClusterDemo";
 
     @Autowired
     private ActorSystem actorSystem;
 
     Map<String, ActorRef> classActorRefMap = new HashMap<>();
 
-    @Autowired
-    SpringClusterConfig myClusterConfig;
 
     boolean isInitialized = false;
 
     MyContextServiceImpl() {
         //初始化
-        init();
+        boolean initResultInConstructor = init();
+        log.info("initResultInConstructor={}, actorSystem={}", initResultInConstructor, actorSystem);
     }
 
     @Override
-    public void init() {
+    public boolean init() {
         synchronized (this) {
             if (!isInitialized && actorSystem != null) {
                 //初始化
@@ -80,6 +84,8 @@ public class MyContextServiceImpl implements MyContextService {
                 }
             }
         }
+
+        return isInitialized;
     }
 
     @Override

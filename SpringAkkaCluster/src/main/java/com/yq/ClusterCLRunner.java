@@ -20,12 +20,13 @@ public class ClusterCLRunner implements CommandLineRunner {
     @Autowired
     private MyContextService myContextService;
 
-
     @Override
     public void run(String... strings) throws Exception {
-        log.info("initialize cluster ");
+        long threadId = Thread.currentThread().getId();
+        log.info("initialize cluster. threadId={}", threadId);
 
-        myContextService.init();
+        boolean initResultInCLR = myContextService.init();
+        log.info("initResultInCLR={}", initResultInCLR);
     }
 
 }
