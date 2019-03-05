@@ -10,6 +10,7 @@ import akka.actor.Inbox;
 import akka.util.Timeout;
 import com.alibaba.fastjson.JSONObject;
 import com.yq.actor.CountingActor;
+import com.yq.actor.ReceiveSchedulerResultActor;
 import com.yq.util.SpringContextHolder;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -47,8 +48,9 @@ public class ActorController {
     @Autowired
     private SpringContextHolder springContextHolder;
 
-    private final static String counterActorPath = "akka://Hello/user/counterActor";
-    private final static String helloActorPath = "akka://Hello/user/helloActor";
+    private final static String LOCAL_FULL_COUNTER_ACTOR_PATH = "akka://Hello/user/counterActor";
+    private final static String LOCAL_FULL_HELLO_ACTOR_PATH = "akka://Hello/user/helloActor";
+    private final static String LOCAL_FULL_RESULT_ACTOR_PATH = "akka://Hello/user/resultActor";
 
     @ApiOperation(value = "演示使用，初始counterActor和helloActor,已经考虑线程安全", notes="private")
     @GetMapping(value = "/actor/init", produces = "application/json;charset=UTF-8")
@@ -56,31 +58,35 @@ public class ActorController {
         Long threadId = Thread.currentThread().getId();
 
         ActorRef helloActor0;
+        ActorRef receiveActor0;
         ActorRef helloActor1 = null;
         synchronized(this) {
             //可以获取到helloActor
-            helloActor0 = actorSystem.actorFor(helloActorPath);
-
+            helloActor0 = actorSystem.actorFor(LOCAL_FULL_HELLO_ACTOR_PATH);
             if (helloActor0 instanceof EmptyLocalActorRef) {
                 helloActor1 = actorSystem.actorOf(springContextHolder.props("HelloWorldActor"), "helloActor");
                 ActorPath actorPath1 = helloActor1.path();
                 String name1 = actorPath1.name();
                 //RepointableActorRef
             }
+
+            receiveActor0 = actorSystem.actorFor(LOCAL_FULL_RESULT_ACTOR_PATH);
+            if (receiveActor0 instanceof EmptyLocalActorRef) {
+                actorSystem.actorOf(springContextHolder.props("ReceiveSchedulerResultActor"), "resultActor");
+            }
         }
 
-
         ActorRefProvider actorRefProvider = actorSystem.provider();
-        ActorRef helloActorFromProvider = actorRefProvider.resolveActorRef(helloActorPath);
+        ActorRef helloActorFromProvider = actorRefProvider.resolveActorRef(LOCAL_FULL_HELLO_ACTOR_PATH);
 
-        ActorSelection actorSelection = actorSystem.actorSelection(helloActorPath);
+        ActorSelection actorSelection = actorSystem.actorSelection(LOCAL_FULL_HELLO_ACTOR_PATH);
         String pathString = actorSelection.pathString();
         ActorRef helloActorFromSelectionAnchor = actorSelection.anchor();
         ActorPath actorPath = helloActorFromSelectionAnchor.path();
         scala.collection.immutable.Iterable<String> itrElements = actorPath.elements();
         String name = actorPath.name();
 
-        ActorSelection as = actorSystem.actorSelection(helloActorPath);
+        ActorSelection as = actorSystem.actorSelection(LOCAL_FULL_HELLO_ACTOR_PATH);
         as.tell("hello", ActorRef.noSender());
 
         //可以获取到helloActor
@@ -88,7 +94,7 @@ public class ActorController {
         ActorRef counterActor0;
         ActorRef counterActor1 = null;
         synchronized(this) {
-            counterActor0 = actorSystem.actorFor(counterActorPath);
+            counterActor0 = actorSystem.actorFor(LOCAL_FULL_COUNTER_ACTOR_PATH);
 
             if (counterActor0 instanceof EmptyLocalActorRef) {
                 counterActor1 = actorSystem.actorOf(springContextHolder.props("CountingActor"), "counterActor");
@@ -123,10 +129,25 @@ public class ActorController {
            log.error("exception.", e);
         }
 
-
         helloActor.tell("init",ActorRef.noSender());
         inbox.send(helloActor, "msg from inbox");
 
+
+        JSONObject jsonObj = new JSONObject();
+        jsonObj.put("currentTime", LocalDateTime.now().toString());
+        return jsonObj.toJSONString();
+    }
+
+    @ApiOperation(value = "向helloActor发送消息", notes="private")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "message", defaultValue = "testFromNode0_Node0", value = "testFrom0", required = true, dataType = "string", paramType = "query")
+    })
+    @GetMapping(value = "/helloActor/send", produces = "application/json;charset=UTF-8")
+    public String sendMessage(@RequestParam String message) {
+        ActorRefProvider actorRefProvider = actorSystem.provider();
+        ActorRef helloActorFromProvider = actorRefProvider.resolveActorRef(LOCAL_FULL_HELLO_ACTOR_PATH);
+
+        helloActorFromProvider.tell(message, ActorRef.noSender());
 
         JSONObject jsonObj = new JSONObject();
         jsonObj.put("currentTime", LocalDateTime.now().toString());
@@ -139,16 +160,14 @@ public class ActorController {
     })
     @GetMapping(value = "/counterActor/send", produces = "application/json;charset=UTF-8")
     public String addIncrement(@RequestParam Long increment) {
-
         ActorRefProvider actorRefProvider = actorSystem.provider();
-        ActorRef counterActorFromProvider = actorRefProvider.resolveActorRef(counterActorPath);
+        ActorRef counterActorFromProvider = actorRefProvider.resolveActorRef(LOCAL_FULL_COUNTER_ACTOR_PATH);
 
-        //foreach increment times
+
         counterActorFromProvider.tell(new CountingActor.Count(), ActorRef.noSender());
 
         JSONObject jsonObj = new JSONObject();
         jsonObj.put("currentTime", LocalDateTime.now().toString());
         return jsonObj.toJSONString();
     }
-
 }

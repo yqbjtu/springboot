@@ -1,14 +1,23 @@
 package com.yq.actor;
 
 import akka.actor.AbstractActor;
+import akka.actor.ActorRef;
+import akka.actor.ActorSelection;
+import akka.actor.ActorSystem;
 import akka.actor.Props;
 import akka.event.Logging;
 import akka.event.LoggingAdapter;
 
 import javax.inject.Named;
 
+import com.yq.domain.Result;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
+
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Simple to Introduction
@@ -26,6 +35,11 @@ public class HelloWorldActor extends AbstractActor {
         return Props.create(HelloWorldActor.class, () -> new HelloWorldActor());
     }
 
+    private List<String> stringList = new ArrayList<>();
+
+    private final static String LOCAL_FULL_RESULT_ACTOR_PATH = "akka://Hello/user/resultActor";
+
+    private volatile boolean hasScheduler = false;
 
     public HelloWorldActor() {
 
@@ -47,7 +61,32 @@ public class HelloWorldActor extends AbstractActor {
                 .matchEquals("stop", m ->
                         getContext().stop(getSelf())
                 )
-                .matchAny(msg -> log.info("received unknown message={}", msg))
+                .matchAny(msg -> {
+                    log.info("received unknown message={}. hasScheduler={} ", msg, hasScheduler);
+                    String msgReceived = (String)msg;
+                    stringList.add(msgReceived);
+
+                    //累计消息然后发送
+                    if (!hasScheduler) {
+                        ActorSystem actorSystem = getContext().getSystem();
+
+                        actorSystem.scheduler().scheduleOnce(Duration.ofMillis(1000 * 5), new Runnable() {
+                            @Override
+                            public void run() {
+                                Result result = new Result();
+                                result.setCode(001);
+                                result.setContent(String.join(",",  stringList.toArray(new String[stringList.size()])));
+
+                                ActorSelection as = actorSystem.actorSelection(LOCAL_FULL_RESULT_ACTOR_PATH);
+                                as.tell(result, ActorRef.noSender());
+                                stringList = new ArrayList<>();
+                                hasScheduler = false;
+                            }
+                        },actorSystem.dispatcher());
+                    }
+
+
+                })
                 .build();
     }
 
