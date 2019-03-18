@@ -44,7 +44,7 @@ public class MyContextServiceImpl implements MyContextService {
 
     boolean isInitialized = false;
 
-    MyContextServiceImpl() {
+    public MyContextServiceImpl() {
         //初始化
         boolean initResultInConstructor = init();
         log.info("initResultInConstructor={}, actorSystem={}", initResultInConstructor, actorSystem);

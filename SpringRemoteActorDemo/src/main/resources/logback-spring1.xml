@@ -50,12 +50,13 @@
     <root level="DEBUG">
         <appender-ref ref="CONSOLE"/>
         <appender-ref ref="ERROR_FILE"/>
+        <appender-ref ref="FILE" />
     </root>
 
 
-    <logger name="com.yq" level="info" additivity="false">
-        <appender-ref ref="FILE" />
-    </logger>
+    <!--<logger name="com.yq" level="info" additivity="false">-->
+        <!--<appender-ref ref="FILE" />-->
+    <!--</logger>-->
 
 
 </configuration>

@@ -5,6 +5,7 @@ import akka.actor.ActorRef;
 import akka.actor.ActorRefProvider;
 import akka.actor.ActorSelection;
 import akka.actor.ActorSystem;
+import akka.actor.Address;
 import akka.actor.EmptyLocalActorRef;
 import akka.actor.Inbox;
 import akka.util.Timeout;
@@ -133,6 +134,33 @@ public class ActorController {
         return jsonObj.toJSONString();
     }
 
+    @ApiOperation(value = "演示使用，将本地counterActor和helloActor写入redis，供远程使用", notes="private")
+    @GetMapping(value = "/actor/remoteAddress", produces = "application/json;charset=UTF-8")
+    public String writeActorToRedis() {
+        Long threadId = Thread.currentThread().getId();
+
+        ActorRefProvider actorRefProvider = actorSystem.provider();
+        ActorRef helloActorFromProvider = actorRefProvider.resolveActorRef(LOCAL_FULL_HELLO_ACTOR_PATH);
+        ActorRef counterActorFromProvider = actorRefProvider.resolveActorRef(LOCAL_FULL_COUNTER_ACTOR_PATH);
+
+
+        ActorSelection actorSelection = actorSystem.actorSelection(LOCAL_FULL_HELLO_ACTOR_PATH);
+        String pathString = actorSelection.pathString();  // pathString is /user/helloActor
+
+
+        log.info("helloActorFromProvider={}, counterActorFromProvider={}, threadId={}, this={}",
+                helloActorFromProvider, counterActorFromProvider, threadId, this.toString());
+
+        JSONObject jsonObj = new JSONObject();
+        Address helloAddress = helloActorFromProvider.path().address();
+        //无法获取带有ip地址的远程可以访问的address，这种方式还是本地akka://RemoteActorDemo
+        String addressString = helloAddress.toString();
+        jsonObj.put("helloPath", helloActorFromProvider.path().address().toString());
+        jsonObj.put("counterPath", counterActorFromProvider.path().address());
+        jsonObj.put("currentTime", LocalDateTime.now().toString());
+        return jsonObj.toJSONString();
+    }
+
     @ApiOperation(value = "向counterActor发送计数消息", notes="private")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "msg", defaultValue = "testFromNode0_Node0", value = "testFrom0", required = true, dataType = "string", paramType = "query"),
@@ -143,12 +171,17 @@ public class ActorController {
     public String sendMsg2SpecificNode(@RequestParam String msg, @RequestParam String nodeAddress) {
         ActorRef actorRef = actorSystem.actorSelection(nodeAddress + HELLO_ACTOR_PATH).anchor();
 
+        if (actorRef != null) {
+            actorRef.tell("直接向远程actor发消息", ActorRef.noSender());
+        }
+
         ActorSelection as = actorSystem.actorSelection(LOCAL_FULL_HELLO_ACTOR_PATH);
         as.tell(nodeAddress + HELLO_ACTOR_PATH, ActorRef.noSender());
 
 
         JSONObject jsonObj = new JSONObject();
         jsonObj.put("currentTime", LocalDateTime.now().toString());
+        jsonObj.put("actorRef", actorRef);
         return jsonObj.toJSONString();
     }
 

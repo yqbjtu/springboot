@@ -84,8 +84,6 @@ public class HelloWorldActor extends AbstractActor {
                             }
                         },actorSystem.dispatcher());
                     }
-
-
                 })
                 .build();
     }
