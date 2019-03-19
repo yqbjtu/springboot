@@ -46,7 +46,7 @@ public class ClusterController {
     private final static String counterActorPath = "akka://Hello/user/counterActor";
     private final static String helloActorPath = "akka://Hello/user/helloActor";
 
-    @ApiOperation(value = "演示使用 向集群发送消息，未考虑线程安全", notes="private")
+    @ApiOperation(value = "演示使用 向集群发送消息，clusterActor会选择本集群的workerActor处理消息，未考虑线程安全", notes="private")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "msg", defaultValue = "testFrom0", value = "testFrom0", required = true, dataType = "string", paramType = "query")
     })

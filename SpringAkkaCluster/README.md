@@ -23,3 +23,34 @@ http://127.0.0.1:5000/swagger-ui.html
   initialize cluster 
   2019-03-01 14:53:47,919 INFO  [DESKTOP-8S2E5H7 main] Caller+0	 at com.yq.ClusterCLRunner.run(ClusterCLRunner.java:29)
   initResultInCLR=true
+  
+  配置文件  
+  https://github.com/akka/akka-sample-cluster-docker-compose-java/blob/master/src/main/resources/application.conf  
+  
+  不能直接绑定主机名  
+  Failed to bind TCP to [ DESKTOP-8S2E5H7:3001] due to: Bind failed because of java.net.SocketException: Unresolved address, caused by: java.nio.channels  
+  
+  https://github.com/akka/akka-sample-cluster-docker-compose-java/blob/master/src/main/resources/application.conf  
+  
+  如果依赖中没有配置>akka-remote_2.12， 并且我们配置了
+    remote {
+      enabled-transports = ["akka.remote.netty.tcp"]
+      netty.tcp {
+        hostname = "127.0.0.1"
+        port = 0
+      }
+   }
+  
+  启动就报
+  akka.remote.RemoteTransportException: No transport is loaded for protocol: [akka], available protocols: [akka.tcp]  
+  这是因为我们的cluster默认使用artery，不是netty
+  val remote = context.actorFor("akka://RemoteSystem@127.0.0.1:5150/user/RemoteActor")
+  两者不同  
+  val remote = context.actorFor("akka.tcp://RemoteSystem@127.0.0.1:5150/user/RemoteActor")  
+  
+  
+  根据  
+  https://doc.akka.io/docs/akka/current/general/configuration.html#config-akka-remote  
+  我们配置好本地的地址（例如本地有3个ip）， 我们通过3个ipakka://RemoteSystem@ip:5150/user/RemoteActor访问actor  
+    
+    

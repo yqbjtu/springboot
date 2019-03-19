@@ -2,6 +2,8 @@
 
 http://127.0.0.1:7001/swagger-ui.html
 
+https://doc.akka.io/docs/akka/2.5/remoting.html
+
   program arguments:--spring.profiles.active=dev2
   
 #  1, 依赖包
@@ -18,4 +20,8 @@ Caused by: java.lang.ClassNotFoundException: akka.remote.RemoteActorRefProvider
 
 ActorSelection selection =
   context.actorSelection("akka.tcp://app@127.0.0.1:2552/user/serviceA/worker");
+  
+  
+  配置文件的写法
+  https://github.com/akka/akka-sample-cluster-docker-compose-java/blob/master/src/main/resources/application.conf
   

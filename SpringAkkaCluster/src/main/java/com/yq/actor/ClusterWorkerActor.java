@@ -109,6 +109,9 @@ public class ClusterWorkerActor extends AbstractActor {
                     if (address != null) {
                         stringBuffer.append(", leaderAddress:" + address.hostPort());
                     }
+                    else {
+                        stringBuffer.append(", leaderAddress is empty");
+                    }
                     stringBuffer.append(", currentNodeIsLeader:" + clusterReadView.isLeader());
 
                     Iterable<Member> list = currentClusterState.getMembers();

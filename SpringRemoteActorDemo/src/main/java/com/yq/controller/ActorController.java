@@ -172,7 +172,14 @@ public class ActorController {
         ActorRef actorRef = actorSystem.actorSelection(nodeAddress + HELLO_ACTOR_PATH).anchor();
 
         if (actorRef != null) {
+            // 实际上无法成功发送
             actorRef.tell("直接向远程actor发消息", ActorRef.noSender());
+        }
+
+        ActorSelection actorSelection = actorSystem.actorSelection(nodeAddress + HELLO_ACTOR_PATH);
+
+        if (actorSelection != null) {
+            actorSelection.tell("通过actorSelection直接向远程actor发消息", ActorRef.noSender());
         }
 
         ActorSelection as = actorSystem.actorSelection(LOCAL_FULL_HELLO_ACTOR_PATH);
@@ -182,6 +189,7 @@ public class ActorController {
         JSONObject jsonObj = new JSONObject();
         jsonObj.put("currentTime", LocalDateTime.now().toString());
         jsonObj.put("actorRef", actorRef);
+        jsonObj.put("actorSelection", actorSelection);
         return jsonObj.toJSONString();
     }
 
