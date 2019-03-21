@@ -11,6 +11,7 @@ import akka.cluster.ClusterSettings;
 import akka.event.Logging;
 import akka.event.LoggingAdapter;
 import com.typesafe.config.Config;
+import com.yq.constant.ClusterConstants;
 
 public class WorkActor extends AbstractActor {
   LoggingAdapter log = Logging.getLogger(getContext().system(), this);
@@ -35,7 +36,7 @@ public class WorkActor extends AbstractActor {
               long threadId = Thread.currentThread().getId();
               ClusterSettings setting = cluster.settings();
               Config config = setting.config();
-              String port = config.getString("akka.remote.artery.canonical.port");
+              String port = config.getString(ClusterConstants.NETTY_PORT);
               log.info("msg={}, objectStr={}, receivedPort={}, threadId={}.", msg, this.toString(), port, threadId);
             })
             .build();

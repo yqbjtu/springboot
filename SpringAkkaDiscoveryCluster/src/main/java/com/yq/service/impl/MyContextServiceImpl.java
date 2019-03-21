@@ -51,10 +51,8 @@ public class MyContextServiceImpl implements MyContextService {
     ZkConfig zkConfig;
 
     private ActorSystem actorSystem;
-
-    Map<String, ActorRef> classActorRefMap = new HashMap<>();
-
-    boolean isInitialized = false;
+    private Map<String, ActorRef> classActorRefMap = new HashMap<>();
+    private boolean isInitialized = false;
 
     public MyContextServiceImpl() {
         //初始化
@@ -85,8 +83,6 @@ public class MyContextServiceImpl implements MyContextService {
                             "clusterActor");
                     ActorRef workActorRef = actorSystem.actorOf(Props.create(WorkActor.class),
                             "workerActor");
-
-                    //clusterActorRef.tell("foo1 " + clusterActorRef.toString() + " p_"+ port,ActorRef.noSender());
 
                     classActorRefMap.put(ClusterWorkerActor.class.getCanonicalName(), clusterActorRef);
                     classActorRefMap.put(WorkActor.class.getCanonicalName(), workActorRef);
@@ -216,18 +212,13 @@ public class MyContextServiceImpl implements MyContextService {
                 }
             }
 
-
             configMap.put("akka.cluster.seed-nodes", list);
-
             Config config = ConfigFactory.parseMap(configMap)
                     .withFallback(ConfigFactory.parseString("akka.cluster.roles=[rule1]"))
                     .withFallback(ConfigFactory.load());
-
-            // Create an Akka system
             system = ActorSystem.create(ACTOR_SYSTEM_NAME, config);
         }
 
         return system;
     }
-
 }
