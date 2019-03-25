@@ -15,7 +15,7 @@ import javax.annotation.PostConstruct;
 @Data
 @Slf4j
 @Order(1)
-public class ZkConfig {
+public class ClusterConfig {
 
     @Value("${zkServers}")
     private String zkServers;

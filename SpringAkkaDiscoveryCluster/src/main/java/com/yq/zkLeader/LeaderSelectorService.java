@@ -1,7 +1,7 @@
 package com.yq.zkLeader;
 
 
-import com.yq.config.ZkConfig;
+import com.yq.config.ClusterConfig;
 import com.yq.constant.ClusterConstants;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
@@ -32,7 +32,7 @@ import java.util.concurrent.CountDownLatch;
 public class LeaderSelectorService {
 
     @Autowired
-    ZkConfig zkConfig;
+    ClusterConfig zkConfig;
 
     private static final int CLIENT_QTY = 10;
     private CuratorFramework client = null;

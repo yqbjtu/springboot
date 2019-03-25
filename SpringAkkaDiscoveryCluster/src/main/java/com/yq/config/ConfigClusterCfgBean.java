@@ -15,12 +15,12 @@ import org.springframework.core.annotation.Order;
 @Configuration
 @Order(3)
 @Slf4j
-public class ConfigZKBean {
+public class ConfigClusterCfgBean {
 
     @Bean
-    public ZkConfig zKConfig() {
+    public ClusterConfig clusterConfig() {
         log.info("Create a zkConfig");
-        return new ZkConfig();
+        return new ClusterConfig();
     }
 }
 

@@ -7,7 +7,7 @@ import com.typesafe.config.Config;
 import com.typesafe.config.ConfigFactory;
 import com.yq.actor.ClusterWorkerActor;
 import com.yq.actor.WorkActor;
-import com.yq.config.ZkConfig;
+import com.yq.config.ClusterConfig;
 import com.yq.service.MyContextService;
 
 import com.yq.zkLeader.LeaderSelectorService;
@@ -48,7 +48,7 @@ public class MyContextServiceImpl implements MyContextService {
     LeaderSelectorService leaderSelectionSvc;
 
     @Autowired
-    ZkConfig zkConfig;
+    ClusterConfig zkConfig;
 
     private ActorSystem actorSystem;
     private Map<String, ActorRef> classActorRefMap = new HashMap<>();
