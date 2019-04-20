@@ -4,6 +4,7 @@ package com.yq.controller;
 
 import com.yq.domain.User;
 import com.yq.domain.vo.UserVO;
+import com.yq.event.HelloWorldEvent;
 import com.yq.service.IUserService;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -12,6 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,13 +27,16 @@ import javax.validation.Valid;
 import java.util.Collection;
 
 
-@Controller
+@RestController
 @RequestMapping("/user")
 public class UserController {
     private Logger log = LoggerFactory.getLogger(UserController.class);
 
     @Autowired
-    IUserService userSvc;
+    private IUserService userSvc;
+
+    @Autowired
+    private ApplicationContext applicationContext;
 
     @ApiOperation(value = "创建用户", notes="private")
     @ApiImplicitParams({
@@ -42,6 +47,9 @@ public class UserController {
         User user = new User();
         BeanUtils.copyProperties(userVO, user);
         userSvc.save(user);
+
+        //发送用户修改事件， 这里用HelloWorld为例
+        applicationContext.publishEvent(new HelloWorldEvent(user, user.getId(), "user update"));
         return user;
     }
 
