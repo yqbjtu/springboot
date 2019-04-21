@@ -9,6 +9,7 @@ import com.yq.service.IUserService;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -29,8 +30,8 @@ import java.util.Collection;
 
 @RestController
 @RequestMapping("/user")
+@Slf4j
 public class UserController {
-    private Logger log = LoggerFactory.getLogger(UserController.class);
 
     @Autowired
     private IUserService userSvc;
@@ -47,7 +48,7 @@ public class UserController {
         User user = new User();
         BeanUtils.copyProperties(userVO, user);
         userSvc.save(user);
-
+        log.info("controller threadId={}", Thread.currentThread().getId());
         //发送用户修改事件， 这里用HelloWorld为例
         applicationContext.publishEvent(new HelloWorldEvent(user, user.getId(), "user update"));
         return user;
