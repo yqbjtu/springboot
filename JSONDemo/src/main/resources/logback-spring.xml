@@ -53,7 +53,7 @@
     </root>
 
 
-    <logger name="com.yq.controller" level="trace" additivity="false">
+    <logger name="com.yq.controller" level="info" additivity="false">
         <appender-ref ref="FILE" />
     </logger>
 

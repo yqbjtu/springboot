@@ -36,7 +36,7 @@ spring.jackson.time-zone=GMT+8
 如果create输入
 ```json
 {
-  "address": "06",
+  "userId": "06",
   "comment": "张三",
   "fullName": "tomFull",
   "id": "099",
@@ -61,7 +61,7 @@ spring.jackson.time-zone=GMT+8
 修改成
 ```json
 {
-  "address": "06",
+  "userId": "06",
   "comment": "张三",
   "fullName": "tomFull",
   "id": "099",
