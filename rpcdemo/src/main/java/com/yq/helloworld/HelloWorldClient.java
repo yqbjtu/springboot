@@ -1,4 +1,4 @@
-package com.yq;
+package com.yq.helloworld;
 
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
