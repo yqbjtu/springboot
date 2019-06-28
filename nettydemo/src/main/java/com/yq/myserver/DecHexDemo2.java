@@ -13,7 +13,7 @@ import java.nio.charset.StandardCharsets;
 public class DecHexDemo2 {
     public static void main(String[] args) throws Exception {
         String str = "11";
-        //String str = "FFFF";
+        //String str = "0e";
         Integer bigInteger1 =  Integer.parseInt(str,16);
         BigInteger bigInteger2 = new BigInteger(str,10);
         System.out.println( bigInteger1 + ", " + bigInteger2);
@@ -71,25 +71,27 @@ public class DecHexDemo2 {
         String strHex = Integer.toHexString(decimalValue);
         System.out.println("decimalValue:" + decimalValue + ", strHex:" + strHex);
         int length = strHex.getBytes(StandardCharsets.UTF_8).length;
-        if (length > 2) {
-            String str1 = strHex.substring(0, length -2);
-            BigInteger bigInteger = new BigInteger(str1,16);
-            Integer high = bigInteger.intValue();
-            byteBuf.writeByte(high.shortValue());
+//        if (length > 2) {
+//            String str1 = strHex.substring(0, length -2);
+//            BigInteger bigInteger = new BigInteger(str1,16);
+//            Integer high = bigInteger.intValue();
+//            byteBuf.writeByte(high.shortValue());
+//
+//            String str2 = strHex.substring( length -2,  length);
+//            bigInteger = new BigInteger(str2,16);
+//            Integer low = bigInteger.intValue();
+//            byteBuf.writeByte(low.shortValue());
+//            System.out.println("str1:" + str1 + ", high:" + high + ", str2:" + str2 + ", low:" + low);
+//        } else {
+//            byteBuf.writeByte(0);
+//            String str2 = strHex.substring(0,  length);
+//            BigInteger bigInteger = new BigInteger(str2,16);
+//            Integer low = bigInteger.intValue();
+//            byteBuf.writeByte(low.shortValue());
+//            System.out.println("str1:0, high:0, str2:" + str2 + ", low:" + low);
+//        }
 
-            String str2 = strHex.substring( length -2,  length);
-            bigInteger = new BigInteger(str2,16);
-            Integer low = bigInteger.intValue();
-            byteBuf.writeByte(low.shortValue());
-            System.out.println("str1:" + str1 + ", high:" + high + ", str2:" + str2 + ", low:" + low);
-        } else {
-            byteBuf.writeByte(0);
-            String str2 = strHex.substring(0,  length);
-            BigInteger bigInteger = new BigInteger(str2,16);
-            Integer low = bigInteger.intValue();
-            byteBuf.writeByte(low.shortValue());
-            System.out.println("str1:0, high:0, str2:" + str2 + ", low:" + low);
-        }
+        byteBuf.writeShort(decimalValue);
 
         long frameLength = (long)byteBuf.getUnsignedShort(0);
 
