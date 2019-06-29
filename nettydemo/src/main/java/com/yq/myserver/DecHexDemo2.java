@@ -31,43 +31,48 @@ public class DecHexDemo2 {
         //byteBuf.writeByte(0xe8);
         //dec 1256  --hex 4e8
         DecHexDemo2 demo = new DecHexDemo2();
-        demo.printDecHexConvert(byteBuf, "4e8", 1256);
+        demo.printDecHexConvert(byteBuf, "4e8", 1256, 2);
 
         byteBuf = Unpooled.buffer();
         //byteBuf.writeByte(0x14); //必须写成0x14， 不能是14
         //byteBuf.writeByte(0xe8);
         //dec 5352  --hex 14e8
         demo = new DecHexDemo2();
-        demo.printDecHexConvert(byteBuf, "14e8", 5352);
+        demo.printDecHexConvert(byteBuf, "14e8", 5352, 2);
 
         ByteBuf byteBuf2 = Unpooled.buffer();
         //byteBuf2.writeByte(0);
         //byteBuf2.writeByte(0xe8);
         //dec 232  --hex e8
-        demo.printDecHexConvert(byteBuf2, "e8", 232);
+        demo.printDecHexConvert(byteBuf2, "e8", 232, 2);
 
 
         ByteBuf byteBuf3 = Unpooled.buffer();
         //byteBuf3.writeByte(0);
         //byteBuf3.writeByte(0x11);
         //dec 17  --hex 11
-        demo.printDecHexConvert(byteBuf3, "0x11", 17);
+        demo.printDecHexConvert(byteBuf3, "0x11", 17, 2);
 
         byteBuf3 = Unpooled.buffer();
         //byteBuf3.writeByte(0);
         //byteBuf3.writeByte(0x99);
         //dec 153  --hex 99
-        demo.printDecHexConvert(byteBuf3, "ox99", 153);
+        demo.printDecHexConvert(byteBuf3, "ox99", 153, 2);
 
         ByteBuf byteBuf4 = Unpooled.buffer();
         //byteBuf4.writeByte(0);
         //byteBuf4.writeByte(0xFF);
         //dec 255  --hex ff
-        demo.printDecHexConvert(byteBuf4, "FF", 255);
+        demo.printDecHexConvert(byteBuf4, "FF", 255, 2);
 
+        ByteBuf byteBuf5 = Unpooled.buffer();
+        //byteBuf4.writeByte(0);
+        //byteBuf4.writeByte(0xFF);
+        //dec 255  --hex ff
+        demo.printDecHexConvert(byteBuf5, "7A120", 500000, 3);
     }
 
-    private void printDecHexConvert(ByteBuf byteBuf, String hexStr, int decimalValue) {
+    private void printDecHexConvert(ByteBuf byteBuf, String hexStr, int decimalValue, int count) throws Exception {
         String strHex = Integer.toHexString(decimalValue);
         System.out.println("decimalValue:" + decimalValue + ", strHex:" + strHex);
         int length = strHex.getBytes(StandardCharsets.UTF_8).length;
@@ -91,19 +96,27 @@ public class DecHexDemo2 {
 //            System.out.println("str1:0, high:0, str2:" + str2 + ", low:" + low);
 //        }
 
-        byteBuf.writeShort(decimalValue);
+        //byteBuf.writeShort(decimalValue);
+        if (count ==2 ) {
+            byteBuf.writeShort(decimalValue);
+        } else if (count ==3 ){
+            byteBuf.writeMedium(decimalValue);
+        } else {
+            throw new Exception(" invalid count:" + count);
+        }
+
 
         long frameLength = (long)byteBuf.getUnsignedShort(0);
-
-        long low = (long)byteBuf.getUnsignedByte(0);
-        long high = (long)byteBuf.getUnsignedByte(1);
         StringBuilder strBuilder = new StringBuilder();
-        strBuilder.append(String.format("%02x", low)).append(String.format("%02x",high));
+        for(int i=0; i< count; i++) {
+            long high = (long)byteBuf.getUnsignedByte(i);
+            strBuilder.append(String.format("%02x", high));
+        }
         String str = strBuilder.toString();
         BigInteger bigInteger = new BigInteger(str,16);
         long frameLength2 = Integer.valueOf(String.valueOf(frameLength), 16);
         System.out.println("decimalVal:" + decimalValue + ", HexStr:" + hexStr +
-                ", getStr:" + str + "---" + frameLength + "," + bigInteger + "," +frameLength2);
+                ", getStr:" + str + "---" + frameLength + "," + bigInteger + "," + frameLength2);
 
 
     }
