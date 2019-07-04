@@ -17,7 +17,6 @@ public class AkkaAlarmDemo {
     public static void main(String[] args) {
         final ActorSystem system = ActorSystem.create("AlarmDemo");
         try {
-
             IoTContext ioTContext = new IoTContext();
 
             final ActorRef filterScriptActor =
