@@ -73,3 +73,5 @@ spring.jackson.time-zone=GMT+8
 ```
 
 这样就可以创建成功
+
+https://blog.jetbrains.com/idea/2014/03/debugger-for-jdk8s-nashorn-javascript-in-intellij-idea-13-1/
