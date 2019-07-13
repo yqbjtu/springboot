@@ -3,15 +3,9 @@ package com.yq;
 import akka.actor.ActorRef;
 import akka.actor.ActorSystem;
 import com.yq.context.IoTContext;
-import com.yq.ruleActor.CreateAlarmActionActor;
-import com.yq.ruleActor.FilterScriptActor;
 import com.yq.ruleActor.MyTimerActor;
-import com.yq.ruleActor.RestHttpActor;
-import com.yq.ruleActor.SendMailActionActor;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 
 
 public class AkkaTimerDemo {
@@ -21,9 +15,13 @@ public class AkkaTimerDemo {
             IoTContext ioTContext = new IoTContext();
 
             final ActorRef timerActor =
-                    system.actorOf(MyTimerActor.props(), "timerActor");
+                    system.actorOf(MyTimerActor.props(1), "timerActor");
+
+            final ActorRef timerActor3 =
+                    system.actorOf(MyTimerActor.props(3), "timer3Actor");
 
             timerActor.tell("done1", ActorRef.noSender());
+            timerActor3.tell("done3", ActorRef.noSender());
 
 
 

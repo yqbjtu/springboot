@@ -5,7 +5,6 @@ import akka.actor.ActorSystem;
 import com.typesafe.config.Config;
 import com.typesafe.config.ConfigFactory;
 import com.yq.context.IoTContext;
-import com.yq.ruleActor.HelloActor;
 import com.yq.ruleActor.HelloFutureActor;
 
 import java.io.IOException;

@@ -3,15 +3,11 @@ package com.yq;
 import akka.actor.ActorRef;
 import akka.actor.ActorSystem;
 import akka.actor.Props;
-import akka.actor.TypedActor;
+import com.typesafe.config.Config;
 import com.typesafe.config.ConfigFactory;
-import com.yq.context.IoTContext;
 import com.yq.ruleActor.HotSwapActor;
 
 import java.io.IOException;
-
-import com.typesafe.config.Config;
-import com.typesafe.config.ConfigFactory;
 public class AkkaActorConfigDemo {
     private static final String AKKA_CONF_FILE_NAME = "actor-system.conf";
     private static final String ACTOR_SYSTEM_NAME = "TimerActorDemo";

@@ -3,7 +3,6 @@ package com.yq;
 import akka.actor.ActorRef;
 import akka.actor.ActorSystem;
 
-
 import com.yq.context.IoTContext;
 import com.yq.rule.BaseRule;
 import com.yq.rule.RuleChain;
@@ -35,7 +34,6 @@ public class AkkaAlarmRuleChainDemo {
             final ActorRef callRestActor =
                     system.actorOf(RestHttpActor.props(ioTContext), "callRestActor");
 
-
             ioTContext.setCreateAlarmActor(createAlarmActor);
             ioTContext.setSendMailActor(sendMailActor);
             ioTContext.setRestActor(callRestActor);
@@ -43,11 +41,9 @@ public class AkkaAlarmRuleChainDemo {
             final ActorRef filterScript =
                     system.actorOf(FilterScriptActor.props(ioTContext), "filterScript");
 
-
             Map<String, Object> sensorDataMap = new HashMap<>();
             sensorDataMap.put("temperature", 91);
             sensorDataMap.put("humidity", 20);
-
 
             RuleChainDemo1 demo1 = new RuleChainDemo1();
             RuleChainDemo2 demo2 = new RuleChainDemo2();
@@ -55,7 +51,6 @@ public class AkkaAlarmRuleChainDemo {
             //RuleChain ruleChain = demo1.getRuleChain();
            // RuleChain ruleChain = demo2.getRuleChain();
            RuleChain ruleChain = restDemo.getRuleChain();
-
 
             //得到第一个RuleNode
             List<BaseRule> ruleList = ruleChain.getRuleList();
@@ -66,7 +61,6 @@ public class AkkaAlarmRuleChainDemo {
             String ruleNodeType = null;
             String ruleNodeActualClass = null;
             while(itr.hasNext()) {
-
                 BaseRule baseRule = itr.next();
                 ruleChain.putMapEntry(baseRule.getId(), baseRule);
                 if (Objects.equals(rootRuleNodeId, baseRule.getId())) {
@@ -91,12 +85,9 @@ public class AkkaAlarmRuleChainDemo {
                     default:
                         log.warn("no found root rule Node class={}", ruleNodeActualClass);
                 }
-            }
-            else {
+            } else {
                 log.warn("no root rule Node");
             }
-
-
 
             System.out.println(">>> Press ENTER to exit <<<");
             System.in.read();

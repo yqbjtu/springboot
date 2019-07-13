@@ -18,6 +18,7 @@ import java.time.Duration;
 public class MyTimerActor extends AbstractActorWithTimers {
     private LoggingAdapter log = Logging.getLogger(getContext().getSystem(), this);
     private static Object TICK_KEY = "TickKey";
+    private int interval = 1;
 
     private static final class FirstTick {}
 
@@ -32,11 +33,13 @@ public class MyTimerActor extends AbstractActorWithTimers {
         }
     }
 
-    static public Props props() {
-        return Props.create(MyTimerActor.class, () -> new MyTimerActor());
+    static public Props props(int interval) {
+        return Props.create(MyTimerActor.class, () -> new MyTimerActor(interval));
     }
 
-    public MyTimerActor() {
+    public MyTimerActor(int interval) {
+        //已生成对象就发一个次性的timer时间
+        this.interval = interval;
         getTimers().startSingleTimer(TICK_KEY, new FirstTick(), Duration.ofMillis(5000));
     }
 
@@ -47,7 +50,8 @@ public class MyTimerActor extends AbstractActorWithTimers {
                         FirstTick.class,
                         message -> {
                             log.info("receive FirstTick event");
-                            getTimers().startPeriodicTimer(TICK_KEY, new Tick("test1"), Duration.ofSeconds(1));
+                            //收到一次性的timer时间后，产生一个周期性的事件
+                            getTimers().startPeriodicTimer(TICK_KEY, new Tick("test1"), Duration.ofSeconds(interval));
                         })
                 .match(
                         Tick.class,

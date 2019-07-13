@@ -3,15 +3,9 @@ package com.yq;
 import akka.actor.ActorRef;
 import akka.actor.ActorSystem;
 import com.yq.context.IoTContext;
-import com.yq.ruleActor.CreateAlarmActionActor;
-import com.yq.ruleActor.FilterScriptActor;
 import com.yq.ruleActor.HelloActor;
-import com.yq.ruleActor.RestHttpActor;
-import com.yq.ruleActor.SendMailActionActor;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 
 
 public class AkkaAlarmActorExceptionDemo {

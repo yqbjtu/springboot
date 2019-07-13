@@ -3,7 +3,6 @@ package com.yq;
 import akka.actor.ActorRef;
 import akka.actor.ActorSystem;
 import com.yq.context.IoTContext;
-import com.yq.ruleActor.HelloActor;
 import com.yq.ruleActor.TimerActor;
 
 import java.io.IOException;
