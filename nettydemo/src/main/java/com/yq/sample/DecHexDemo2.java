@@ -1,4 +1,4 @@
-package com.yq.myserver;
+package com.yq.sample;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufUtil;

@@ -1,4 +1,4 @@
-package com.yq.myserver;
+package com.yq.sample;
 
 /**
  * Created by yangqian on 2019/6/22.
