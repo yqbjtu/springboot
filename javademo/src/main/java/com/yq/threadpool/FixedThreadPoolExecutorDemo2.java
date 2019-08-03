@@ -11,12 +11,14 @@ import java.util.concurrent.TimeUnit;
 @Slf4j
 public class FixedThreadPoolExecutorDemo2 {
     public static void main(String[] args) {
-        ThreadPoolExecutor executor = (ThreadPoolExecutor) Executors.newFixedThreadPool(4);
+       // ThreadPoolExecutor executor = (ThreadPoolExecutor) Executors.newFixedThreadPool(4);
+        ThreadPoolExecutor executor = (ThreadPoolExecutor) Executors.newCachedThreadPool();
+
         for (int i = 0; i < 10; i++) {
             MyTask task = new MyTask("Task " + i);
             if (i == 2) {
                 try {
-                    TimeUnit.SECONDS.sleep(70);
+                    TimeUnit.SECONDS.sleep(30);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
