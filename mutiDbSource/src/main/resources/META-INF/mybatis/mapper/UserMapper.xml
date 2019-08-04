@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yq.mapper.UserMapper">
+	<resultMap id="BaseResultMap" type="com.yq.domain.User">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="user_name" property="userName" jdbcType="VARCHAR" />
+		<result column="user_age" property="userAge" jdbcType="INTEGER" />
+		<result column="address" property="address" jdbcType="VARCHAR" />
+		<result column="add_time" property="addTime" jdbcType="TIMESTAMP" />
+		<result column="remarks" property="remarks" jdbcType="VARCHAR" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		id, user_name, user_age, address,add_time,remarks
+	</sql>
+	<select id="selectByOddUserId" resultMap="BaseResultMap"
+		parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_List" />
+		from user
+		where id = #{id,jdbcType=INTEGER}
+	</select>
+	<select id="selectByEvenUserId" resultMap="BaseResultMap"
+	        parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_List" />
+		from user
+		where id = #{id,jdbcType=INTEGER}
+	</select>
+</mapper>

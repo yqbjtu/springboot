@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/2002/xmlspec/dtd/2.10/xmlspec.dtd"> -->
+<configuration scan="true" scanPeriod="60 seconds" debug="false">
+	<!--定义日志文件的存储地址 勿在 LogBack 的配置中使用相对路径 -->
+	<!-- <property name="LOG_HOME" value="./log" /> -->
+	<property resource="application.properties" />
+	<jmxConfigurator/>
+	<!-- 控制台输出 -->
+	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+			<!--格式化输出：%d表示日期，%thread表示线程名，%-5level：级别从左显示5个字符宽度%msg：日志消息，%n是换行符 -->
+			<!-- <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS}|%msgno|%thread|%-5level|%logger{20}-%msg%n</pattern> -->
+			<pattern>[%d][%-5level] %logger{20}[%line] - %msg%n</pattern>
+		</encoder>
+		<!--<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+			<level>DEBUG</level>
+		</filter>-->
+	</appender>
+
+	<appender name="FILE"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<!-- 定义文件的名称 -->
+		<file>${logging.path}/${spring.application.name}/${spring.application.name}.log
+		</file>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">      <!-- rollover daily -->
+			<!-- 设置达到指定大小限制后输出的日志名称 -->
+			<fileNamePattern>${logging.path}/${spring.application.name}/${spring.application.name}-%d{yyyy-MM-dd}-%i.log
+			</fileNamePattern>
+			<maxHistory>30</maxHistory>
+			<timeBasedFileNamingAndTriggeringPolicy
+				class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">        <!-- or whenever the file size reaches 100MB -->
+				<maxFileSize>50MB</maxFileSize>
+			</timeBasedFileNamingAndTriggeringPolicy>
+		</rollingPolicy>
+		<encoder>
+			<!--格式化输出：%d表示日期，%thread表示线程名，%-5level：级别从左显示5个字符宽度%msg：日志消息，%n是换行符 -->
+			<pattern>[%d][%-5level] %logger{20}[%line] - %msg%n</pattern>
+			<charset>UTF-8</charset>
+		</encoder>
+	</appender>
+
+	<!--打开DAO层日志，此功能要能使用必须在mybatis配置文件中添加如下配置
+	<settings>
+		<setting name="logPrefix" value="dao." />
+	</settings>
+	否则sql日志输出将有问题，另外以下设置中只需要设置dao等级即可，不需要绑定appender
+	-->
+	<logger name="dao" level="${log.sql.level}"/>
+
+	<!-- 统一日志输出级别，其他appender中如果有高于此处等级设置的也会被输出 -->
+	<root level="INFO">
+		<appender-ref ref="STDOUT" />
+		<appender-ref ref="FILE" />
+	</root>
+</configuration>
