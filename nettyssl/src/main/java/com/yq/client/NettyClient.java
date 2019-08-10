@@ -30,7 +30,7 @@ public class NettyClient {
     private ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
     EventLoopGroup group = new NioEventLoopGroup();
 
-    public void connect( String host, int port) throws Exception {
+    public void connect( String host, int port){
 
         // 配置客户端NIO线程组
         try {
@@ -39,7 +39,7 @@ public class NettyClient {
                     .option(ChannelOption.TCP_NODELAY, true)
                     .handler(new ChannelInitializer<SocketChannel>() {
                         @Override
-                        public void initChannel(SocketChannel ch) throws Exception {
+                        public void initChannel(SocketChannel ch){
 
                             log.info("client current dir:{}", System.getProperty("user.dir"));
                             String clientPath = (System.getProperty("user.dir")+ "/nettyssl/src/main/resources/certs/yqClient.jks");
@@ -59,22 +59,8 @@ public class NettyClient {
             // 发起异步连接操作
             ChannelFuture future = b.connect(host, port).sync();
             future.channel().closeFuture().sync();
-        } finally {
-            // 所有资源释放完成之后，清空资源，再次发起重连操作
-            /*executor.execute(new Runnable() {
-                public void run() {
-                    try {
-                        TimeUnit.SECONDS.sleep(1);
-                        try {
-                            connect(host, port);// 发起重连操作
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }); */
+        } catch (Exception ex) {
+            log.info("connection exception", ex);
         }
     }
 

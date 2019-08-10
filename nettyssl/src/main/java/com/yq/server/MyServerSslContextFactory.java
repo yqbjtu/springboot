@@ -59,7 +59,7 @@ public class MyServerSslContextFactory {
             // 参数三：伪随机数生成器 。 由于单向认证，服务端不用验证客户端，所以第二个参数为null
             sslContext.init(kmf.getKeyManagers(), null, null);
         }catch(Exception e){
-            throw new Error("Failed to initialize the server-side SSLContext", e);
+            throw new Error("Failed to init the server-side SSLContext", e);
         }finally{
             if(in !=null){
                 try {
