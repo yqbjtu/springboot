@@ -41,10 +41,22 @@ public class MyServerSslContextFactory {
                 //初始化密钥管理器, keypass 指定别名条目的密码(私钥的密码)
                 kmf.init(ks, keypass.toCharArray());
             }
+            //信任库 caPath is String，双向认证再开启这一段
+            /*TrustManagerFactory tf = null;
+            InputStream caIn = null;
+            if (caPath != null) {
+                KeyStore tks = KeyStore.getInstance("JKS");
+                caIn = new FileInputStream(caPath);
+                tks.load(caIn, storepass.toCharArray());
+                tf = TrustManagerFactory.getInstance("SunX509");
+                tf.init(tks);
+            }*/
+
             //获取安全套接字协议（TLS协议）的对象
             sslContext = SSLContext.getInstance(PROTOCOL);
             //初始化此上下文
-            //参数一：认证的密钥    参数二：对等信任认证  参数三：伪随机数生成器 。 由于单向认证，服务端不用验证客户端，所以第二个参数为null
+            //参数一：认证的密钥    参数二：对等信任认证，如果双向认证就写成tf.getTrustManagers()
+            // 参数三：伪随机数生成器 。 由于单向认证，服务端不用验证客户端，所以第二个参数为null
             sslContext.init(kmf.getKeyManagers(), null, null);
         }catch(Exception e){
             throw new Error("Failed to initialize the server-side SSLContext", e);
@@ -57,6 +69,7 @@ public class MyServerSslContextFactory {
                 }
             }
 
+            // close caIn 双向证书需要，关闭caIn
         }
         return sslContext;
     }

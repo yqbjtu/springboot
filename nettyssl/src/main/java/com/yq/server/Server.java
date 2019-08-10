@@ -42,7 +42,7 @@ public class Server {
                         //设置为服务器模式
                         SSLEngine sslEngine = sslContext.createSSLEngine();
                         sslEngine.setUseClientMode(false);
-                        //是否需要验证客户端
+                        //是否需要验证客户端 。 如果是双向认证，则需要将其设置为true，同时将client证书添加到server的信任列表中
                         sslEngine.setNeedClientAuth(false);
                         ch.pipeline().addLast("ssl", new SslHandler(sslEngine));
 
