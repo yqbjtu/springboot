@@ -1,0 +1,14 @@
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+spring:
+  application:
+    name: myservice
+rest:
+  limits:
+    tenant:
+      enabled: "true"
+      configuration: "2:30,5:60"
+

@@ -31,13 +31,13 @@ public class MyClientSslContextFactory {
             TrustManagerFactory tf = null;
             if (caPath != null) {
                 //密钥库KeyStore
-                KeyStore ks = KeyStore.getInstance("JKS");
+                KeyStore trustKeyStore = KeyStore.getInstance("JKS");
                 //加载客户端证书
                 trustInput = new FileInputStream(caPath);
-                ks.load(trustInput, storepass.toCharArray());
+                trustKeyStore.load(trustInput, storepass.toCharArray());
                 tf = TrustManagerFactory.getInstance("SunX509");
                 // 初始化信任库
-                tf.init(ks);
+                tf.init(trustKeyStore);
             }
 
             //双向认证时需要加载自己的证书
