@@ -32,10 +32,10 @@ public class RateLimitSvcImpl implements RateLimitSvc {
         if (perTenantLimitsEnabled) {
             RateLimits rateLimits = perTenantLimits.computeIfAbsent(tenantId, id -> new RateLimits(perTenantLimitsConfiguration));
             if (!rateLimits.tryConsume()) {
-                log.info("tryConsume false, leftToken={}", rateLimits.getAvailableTokens());
+                log.info("tryConsume false, tenantId={}, leftToken={}", tenantId, rateLimits.getAvailableTokens());
                 return false;
             } else {
-                log.info("tryConsume true, leftToken={}", rateLimits.getAvailableTokens());
+                log.info("tryConsume true, tenantId={}, leftToken={}", tenantId, rateLimits.getAvailableTokens());
                 return true;
             }
         }
