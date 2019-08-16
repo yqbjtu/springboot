@@ -1,5 +1,6 @@
 package com.yq.client;
 
+import com.yq.server.MyServerSslContextFactory;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.net.ssl.SSLContext;
@@ -33,7 +34,9 @@ public class MyClientSslContextFactory {
                 //密钥库KeyStore
                 KeyStore trustKeyStore = KeyStore.getInstance("JKS");
                 //加载客户端证书
-                trustInput = new FileInputStream(caPath);
+                String resource = caPath.substring("classpath://".length());
+                trustInput = MyClientSslContextFactory.class.getClassLoader().getResourceAsStream(resource);
+                //trustInput = new FileInputStream(caPath);
                 trustKeyStore.load(trustInput, storepass.toCharArray());
                 tf = TrustManagerFactory.getInstance("SunX509");
                 // 初始化信任库

@@ -36,7 +36,7 @@ public class Server {
                     public void initChannel(SocketChannel ch) throws IOException {
                        // ch.pipeline().addLast(new LoggingHandler(LogLevel.INFO));
                         log.info("current dir:{}", System.getProperty("user.dir"));
-                        String jksPath = (System.getProperty("user.dir")+ "/nettyssl/src/main/resources/certs/yqServer.jks");
+                        String jksPath = "classpath://certs/yqServer.jks";
                         SSLContext sslContext =
                                 MyServerSslContextFactory.getServerContext(jksPath, "sstorepass456", "skeypass123");
                         //设置为服务器模式

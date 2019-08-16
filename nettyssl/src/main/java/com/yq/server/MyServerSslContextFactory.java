@@ -1,5 +1,6 @@
 package com.yq.server;
 
+import com.yq.client.MyClientSslContextFactory;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.net.ssl.KeyManagerFactory;
@@ -33,7 +34,9 @@ public class MyServerSslContextFactory {
                 //密钥库KeyStore
                 KeyStore ks = KeyStore.getInstance("JKS");
                 //加载服务端证书
-                in = new FileInputStream(pkPath);
+                String resource = pkPath.substring("classpath://".length());
+                in = MyServerSslContextFactory.class.getClassLoader().getResourceAsStream(resource);
+                //in = new FileInputStream(pkPath);
                 //加载服务端的KeyStore,  该密钥库的密码"storepass,storepass指定密钥库的密码(获取keystore信息所需的密码)
                 ks.load(in, storepass.toCharArray());
 

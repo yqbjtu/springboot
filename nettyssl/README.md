@@ -24,3 +24,7 @@
  ### 6 将客户端的自签名证书导入到服务端的信任证书仓库中：
 
    keytool -import -trustcacerts -alias myClientSelfAlias -file yqClient.cer -storepass sstorepass456 -keystore yqServer.jks
+   
+   以上所有步骤都完成后，还可以通过命令来查看 keystore 文件基本信息，如图 3 所示
+   
+   keytool -list -keystore sslclienttrust

@@ -7,12 +7,8 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.handler.timeout.IdleState;
 import io.netty.handler.timeout.IdleStateEvent;
-import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 @Slf4j
 @NoArgsConstructor
@@ -23,16 +19,21 @@ public class SslDemoClientSideHandler extends SimpleChannelInboundHandler<String
     public void channelActive(final ChannelHandlerContext ctx) {
         System.out.println("connected");
         log.info("---Connection Created from {}", ctx.channel().remoteAddress());
-        SocketUtils.sendHello(ctx,"Client", false);
+        //SocketUtils.sendHello(ctx,"Client", false);
+
+        String str20 = "012345678901234567890123456789";
+        ctx.writeAndFlush(str20);
     }
 
     @Override
     public void channelRead0(ChannelHandlerContext ctx, String msg) throws Exception {
         // Send the received message to all channels but the current one.
         log.info("ip:{}--- msg:{}", ctx.channel().remoteAddress(), msg);
-        String reply = "Client side currentTime:" + LocalDateTime.now().toString();
-        SocketUtils.sendLineBaseText(ctx, reply);
+        //String reply = "Client side currentTime:" + LocalDateTime.now().toString();
+        //SocketUtils.sendLineBaseText(ctx, reply);
 
+        String str20 = "01234567890123456789";
+        ctx.writeAndFlush(str20);
     }
 
     @Override

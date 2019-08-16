@@ -42,7 +42,8 @@ public class NettyClient {
                         public void initChannel(SocketChannel ch){
 
                             log.info("client current dir:{}", System.getProperty("user.dir"));
-                            String clientPath = (System.getProperty("user.dir")+ "/nettyssl/src/main/resources/certs/yqClient.jks");
+                            //String clientPath = (System.getProperty("user.dir")+ "/nettyssl/src/main/resources/certs/yqClient.jks");
+                            String clientPath = "classpath://certs/yqClient.jks";
                             //客户方模式
                             SSLContext sslContext =
                                     MyClientSslContextFactory.getClientContext(clientPath, "cstorepass654");
