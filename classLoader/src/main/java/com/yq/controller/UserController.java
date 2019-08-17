@@ -28,19 +28,6 @@ import java.util.Map;
 @Slf4j
 public class UserController {
 
-    private Map<String, User> userMap = new HashMap<>();
-    {
-        for(int i=0;i < 5; i++) {
-            User user = new User();
-            user.setId(i + "");
-            user.setMail("qq" + i + "@163.com");
-            user.setName("Tom" + i );
-            user.setRegDate(new Date());
-            userMap.put(i+ "",user );
-        }
-
-    }
-
     @ApiOperation(value = "测试规则, 演示代码，为了快速展示效果没有按照各种规范去写，仅供说明问题")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "userId", value = "userID", defaultValue = "001", required = true, dataType = "string", paramType = "path"),
@@ -72,7 +59,6 @@ public class UserController {
                 break;
             }
         }
-
 
         thread2.setContextClassLoader(ctxThreadClassLoader);
         ClassLoader thread2ClassLoader = thread2.getContextClassLoader();

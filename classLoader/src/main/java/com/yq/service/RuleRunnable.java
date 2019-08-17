@@ -54,15 +54,18 @@ public class RuleRunnable implements Runnable {
         for (Object obj : list) {
             User u2 = new User();
             BeanUtils.copyProperties(obj, u2);
+            ClassLoader userObjLoader = u2.getClass().getClassLoader();
             log.info("obj={}", obj);
             try {
                 ClassLoader classLoader = obj.getClass().getClassLoader();
                 String objClassName = obj.getClass().getCanonicalName();
                 if (obj instanceof User) {
-                    log.info("drools uses loader={}, objClassName={}, threadId={}", classLoader, objClassName, threadId);
+                    log.info("drools uses drools对象的loader={}, 线程user对象的loader={}, drools对象的类名={}, threadId={}",
+                            classLoader, userObjLoader, objClassName, threadId);
                 } else {
                     ClassLoader userClassLoader = User.class.getClassLoader();
-                    log.info("objLoader={}, userLoader={}, objClassName={},threadId={}", classLoader, userClassLoader, objClassName, threadId);
+                    log.info("drools对象的loader={}, 线程user对象的loader={}, 线程User类的Loader={}, drools对象的类名={},threadId={}",
+                            classLoader, userObjLoader, userClassLoader, objClassName, threadId);
                 }
             } catch (Exception ex) {
                 log.debug("not the same class", ex);
