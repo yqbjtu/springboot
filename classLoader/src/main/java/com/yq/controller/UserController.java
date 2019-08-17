@@ -60,7 +60,21 @@ public class UserController {
         thread1.start();
 
         Thread thread2 = new Thread(runnable);
-        thread2.setContextClassLoader(classLoader);
+        ClassLoader strClassLoader = String.class.getClassLoader();
+        ClassLoader ctxThreadClassLoader = Thread.currentThread().getContextClassLoader();
+
+        log.info("strClassLoader={}, ctxThreadClassLoader={}", strClassLoader, ctxThreadClassLoader);
+        while(ctxThreadClassLoader.getParent() != null) {
+            ctxThreadClassLoader = ctxThreadClassLoader.getParent();
+            String name = ctxThreadClassLoader.toString();
+            log.info("...pClassLoader={}", ctxThreadClassLoader);
+            if (name.contains("AppClassLoader")) {
+                break;
+            }
+        }
+
+
+        thread2.setContextClassLoader(ctxThreadClassLoader);
         ClassLoader thread2ClassLoader = thread2.getContextClassLoader();
 
         thread2.start();

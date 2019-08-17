@@ -32,7 +32,8 @@ public class RuleRunnable implements Runnable {
         long threadId = Thread.currentThread().getId();
         userId = (String) dataMap.get("userId");
         long begin = System.currentTimeMillis();
-        log.debug("RuleRunnable start for userId={}, threadId={}", userId, threadId);
+
+        log.debug("start for userId={}, threadId={}", userId, threadId);
 
         DroolsProcessor processor = new DroolsProcessor();
 
@@ -69,7 +70,7 @@ public class RuleRunnable implements Runnable {
         }
 
         long end = System.currentTimeMillis();
-        log.debug("RuleRunnable end for userId={}, cost={}, threadId={}", userId, end - begin, threadId);
+        log.debug("end for userId={}, cost={}, threadId={}", userId, end - begin, threadId);
     }
 
 }

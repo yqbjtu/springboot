@@ -87,9 +87,11 @@ public class DroolsUtils {
         sb.append("Logger logger = LoggerFactory.getLogger(RuleRunnable.class);\n");
         sb.append("logger.info(\"rule userId=\"+ $map.get(\"userId\"));\n");
         sb.append(" ClassLoader innerUserClassLoader = User.class.getClassLoader();\n");
+        sb.append(" ClassLoader innerlistClassLoader = list.getClass().getClassLoader();\n");
         sb.append(" ClassLoader innerThreadClassLoader = Thread.currentThread().getContextClassLoader() ;\n");
         sb.append(" long threadId = Thread.currentThread().getId();\n");
-        sb.append("logger.info(\"rule userLoader={}, threadLoader={}, thread={}\", innerUserClassLoader, innerThreadClassLoader, threadId);\n");
+        sb.append("logger.info(\"rule UserLoader={}, listLoader={}, threadLoader={}, thread={}\", " +
+                "innerUserClassLoader, innerlistClassLoader, innerThreadClassLoader, threadId);\n");
 
         sb.append("User user = new User();").append("\n");
         sb.append("user.setId($map.get(\"userId\")+\"\");").append("\n");

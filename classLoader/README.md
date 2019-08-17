@@ -1,6 +1,6 @@
 #
-
-http://127.0.0.1:8080/swagger-ui.html
+启动后访问
+http://127.0.0.1:8080/swagger-ui.html，  点击swagger中API
 
 
 # 使用devtools之前的日志
