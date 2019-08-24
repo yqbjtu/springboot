@@ -41,7 +41,6 @@ public class MyContextServiceImpl implements MyContextService {
 
     Map<String, ActorRef> classActorRefMap = new HashMap<>();
 
-
     boolean isInitialized = false;
 
     public MyContextServiceImpl() {

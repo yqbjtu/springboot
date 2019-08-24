@@ -33,8 +33,9 @@ public class DataSourceConfig {
 		//采用是想AbstractRoutingDataSource的对象包装多数据源
 		DynamicDataSource dataSource = new DynamicDataSource();
 		dataSource.setTargetDataSources(targetDataSources);
-		//设置默认的数据源，当拿不到数据源时，使用此配置
+		//设置默认的数据源，当拿不到数据源时，使用此配置默认
 		dataSource.setDefaultTargetDataSource(properties.getTest1());
+
 		return dataSource;
 	}
 

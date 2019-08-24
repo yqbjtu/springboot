@@ -77,6 +77,29 @@
 </dependencies>
 
 <build>
+    <resources>
+        <!-- 先指定 src/main/resources下所有文件及文件夹为资源文件 -->
+        <resource>
+            <directory>src/main/resources</directory>
+            <includes>
+                <include>**/*</include>
+            </includes>
+        </resource>
+        <!-- 过滤指定文件 jks不能过滤-->
+        <resource>
+            <directory>src/main/resources</directory>
+            <excludes>
+                <exclude>certs/*</exclude>
+            </excludes>
+            <filtering>true</filtering>
+        </resource>
+        <resource>
+            <!-- 指定打包时，需要特殊处理的文件 -->
+            <directory>src/main/docker</directory>
+            <!-- 处理文件时，需要对文件进行变量替换 -->
+            <filtering>true</filtering>
+        </resource>
+    </resources>
     <extensions>
         <extension>
             <groupId>kr.motd.maven</groupId>

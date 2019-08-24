@@ -33,29 +33,29 @@ trace
     
     
     info1.txt 内容为  
-    2018-11-10 13:44:21,199 ERROR [DESKTOP-8S2E5H7 http-nio-9090-exec-2] Caller+0	 at com.yq.controller.UserController.getUser(UserController.java:37)
+    2018-11-10 13:44:21,199 ERROR [DESKTOP-8S2E5H7 http-nio-9090-exec-2] Caller+0	 at com.yq.controller.OpsController.getUser(UserController.java:37)
     error rest get user=User(id=2, name=Tom2, mail=qq2@163.com, regDate=Sat Nov 10 13:44:12 CST 2018) by id=2
-    2018-11-10 13:44:21,200 WARN  [DESKTOP-8S2E5H7 http-nio-9090-exec-2] Caller+0	 at com.yq.controller.UserController.getUser(UserController.java:38)
+    2018-11-10 13:44:21,200 WARN  [DESKTOP-8S2E5H7 http-nio-9090-exec-2] Caller+0	 at com.yq.controller.OpsController.getUser(UserController.java:38)
     warn rest get user=User(id=2, name=Tom2, mail=qq2@163.com, regDate=Sat Nov 10 13:44:12 CST 2018) by id=2
-    2018-11-10 13:44:21,200 INFO  [DESKTOP-8S2E5H7 http-nio-9090-exec-2] Caller+0	 at com.yq.controller.UserController.getUser(UserController.java:39)
+    2018-11-10 13:44:21,200 INFO  [DESKTOP-8S2E5H7 http-nio-9090-exec-2] Caller+0	 at com.yq.controller.OpsController.getUser(UserController.java:39)
     info rest get user=User(id=2, name=Tom2, mail=qq2@163.com, regDate=Sat Nov 10 13:44:12 CST 2018) by id=2
 
 
 
     error1.txt内容为  
-    2018-11-10 13:44:21,199 ERROR [DESKTOP-8S2E5H7 http-nio-9090-exec-2] Caller+0	 at com.yq.controller.UserController.getUser(UserController.java:37)
+    2018-11-10 13:44:21,199 ERROR [DESKTOP-8S2E5H7 http-nio-9090-exec-2] Caller+0	 at com.yq.controller.OpsController.getUser(UserController.java:37)
 error rest get user=User(id=2, name=Tom2, mail=qq2@163.com, regDate=Sat Nov 10 13:44:12 CST 2018) by id=2
     
     console内容为  
     2018-11-10 13:44:21,199 INFO  [DESKTOP-8S2E5H7 http-nio-9090-exec-2] Caller+0	 at com.yq.service.impl.UserServiceImpl.getById(UserServiceImpl.java:40)
     find user=2 by id=User(id=2, name=Tom2, mail=qq2@163.com, regDate=Sat Nov 10 13:44:12 CST 2018)
-    2018-11-10 13:44:21,199 ERROR [DESKTOP-8S2E5H7 http-nio-9090-exec-2] Caller+0	 at com.yq.controller.UserController.getUser(UserController.java:37)
+    2018-11-10 13:44:21,199 ERROR [DESKTOP-8S2E5H7 http-nio-9090-exec-2] Caller+0	 at com.yq.controller.OpsController.getUser(UserController.java:37)
     error rest get user=User(id=2, name=Tom2, mail=qq2@163.com, regDate=Sat Nov 10 13:44:12 CST 2018) by id=2
-    2018-11-10 13:44:21,200 WARN  [DESKTOP-8S2E5H7 http-nio-9090-exec-2] Caller+0	 at com.yq.controller.UserController.getUser(UserController.java:38)
+    2018-11-10 13:44:21,200 WARN  [DESKTOP-8S2E5H7 http-nio-9090-exec-2] Caller+0	 at com.yq.controller.OpsController.getUser(UserController.java:38)
     warn rest get user=User(id=2, name=Tom2, mail=qq2@163.com, regDate=Sat Nov 10 13:44:12 CST 2018) by id=2
-    2018-11-10 13:44:21,200 INFO  [DESKTOP-8S2E5H7 http-nio-9090-exec-2] Caller+0	 at com.yq.controller.UserController.getUser(UserController.java:39)
+    2018-11-10 13:44:21,200 INFO  [DESKTOP-8S2E5H7 http-nio-9090-exec-2] Caller+0	 at com.yq.controller.OpsController.getUser(UserController.java:39)
     info rest get user=User(id=2, name=Tom2, mail=qq2@163.com, regDate=Sat Nov 10 13:44:12 CST 2018) by id=2
-    2018-11-10 13:44:21,209 DEBUG [DESKTOP-8S2E5H7 http-nio-9090-exec-2] Caller+0	 at com.yq.controller.UserController.getUser(UserController.java:40)
+    2018-11-10 13:44:21,209 DEBUG [DESKTOP-8S2E5H7 http-nio-9090-exec-2] Caller+0	 at com.yq.controller.OpsController.getUser(UserController.java:40)
     debug rest get user=User(id=2, name=Tom2, mail=qq2@163.com, regDate=Sat Nov 10 13:44:12 CST 2018) by id=2
     
 
@@ -81,18 +81,18 @@ error rest get user=User(id=2, name=Tom2, mail=qq2@163.com, regDate=Sat Nov 10 1
         
         
 info1.txt内容为
-2018-11-10 13:40:11,047 ERROR [DESKTOP-8S2E5H7 http-nio-9090-exec-1] Caller+0	 at com.yq.controller.UserController.getUser(UserController.java:37)
+2018-11-10 13:40:11,047 ERROR [DESKTOP-8S2E5H7 http-nio-9090-exec-1] Caller+0	 at com.yq.controller.OpsController.getUser(UserController.java:37)
 error rest get user=User(id=2, name=Tom2, mail=qq2@163.com, regDate=Sat Nov 10 13:39:58 CST 2018) by id=2
 
 
 error1.txt内容为  
-2018-11-10 13:40:11,047 ERROR [DESKTOP-8S2E5H7 http-nio-9090-exec-1] Caller+0	 at com.yq.controller.UserController.getUser(UserController.java:37)
+2018-11-10 13:40:11,047 ERROR [DESKTOP-8S2E5H7 http-nio-9090-exec-1] Caller+0	 at com.yq.controller.OpsController.getUser(UserController.java:37)
 error rest get user=User(id=2, name=Tom2, mail=qq2@163.com, regDate=Sat Nov 10 13:39:58 CST 2018) by id=2
 
 console内容为    
 2018-11-10 13:40:11,047 INFO  [DESKTOP-8S2E5H7 http-nio-9090-exec-1] Caller+0	 at com.yq.service.impl.UserServiceImpl.getById(UserServiceImpl.java:40)
 find user=2 by id=User(id=2, name=Tom2, mail=qq2@163.com, regDate=Sat Nov 10 13:39:58 CST 2018)
-2018-11-10 13:40:11,047 ERROR [DESKTOP-8S2E5H7 http-nio-9090-exec-1] Caller+0	 at com.yq.controller.UserController.getUser(UserController.java:37)
+2018-11-10 13:40:11,047 ERROR [DESKTOP-8S2E5H7 http-nio-9090-exec-1] Caller+0	 at com.yq.controller.OpsController.getUser(UserController.java:37)
 error rest get user=User(id=2, name=Tom2, mail=qq2@163.com, regDate=Sat Nov 10 13:39:58 CST 2018) by id=2
 
 
@@ -117,22 +117,22 @@ error rest get user=User(id=2, name=Tom2, mail=qq2@163.com, regDate=Sat Nov 10 1
         
         
 info1.txt内容为
-2018-11-10 13:48:52,512 ERROR [DESKTOP-8S2E5H7 http-nio-9090-exec-1] Caller+0	 at com.yq.controller.UserController.getUser(UserController.java:37)
+2018-11-10 13:48:52,512 ERROR [DESKTOP-8S2E5H7 http-nio-9090-exec-1] Caller+0	 at com.yq.controller.OpsController.getUser(UserController.java:37)
 error rest get user=User(id=2, name=Tom2, mail=qq2@163.com, regDate=Sat Nov 10 13:48:45 CST 2018) by id=2
-2018-11-10 13:48:52,513 WARN  [DESKTOP-8S2E5H7 http-nio-9090-exec-1] Caller+0	 at com.yq.controller.UserController.getUser(UserController.java:38)
+2018-11-10 13:48:52,513 WARN  [DESKTOP-8S2E5H7 http-nio-9090-exec-1] Caller+0	 at com.yq.controller.OpsController.getUser(UserController.java:38)
 warn rest get user=User(id=2, name=Tom2, mail=qq2@163.com, regDate=Sat Nov 10 13:48:45 CST 2018) by id=2
 
 
 error1.txt内容为  
-2018-11-10 13:48:52,512 ERROR [DESKTOP-8S2E5H7 http-nio-9090-exec-1] Caller+0	 at com.yq.controller.UserController.getUser(UserController.java:37)
+2018-11-10 13:48:52,512 ERROR [DESKTOP-8S2E5H7 http-nio-9090-exec-1] Caller+0	 at com.yq.controller.OpsController.getUser(UserController.java:37)
 error rest get user=User(id=2, name=Tom2, mail=qq2@163.com, regDate=Sat Nov 10 13:48:45 CST 2018) by id=2
 
 console内容为    
 2018-11-10 13:48:52,512 INFO  [DESKTOP-8S2E5H7 http-nio-9090-exec-1] Caller+0	 at com.yq.service.impl.UserServiceImpl.getById(UserServiceImpl.java:40)
 find user=2 by id=User(id=2, name=Tom2, mail=qq2@163.com, regDate=Sat Nov 10 13:48:45 CST 2018)
-2018-11-10 13:48:52,512 ERROR [DESKTOP-8S2E5H7 http-nio-9090-exec-1] Caller+0	 at com.yq.controller.UserController.getUser(UserController.java:37)
+2018-11-10 13:48:52,512 ERROR [DESKTOP-8S2E5H7 http-nio-9090-exec-1] Caller+0	 at com.yq.controller.OpsController.getUser(UserController.java:37)
 error rest get user=User(id=2, name=Tom2, mail=qq2@163.com, regDate=Sat Nov 10 13:48:45 CST 2018) by id=2
-2018-11-10 13:48:52,513 WARN  [DESKTOP-8S2E5H7 http-nio-9090-exec-1] Caller+0	 at com.yq.controller.UserController.getUser(UserController.java:38)
+2018-11-10 13:48:52,513 WARN  [DESKTOP-8S2E5H7 http-nio-9090-exec-1] Caller+0	 at com.yq.controller.OpsController.getUser(UserController.java:38)
 warn rest get user=User(id=2, name=Tom2, mail=qq2@163.com, regDate=Sat Nov 10 13:48:45 CST 2018) by id=2
 
 
@@ -175,13 +175,13 @@ warn rest get user=User(id=2, name=Tom2, mail=qq2@163.com, regDate=Sat Nov 10 13
     console没有记录com.yq.controller包下面error、warn、info、debug 四个级别的日志
     
 info1.txt内容为
-2018-11-10 14:49:18,900 ERROR [DESKTOP-8S2E5H7 http-nio-9090-exec-1] Caller+0	 at com.yq.controller.UserController.getUser(UserController.java:37)
+2018-11-10 14:49:18,900 ERROR [DESKTOP-8S2E5H7 http-nio-9090-exec-1] Caller+0	 at com.yq.controller.OpsController.getUser(UserController.java:37)
 error rest get user=User(id=2, name=Tom2, mail=qq2@163.com, regDate=Sat Nov 10 14:49:12 CST 2018) by id=2
-2018-11-10 14:49:18,900 WARN  [DESKTOP-8S2E5H7 http-nio-9090-exec-1] Caller+0	 at com.yq.controller.UserController.getUser(UserController.java:38)
+2018-11-10 14:49:18,900 WARN  [DESKTOP-8S2E5H7 http-nio-9090-exec-1] Caller+0	 at com.yq.controller.OpsController.getUser(UserController.java:38)
 warn rest get user=User(id=2, name=Tom2, mail=qq2@163.com, regDate=Sat Nov 10 14:49:12 CST 2018) by id=2
-2018-11-10 14:49:18,900 INFO  [DESKTOP-8S2E5H7 http-nio-9090-exec-1] Caller+0	 at com.yq.controller.UserController.getUser(UserController.java:39)
+2018-11-10 14:49:18,900 INFO  [DESKTOP-8S2E5H7 http-nio-9090-exec-1] Caller+0	 at com.yq.controller.OpsController.getUser(UserController.java:39)
 info rest get user=User(id=2, name=Tom2, mail=qq2@163.com, regDate=Sat Nov 10 14:49:12 CST 2018) by id=2
-2018-11-10 14:49:18,909 DEBUG [DESKTOP-8S2E5H7 http-nio-9090-exec-1] Caller+0	 at com.yq.controller.UserController.getUser(UserController.java:40)
+2018-11-10 14:49:18,909 DEBUG [DESKTOP-8S2E5H7 http-nio-9090-exec-1] Caller+0	 at com.yq.controller.OpsController.getUser(UserController.java:40)
 debug rest get user=User(id=2, name=Tom2, mail=qq2@163.com, regDate=Sat Nov 10 14:49:12 CST 2018) by id=2
 
 
@@ -235,7 +235,7 @@ Did not find handler method for [/user/users/2]
 2018-11-10 15:00:27,430 DEBUG [DESKTOP-8S2E5H7 http-nio-9090-exec-1] Caller+0	 at org.springframework.web.servlet.handler.AbstractHandlerMethodMapping.getHandlerInternal(AbstractHandlerMethodMapping.java:310)
 Looking up handler method for path /user/users/2
 2018-11-10 15:00:27,435 DEBUG [DESKTOP-8S2E5H7 http-nio-9090-exec-1] Caller+0	 at org.springframework.web.servlet.handler.AbstractHandlerMethodMapping.getHandlerInternal(AbstractHandlerMethodMapping.java:317)
-Returning handler method [public com.yq.domain.User com.yq.controller.UserController.getUser(java.lang.String)]
+Returning handler method [public com.yq.domain.User com.yq.controller.OpsController.getUser(java.lang.String)]
 2018-11-10 15:00:27,436 DEBUG [DESKTOP-8S2E5H7 http-nio-9090-exec-1] Caller+0	 at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:251)
 Returning cached instance of singleton bean 'userController'
 2018-11-10 15:00:27,438 DEBUG [DESKTOP-8S2E5H7 http-nio-9090-exec-1] Caller+0	 at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:955)
@@ -250,13 +250,13 @@ warn find user=2 by id=User(id=2, name=Tom2, mail=qq2@163.com, regDate=Sat Nov 1
 info find user=2 by id=User(id=2, name=Tom2, mail=qq2@163.com, regDate=Sat Nov 10 15:00:20 CST 2018)
 2018-11-10 15:00:27,455 DEBUG [DESKTOP-8S2E5H7 http-nio-9090-exec-1] Caller+0	 at com.yq.service.impl.UserServiceImpl.getById(UserServiceImpl.java:43)
 debug find user=2 by id=User(id=2, name=Tom2, mail=qq2@163.com, regDate=Sat Nov 10 15:00:20 CST 2018)
-2018-11-10 15:00:27,456 ERROR [DESKTOP-8S2E5H7 http-nio-9090-exec-1] Caller+0	 at com.yq.controller.UserController.getUser(UserController.java:37)
+2018-11-10 15:00:27,456 ERROR [DESKTOP-8S2E5H7 http-nio-9090-exec-1] Caller+0	 at com.yq.controller.OpsController.getUser(UserController.java:37)
 error rest get user=User(id=2, name=Tom2, mail=qq2@163.com, regDate=Sat Nov 10 15:00:20 CST 2018) by id=2
-2018-11-10 15:00:27,456 WARN  [DESKTOP-8S2E5H7 http-nio-9090-exec-1] Caller+0	 at com.yq.controller.UserController.getUser(UserController.java:38)
+2018-11-10 15:00:27,456 WARN  [DESKTOP-8S2E5H7 http-nio-9090-exec-1] Caller+0	 at com.yq.controller.OpsController.getUser(UserController.java:38)
 warn rest get user=User(id=2, name=Tom2, mail=qq2@163.com, regDate=Sat Nov 10 15:00:20 CST 2018) by id=2
-2018-11-10 15:00:27,456 INFO  [DESKTOP-8S2E5H7 http-nio-9090-exec-1] Caller+0	 at com.yq.controller.UserController.getUser(UserController.java:39)
+2018-11-10 15:00:27,456 INFO  [DESKTOP-8S2E5H7 http-nio-9090-exec-1] Caller+0	 at com.yq.controller.OpsController.getUser(UserController.java:39)
 info rest get user=User(id=2, name=Tom2, mail=qq2@163.com, regDate=Sat Nov 10 15:00:20 CST 2018) by id=2
-2018-11-10 15:00:27,456 DEBUG [DESKTOP-8S2E5H7 http-nio-9090-exec-1] Caller+0	 at com.yq.controller.UserController.getUser(UserController.java:40)
+2018-11-10 15:00:27,456 DEBUG [DESKTOP-8S2E5H7 http-nio-9090-exec-1] Caller+0	 at com.yq.controller.OpsController.getUser(UserController.java:40)
 debug rest get user=User(id=2, name=Tom2, mail=qq2@163.com, regDate=Sat Nov 10 15:00:20 CST 2018) by id=2
 2018-11-10 15:00:27,494 DEBUG [DESKTOP-8S2E5H7 http-nio-9090-exec-1] Caller+0	 at org.springframework.web.servlet.mvc.method.annotation.AbstractMessageConverterMethodProcessor.writeWithMessageConverters(AbstractMessageConverterMethodProcessor.java:234)
 Written [User(id=2, name=Tom2, mail=qq2@163.com, regDate=Sat Nov 10 15:00:20 CST 2018)] as "application/json;charset=UTF-8" using [org.springframework.http.converter.json.MappingJackson2HttpMessageConverter@2bdeda33]
@@ -324,7 +324,7 @@ Did not find handler method for [/user/users/2]
 2018-11-10 14:54:42,080 DEBUG [DESKTOP-8S2E5H7 http-nio-9090-exec-1] Caller+0	 at org.springframework.web.servlet.handler.AbstractHandlerMethodMapping.getHandlerInternal(AbstractHandlerMethodMapping.java:310)
 Looking up handler method for path /user/users/2
 2018-11-10 14:54:42,084 DEBUG [DESKTOP-8S2E5H7 http-nio-9090-exec-1] Caller+0	 at org.springframework.web.servlet.handler.AbstractHandlerMethodMapping.getHandlerInternal(AbstractHandlerMethodMapping.java:317)
-Returning handler method [public com.yq.domain.User com.yq.controller.UserController.getUser(java.lang.String)]
+Returning handler method [public com.yq.domain.User com.yq.controller.OpsController.getUser(java.lang.String)]
 2018-11-10 14:54:42,084 DEBUG [DESKTOP-8S2E5H7 http-nio-9090-exec-1] Caller+0	 at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:251)
 Returning cached instance of singleton bean 'userController'
 2018-11-10 14:54:42,086 DEBUG [DESKTOP-8S2E5H7 http-nio-9090-exec-1] Caller+0	 at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:955)
@@ -333,13 +333,13 @@ Last-Modified value for [/user/users/2] is: -1
 Skip CORS processing: request is from same origin
 2018-11-10 14:54:42,103 INFO  [DESKTOP-8S2E5H7 http-nio-9090-exec-1] Caller+0	 at com.yq.service.impl.UserServiceImpl.getById(UserServiceImpl.java:40)
 find user=2 by id=User(id=2, name=Tom2, mail=qq2@163.com, regDate=Sat Nov 10 14:54:31 CST 2018)
-2018-11-10 14:54:42,104 ERROR [DESKTOP-8S2E5H7 http-nio-9090-exec-1] Caller+0	 at com.yq.controller.UserController.getUser(UserController.java:37)
+2018-11-10 14:54:42,104 ERROR [DESKTOP-8S2E5H7 http-nio-9090-exec-1] Caller+0	 at com.yq.controller.OpsController.getUser(UserController.java:37)
 error rest get user=User(id=2, name=Tom2, mail=qq2@163.com, regDate=Sat Nov 10 14:54:31 CST 2018) by id=2
-2018-11-10 14:54:42,104 WARN  [DESKTOP-8S2E5H7 http-nio-9090-exec-1] Caller+0	 at com.yq.controller.UserController.getUser(UserController.java:38)
+2018-11-10 14:54:42,104 WARN  [DESKTOP-8S2E5H7 http-nio-9090-exec-1] Caller+0	 at com.yq.controller.OpsController.getUser(UserController.java:38)
 warn rest get user=User(id=2, name=Tom2, mail=qq2@163.com, regDate=Sat Nov 10 14:54:31 CST 2018) by id=2
-2018-11-10 14:54:42,104 INFO  [DESKTOP-8S2E5H7 http-nio-9090-exec-1] Caller+0	 at com.yq.controller.UserController.getUser(UserController.java:39)
+2018-11-10 14:54:42,104 INFO  [DESKTOP-8S2E5H7 http-nio-9090-exec-1] Caller+0	 at com.yq.controller.OpsController.getUser(UserController.java:39)
 info rest get user=User(id=2, name=Tom2, mail=qq2@163.com, regDate=Sat Nov 10 14:54:31 CST 2018) by id=2
-2018-11-10 14:54:42,105 DEBUG [DESKTOP-8S2E5H7 http-nio-9090-exec-1] Caller+0	 at com.yq.controller.UserController.getUser(UserController.java:40)
+2018-11-10 14:54:42,105 DEBUG [DESKTOP-8S2E5H7 http-nio-9090-exec-1] Caller+0	 at com.yq.controller.OpsController.getUser(UserController.java:40)
 debug rest get user=User(id=2, name=Tom2, mail=qq2@163.com, regDate=Sat Nov 10 14:54:31 CST 2018) by id=2
 2018-11-10 14:54:42,140 DEBUG [DESKTOP-8S2E5H7 http-nio-9090-exec-1] Caller+0	 at org.springframework.web.servlet.mvc.method.annotation.AbstractMessageConverterMethodProcessor.writeWithMessageConverters(AbstractMessageConverterMethodProcessor.java:234)
 Written [User(id=2, name=Tom2, mail=qq2@163.com, regDate=Sat Nov 10 14:54:31 CST 2018)] as "application/json;charset=UTF-8" using [org.springframework.http.converter.json.MappingJackson2HttpMessageConverter@21da8b58]
@@ -393,7 +393,7 @@ debug LogbackApplication Start done.
 。。。
 
 2018-11-10 15:14:28,198 DEBUG [DESKTOP-8S2E5H7 http-nio-9090-exec-1] Caller+0	 at org.springframework.web.servlet.handler.AbstractHandlerMethodMapping.getHandlerInternal(AbstractHandlerMethodMapping.java:317)
-Returning handler method [public com.yq.domain.User com.yq.controller.UserController.getUser(java.lang.String)]
+Returning handler method [public com.yq.domain.User com.yq.controller.OpsController.getUser(java.lang.String)]
 2018-11-10 15:14:28,199 DEBUG [DESKTOP-8S2E5H7 http-nio-9090-exec-1] Caller+0	 at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:251)
 Returning cached instance of singleton bean 'userController'
 2018-11-10 15:14:28,199 DEBUG [DESKTOP-8S2E5H7 http-nio-9090-exec-1] Caller+0	 at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:955)
@@ -406,15 +406,15 @@ error find user=2 by id=User(id=2, name=Tom2, mail=qq2@163.com, regDate=Sat Nov 
 warn find user=2 by id=User(id=2, name=Tom2, mail=qq2@163.com, regDate=Sat Nov 10 15:14:12 CST 2018)
 2018-11-10 15:14:28,215 INFO  [DESKTOP-8S2E5H7 http-nio-9090-exec-1] Caller+0	 at com.yq.service.impl.UserServiceImpl.getById(UserServiceImpl.java:42)
 info find user=2 by id=User(id=2, name=Tom2, mail=qq2@163.com, regDate=Sat Nov 10 15:14:12 CST 2018)
-2018-11-10 15:14:28,215 ERROR [DESKTOP-8S2E5H7 http-nio-9090-exec-1] Caller+0	 at com.yq.controller.UserController.getUser(UserController.java:37)
+2018-11-10 15:14:28,215 ERROR [DESKTOP-8S2E5H7 http-nio-9090-exec-1] Caller+0	 at com.yq.controller.OpsController.getUser(UserController.java:37)
 error rest get user=User(id=2, name=Tom2, mail=qq2@163.com, regDate=Sat Nov 10 15:14:12 CST 2018) by id=2
-2018-11-10 15:14:28,215 WARN  [DESKTOP-8S2E5H7 http-nio-9090-exec-1] Caller+0	 at com.yq.controller.UserController.getUser(UserController.java:38)
+2018-11-10 15:14:28,215 WARN  [DESKTOP-8S2E5H7 http-nio-9090-exec-1] Caller+0	 at com.yq.controller.OpsController.getUser(UserController.java:38)
 warn rest get user=User(id=2, name=Tom2, mail=qq2@163.com, regDate=Sat Nov 10 15:14:12 CST 2018) by id=2
-2018-11-10 15:14:28,216 INFO  [DESKTOP-8S2E5H7 http-nio-9090-exec-1] Caller+0	 at com.yq.controller.UserController.getUser(UserController.java:39)
+2018-11-10 15:14:28,216 INFO  [DESKTOP-8S2E5H7 http-nio-9090-exec-1] Caller+0	 at com.yq.controller.OpsController.getUser(UserController.java:39)
 info rest get user=User(id=2, name=Tom2, mail=qq2@163.com, regDate=Sat Nov 10 15:14:12 CST 2018) by id=2
-2018-11-10 15:14:28,216 DEBUG [DESKTOP-8S2E5H7 http-nio-9090-exec-1] Caller+0	 at com.yq.controller.UserController.getUser(UserController.java:40)
+2018-11-10 15:14:28,216 DEBUG [DESKTOP-8S2E5H7 http-nio-9090-exec-1] Caller+0	 at com.yq.controller.OpsController.getUser(UserController.java:40)
 debug rest get user=User(id=2, name=Tom2, mail=qq2@163.com, regDate=Sat Nov 10 15:14:12 CST 2018) by id=2
-2018-11-10 15:14:28,216 TRACE [DESKTOP-8S2E5H7 http-nio-9090-exec-1] Caller+0	 at com.yq.controller.UserController.getUser(UserController.java:41)
+2018-11-10 15:14:28,216 TRACE [DESKTOP-8S2E5H7 http-nio-9090-exec-1] Caller+0	 at com.yq.controller.OpsController.getUser(UserController.java:41)
 trace rest get user=User(id=2, name=Tom2, mail=qq2@163.com, regDate=Sat Nov 10 15:14:12 CST 2018) by id=2
 
 error1.txt内容为  
@@ -477,15 +477,15 @@ error find user=2 by id=User(id=2, name=Tom2, mail=qq2@163.com, regDate=Sat Nov 
 warn find user=2 by id=User(id=2, name=Tom2, mail=qq2@163.com, regDate=Sat Nov 10 15:09:21 CST 2018)
 2018-11-10 15:09:27,863 INFO  [DESKTOP-8S2E5H7 http-nio-9090-exec-1] Caller+0	 at com.yq.service.impl.UserServiceImpl.getById(UserServiceImpl.java:42)
 info find user=2 by id=User(id=2, name=Tom2, mail=qq2@163.com, regDate=Sat Nov 10 15:09:21 CST 2018)
-2018-11-10 15:09:27,863 ERROR [DESKTOP-8S2E5H7 http-nio-9090-exec-1] Caller+0	 at com.yq.controller.UserController.getUser(UserController.java:37)
+2018-11-10 15:09:27,863 ERROR [DESKTOP-8S2E5H7 http-nio-9090-exec-1] Caller+0	 at com.yq.controller.OpsController.getUser(UserController.java:37)
 error rest get user=User(id=2, name=Tom2, mail=qq2@163.com, regDate=Sat Nov 10 15:09:21 CST 2018) by id=2
-2018-11-10 15:09:27,863 WARN  [DESKTOP-8S2E5H7 http-nio-9090-exec-1] Caller+0	 at com.yq.controller.UserController.getUser(UserController.java:38)
+2018-11-10 15:09:27,863 WARN  [DESKTOP-8S2E5H7 http-nio-9090-exec-1] Caller+0	 at com.yq.controller.OpsController.getUser(UserController.java:38)
 warn rest get user=User(id=2, name=Tom2, mail=qq2@163.com, regDate=Sat Nov 10 15:09:21 CST 2018) by id=2
-2018-11-10 15:09:27,864 INFO  [DESKTOP-8S2E5H7 http-nio-9090-exec-1] Caller+0	 at com.yq.controller.UserController.getUser(UserController.java:39)
+2018-11-10 15:09:27,864 INFO  [DESKTOP-8S2E5H7 http-nio-9090-exec-1] Caller+0	 at com.yq.controller.OpsController.getUser(UserController.java:39)
 info rest get user=User(id=2, name=Tom2, mail=qq2@163.com, regDate=Sat Nov 10 15:09:21 CST 2018) by id=2
-2018-11-10 15:09:27,864 DEBUG [DESKTOP-8S2E5H7 http-nio-9090-exec-1] Caller+0	 at com.yq.controller.UserController.getUser(UserController.java:40)
+2018-11-10 15:09:27,864 DEBUG [DESKTOP-8S2E5H7 http-nio-9090-exec-1] Caller+0	 at com.yq.controller.OpsController.getUser(UserController.java:40)
 debug rest get user=User(id=2, name=Tom2, mail=qq2@163.com, regDate=Sat Nov 10 15:09:21 CST 2018) by id=2
-2018-11-10 15:09:27,864 TRACE [DESKTOP-8S2E5H7 http-nio-9090-exec-1] Caller+0	 at com.yq.controller.UserController.getUser(UserController.java:41)
+2018-11-10 15:09:27,864 TRACE [DESKTOP-8S2E5H7 http-nio-9090-exec-1] Caller+0	 at com.yq.controller.OpsController.getUser(UserController.java:41)
 trace rest get user=User(id=2, name=Tom2, mail=qq2@163.com, regDate=Sat Nov 10 15:09:21 CST 2018) by id=2
 2018-11-10 15:09:27,900 DEBUG [DESKTOP-8S2E5H7 http-nio-9090-exec-1] Caller+0	 at org.springframework.web.servlet.mvc.method.annotation.AbstractMessageConverterMethodProcessor.writeWithMessageConverters(AbstractMessageConverterMethodProcessor.java:234)
 Written [User(id=2, name=Tom2, mail=qq2@163.com, regDate=Sat Nov 10 15:09:21 CST 2018)] as "application/json;charset=UTF-8" using [org.springframework.http.converter.json.MappingJackson2HttpMessageConverter@4d98dac5]
@@ -556,15 +556,15 @@ error find user=2 by id=User(id=2, name=Tom2, mail=qq2@163.com, regDate=Sat Nov 
 warn find user=2 by id=User(id=2, name=Tom2, mail=qq2@163.com, regDate=Sat Nov 10 15:23:18 CST 2018)
 2018-11-10 15:23:26,830 INFO  [DESKTOP-8S2E5H7 http-nio-9090-exec-1] Caller+0	 at com.yq.service.impl.UserServiceImpl.getById(UserServiceImpl.java:42)
 info find user=2 by id=User(id=2, name=Tom2, mail=qq2@163.com, regDate=Sat Nov 10 15:23:18 CST 2018)
-2018-11-10 15:23:26,830 ERROR [DESKTOP-8S2E5H7 http-nio-9090-exec-1] Caller+0	 at com.yq.controller.UserController.getUser(UserController.java:37)
+2018-11-10 15:23:26,830 ERROR [DESKTOP-8S2E5H7 http-nio-9090-exec-1] Caller+0	 at com.yq.controller.OpsController.getUser(UserController.java:37)
 error rest get user=User(id=2, name=Tom2, mail=qq2@163.com, regDate=Sat Nov 10 15:23:18 CST 2018) by id=2
-2018-11-10 15:23:26,830 WARN  [DESKTOP-8S2E5H7 http-nio-9090-exec-1] Caller+0	 at com.yq.controller.UserController.getUser(UserController.java:38)
+2018-11-10 15:23:26,830 WARN  [DESKTOP-8S2E5H7 http-nio-9090-exec-1] Caller+0	 at com.yq.controller.OpsController.getUser(UserController.java:38)
 warn rest get user=User(id=2, name=Tom2, mail=qq2@163.com, regDate=Sat Nov 10 15:23:18 CST 2018) by id=2
-2018-11-10 15:23:26,830 INFO  [DESKTOP-8S2E5H7 http-nio-9090-exec-1] Caller+0	 at com.yq.controller.UserController.getUser(UserController.java:39)
+2018-11-10 15:23:26,830 INFO  [DESKTOP-8S2E5H7 http-nio-9090-exec-1] Caller+0	 at com.yq.controller.OpsController.getUser(UserController.java:39)
 info rest get user=User(id=2, name=Tom2, mail=qq2@163.com, regDate=Sat Nov 10 15:23:18 CST 2018) by id=2
-2018-11-10 15:23:26,830 DEBUG [DESKTOP-8S2E5H7 http-nio-9090-exec-1] Caller+0	 at com.yq.controller.UserController.getUser(UserController.java:40)
+2018-11-10 15:23:26,830 DEBUG [DESKTOP-8S2E5H7 http-nio-9090-exec-1] Caller+0	 at com.yq.controller.OpsController.getUser(UserController.java:40)
 debug rest get user=User(id=2, name=Tom2, mail=qq2@163.com, regDate=Sat Nov 10 15:23:18 CST 2018) by id=2
-2018-11-10 15:23:26,830 TRACE [DESKTOP-8S2E5H7 http-nio-9090-exec-1] Caller+0	 at com.yq.controller.UserController.getUser(UserController.java:41)
+2018-11-10 15:23:26,830 TRACE [DESKTOP-8S2E5H7 http-nio-9090-exec-1] Caller+0	 at com.yq.controller.OpsController.getUser(UserController.java:41)
 trace rest get user=User(id=2, name=Tom2, mail=qq2@163.com, regDate=Sat Nov 10 15:23:18 CST 2018) by id=2  
 
 error1.txt内容为  

@@ -41,6 +41,8 @@ import java.util.Map;
 public class Cluster2 {
     private static final String ACTOR_SYSTEM_NAME = "ClusterDemo";
     private static final String AKKA_CONF_FILE_NAME = "akka-system11112";
+    private static final String MGNT_HOSTNAME = "akka.management.http.hostname";
+    private static final String MGNT_PORT = "akka.management.http.port";
     public static void main(String[] args) {
         Map<String, Object> configMap = new HashMap<>();
         configMap.put(ClusterConstants.NETTY_PORT, 3001);
@@ -48,6 +50,9 @@ public class Cluster2 {
         Config config = ConfigFactory.parseResources(AKKA_CONF_FILE_NAME)
                 .withFallback(ConfigFactory.parseMap(configMap))
                 .withFallback(ConfigFactory.parseString("akka.cluster.roles=[rule1]"))
+                .withFallback(ConfigFactory.parseString(MGNT_HOSTNAME+"=\"127.0.0.1\""))
+                .withFallback(ConfigFactory.parseString(ClusterConstants.NETTY_HOSTNAME+"=\"127.0.0.1\""))
+
                 .withFallback(ConfigFactory.load());
 
         // Create an Akka system

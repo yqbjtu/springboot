@@ -1,6 +1,6 @@
 
 # 日志分析
-[INFO] [02/25/2019 15:27:31.342] [ClusterSystem-akka.actor.default-dispatcher-3] [akka://ClusterSystem/user/workerActor] Member is Up: Member(address = akka://ClusterSystem@127.0.0.1:50849, status = Up)
+[INFO] [02/25/2019 15:27:31.342] [ClusterSystem-akka.actor.default-dispatcher-3] [akka://ClusterSystem/user/workerActor] Member is Up: Member(userId = akka://ClusterSystem@127.0.0.1:50849, status = Up)
 [INFO] [02/25/2019 15:27:34.426] [ClusterSystem-akka.actor.default-dispatcher-25] [akka://ClusterSystem/user/clusterListener] msg=foo4 Actor[akka://ClusterSystem/user/clusterListener#1131385333], objectStr=sample.cluster.simple.SimpleClusterListener2@16d4a21f, port=0, threadId=95.
 [INFO] [02/25/2019 15:27:34.426] [ClusterSystem-akka.actor.default-dispatcher-18] [akka://ClusterSystem/user/clusterListener] msg=foo4 Actor[akka://ClusterSystem/user/clusterListener#-1801590123], objectStr=sample.cluster.simple.SimpleClusterListener2@1bc441bb, port=2552, threadId=50.
 [INFO] [02/25/2019 15:27:34.426] [ClusterSystem-akka.actor.default-dispatcher-8] [akka://ClusterSystem/user/clusterListener] msg=foo4 Actor[akka://ClusterSystem/user/clusterListener#-936616801], objectStr=sample.cluster.simple.SimpleClusterListener2@7f815c8b, port=2551, threadId=19.

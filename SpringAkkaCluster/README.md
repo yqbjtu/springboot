@@ -11,7 +11,7 @@ http://127.0.0.1:5000/swagger-ui.html
   如果otherActor发一次，每次发消息也能被不同的node上的actor收到
   
   从日志可以看出service初始化被bean要早
-  2019-03-01 14:53:43,612 INFO  [DESKTOP-8S2E5H7 main] Caller+0	 at com.yq.service.impl.MyContextServiceImpl.<init>(MyContextServiceImpl.java:45)
+  2019-03-01 14:53:43,612 INFO  [DESKTOP-8S2E5H7 main] Caller+0	 at com.yq.service.impl.IoTContextServiceImpl.<init>(MyContextServiceImpl.java:45)
   initResultInConstructor=false, actorSystem=null
   2019-03-01 14:53:43,640 INFO  [DESKTOP-8S2E5H7 main] Caller+0	 at com.yq.config.ClusterConfigBean.springClusterConfig(ClusterConfigBean.java:32)
   Create a springClusterConfig bean
@@ -29,7 +29,7 @@ http://127.0.0.1:5000/swagger-ui.html
   
   https://github.com/akka/akka-sample-cluster-docker-compose-java/blob/master/docker-compose.yml
   不能直接绑定主机名  
-  Failed to bind TCP to [ DESKTOP-8S2E5H7:3001] due to: Bind failed because of java.net.SocketException: Unresolved address, caused by: java.nio.channels  
+  Failed to bind TCP to [ DESKTOP-8S2E5H7:3001] due to: Bind failed because of java.net.SocketException: Unresolved userId, caused by: java.nio.channels  
   
   https://github.com/akka/akka-sample-cluster-docker-compose-java/blob/master/src/main/resources/application.conf  
   

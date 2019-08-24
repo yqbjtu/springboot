@@ -27,4 +27,21 @@
    
    以上所有步骤都完成后，还可以通过命令来查看 keystore 文件基本信息，如图 3 所示
    
-   keytool -list -keystore sslclienttrust
+   keytool -list -keystore yqClient.jks (输入cstorepass654)
+   ---数据结果为----
+   D:\E\workspaceGitub\springboot\nettyssl\src\main\resources\certs>keytool -list -keystore yqClient.jks
+   输入密钥库口令:
+   密钥库类型: jks
+   密钥库提供方: SUN
+   
+   您的密钥库包含 2 个条目
+   
+   myclientalias1, 2019-8-10, PrivateKeyEntry,
+   证书指纹 (SHA1): D6:8A:D7:BB:4E:12:60:95:1D:17:51:78:D3:74:D1:00:95:7E:92:08
+   mysrvalias1, 2019-8-10, trustedCertEntry,
+   证书指纹 (SHA1): A7:F6:DF:C8:83:82:4C:63:8D:24:57:5E:7D:25:58:E0:DE:76:DE:DF
+   
+   Warning:
+   JKS 密钥库使用专用格式。建议使用 "keytool -importkeystore -srckeystore yqClient.jks -destkeystore yqClient.jks -deststoretype pkcs12" 迁移到行业标准格式 PKCS12。
+   
+   D:\E\workspaceGitub\springboot\nettyssl\src\main\resources\certs>

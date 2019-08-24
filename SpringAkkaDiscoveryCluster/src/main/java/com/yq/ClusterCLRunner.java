@@ -1,13 +1,11 @@
 package com.yq;
 
-import com.yq.service.MyContextService;
+import com.yq.service.IoTContextService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
-
-import java.util.concurrent.TimeUnit;
 
 /**
  * Simple to Introduction
@@ -22,7 +20,7 @@ import java.util.concurrent.TimeUnit;
 public class ClusterCLRunner implements CommandLineRunner {
 
     @Autowired
-    private MyContextService myContextService;
+    private IoTContextService myContextService;
 
     @Override
     public void run(String... strings) throws Exception {

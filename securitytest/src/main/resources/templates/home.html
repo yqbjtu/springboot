@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8"></meta>
+<title>home页面</title>
+<link rel="stylesheet" th:href="@{css/bootstrap.min.css}" />
+<link rel="stylesheet" th:href="@{css/bootstrap-theme.min.css}"/> 
+<script type="text/javascript" th:src="@{js/jquery-1.11.0.min.js}"></script>
+<script type="text/javascript" th:src="@{js/bootstrap.min.js}"></script>
+</head>
+<body>
+<div class="panel panel-primary">
+		<div class="panel-heading">
+			<h3 class="panel-title">Home页面</h3>
+		</div>
+</div>
+	<h3>欢迎[<font color="red"><span th:text="${user}">用户名</span></font>]访问Home页面!
+	您的权限是<font color="red"><span th:text="${role}">权限</span></font><br/><br/>
+	<a href="admin">访问admin页面</a><br/><br/>
+	<a href="logout">安全退出</a></h3>
+</body>
+</html>

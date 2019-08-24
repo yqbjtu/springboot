@@ -71,7 +71,7 @@ public class NettyClient {
      */
     public static void main(String[] args) throws Exception {
         String destIp = "192.168.119.1";
-        int port = 5566;
+        int port = 5100;
         new NettyClient().connect(destIp, port);
     }
 

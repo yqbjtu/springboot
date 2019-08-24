@@ -2,10 +2,7 @@ package com.yq.actor;
 
 import akka.actor.AbstractActor;
 import akka.cluster.Cluster;
-import akka.cluster.ClusterEvent.CurrentClusterState;
 import akka.cluster.ClusterEvent.MemberEvent;
-import akka.cluster.ClusterEvent.MemberRemoved;
-import akka.cluster.ClusterEvent.MemberUp;
 import akka.cluster.ClusterEvent.UnreachableMember;
 import akka.cluster.ClusterSettings;
 import akka.event.Logging;

@@ -13,7 +13,7 @@ import akka.actor.ActorSystem;
  * @author EricYang
  * @version 2019/6/25 13:39
  */
-public interface MyContextService {
+public interface IoTContextService {
 
     public boolean init();
     public ActorRef getActor(String actorName);

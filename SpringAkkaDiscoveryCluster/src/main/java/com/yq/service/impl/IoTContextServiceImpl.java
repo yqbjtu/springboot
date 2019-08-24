@@ -8,7 +8,7 @@ import com.typesafe.config.ConfigFactory;
 import com.yq.actor.ClusterWorkerActor;
 import com.yq.actor.WorkActor;
 import com.yq.config.ClusterConfig;
-import com.yq.service.MyContextService;
+import com.yq.service.IoTContextService;
 
 import com.yq.zkLeader.LeaderSelectorService;
 import lombok.extern.slf4j.Slf4j;
@@ -38,7 +38,7 @@ import com.yq.constant.ClusterConstants;
 
 @Service
 @Slf4j
-public class MyContextServiceImpl implements MyContextService {
+public class IoTContextServiceImpl implements IoTContextService {
     private static final String ACTOR_SYSTEM_NAME = "ClusterDemo";
 
     @Autowired
@@ -54,7 +54,7 @@ public class MyContextServiceImpl implements MyContextService {
     private Map<String, ActorRef> classActorRefMap = new HashMap<>();
     private boolean isInitialized = false;
 
-    public MyContextServiceImpl() {
+    public IoTContextServiceImpl() {
         //初始化
         //boolean initResultInConstructor = init();
         //log.info("initResultInConstructor={}, actorSystem={}", initResultInConstructor, actorSystem);

@@ -18,7 +18,7 @@
         <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
             <level>DEBUG</level> <!-- 日志过滤级别 -->
         </filter>
-        <remoteHost>10.76.3.79</remoteHost>
+        <remoteHost>a.b.c.d</remoteHost>
         <port>5003</port>
         <encoder class="net.logstash.logback.encoder.LogstashEncoder">
         </encoder>

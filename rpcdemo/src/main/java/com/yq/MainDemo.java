@@ -21,11 +21,17 @@ public class MainDemo {
             System.out.print(singleByte);
         }
 
+        int decimalValue =255;
+        byte[] bytes1 = Hex.decodeHex( String.valueOf(decimalValue).toCharArray());
+
         byte[] strDecodeHexBytes = Hex.decodeHex(myHexStr.toCharArray());
         String strDecode = new String(strDecodeHexBytes, StandardCharsets.UTF_8);
         System.out.println("\r\nhex to original Str");
 
         System.out.println(strDecode);
+
+
+
 
 //        String strHex = Integer.toHexString(in).toUpperCase();
 //        System.out.println(strHex);

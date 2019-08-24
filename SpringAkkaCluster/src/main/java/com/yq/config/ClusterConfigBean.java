@@ -1,6 +1,7 @@
 package com.yq.config;
 
 import akka.actor.ActorSystem;
+import akka.cluster.Cluster;
 import com.typesafe.config.Config;
 import com.typesafe.config.ConfigFactory;
 import lombok.extern.slf4j.Slf4j;
@@ -84,7 +85,6 @@ public class ClusterConfigBean {
 
         // Create an Akka system
         ActorSystem system = ActorSystem.create(ACTOR_SYSTEM_NAME, config);
-
         return system;
     }
 }
