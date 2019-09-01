@@ -79,6 +79,11 @@
             <artifactId>commons-codec</artifactId>
             <version>1.6</version>
         </dependency>
+        <dependency>
+            <groupId>io.netty</groupId>
+            <artifactId>netty-codec</artifactId>
+            <version>RELEASE</version>
+        </dependency>
     </dependencies>
 
     <build>
