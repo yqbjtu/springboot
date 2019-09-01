@@ -61,7 +61,7 @@ public class ClientSideHandler extends SimpleChannelInboundHandler<String> {
             } else if (event.state().equals(IdleState.ALL_IDLE)) {
                 log.info("ALL_IDLE");
                 // 发送心跳
-                ctx.channel().write("ping\n");
+                SocketUtils.sendLineBaseText(ctx, "ping");
             }
         }
         super.userEventTriggered(ctx, evt);

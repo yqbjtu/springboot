@@ -7,11 +7,8 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.handler.timeout.IdleState;
 import io.netty.handler.timeout.IdleStateEvent;
-import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-
-import java.util.concurrent.atomic.AtomicInteger;
 
 @Slf4j
 @NoArgsConstructor
@@ -28,9 +25,7 @@ public class ServerSideHandler extends SimpleChannelInboundHandler<String> {
     public void channelRead0(ChannelHandlerContext ctx, String msg) throws Exception {
         // Send the received message to all channels but the current one.
         log.info("ip:{}--- msg:{}", ctx.channel().remoteAddress(), msg);
-        idleCounter = 0;
-        //String reply = "Server counter " + counter.getAndAdd(1);
-        //SocketUtils.sendLineBaseText(ctx, reply);
+        idleCounter = 0;;
     }
 
     @Override
@@ -58,10 +53,9 @@ public class ServerSideHandler extends SimpleChannelInboundHandler<String> {
             } else if (event.state().equals(IdleState.ALL_IDLE)) {
                 log.info("ALL_IDLE");
                 // 发送心跳
-                ctx.channel().write("ping\n");
+                SocketUtils.sendLineBaseText(ctx, "ping");
             }
         }
         super.userEventTriggered(ctx, evt);
     }
-
 }
