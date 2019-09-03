@@ -3,7 +3,7 @@ package com.yq.map;
 import com.google.common.base.Function;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.collect.MapMaker;
-import org.apache.commons.collections4.map.PassiveExpiringMap;
+
 
 import java.util.LinkedHashMap;
 import java.util.concurrent.ConcurrentMap;
