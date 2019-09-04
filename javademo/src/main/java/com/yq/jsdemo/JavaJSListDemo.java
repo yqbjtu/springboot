@@ -46,11 +46,10 @@ public class JavaJSListDemo {
         demo.invokeFunctionByFileWithListParams();
     }
 
-
     private void invokeFunctionByFileDemo() {
         log.info("---          invokeFunction         ---" );
         try {
-            log.info("Current dir={}", System.getProperty("user.dir"));
+            log.info("current dir={}", System.getProperty("user.dir"));
             File file = new File("./javademo/src/main/resources/demo.js");
             Reader reader = Files.newBufferedReader(file.toPath(), Charset.defaultCharset());
 
@@ -63,7 +62,7 @@ public class JavaJSListDemo {
             log.info("function={}, result={}", obj1, obj2);
         }
         catch(Exception ex) {
-            log.warn("exception", ex);
+            log.warn("exception={}", ex.getMessage(), ex);
         }
     }
 
@@ -73,7 +72,6 @@ public class JavaJSListDemo {
             log.info("Current dir={}", System.getProperty("user.dir"));
             File file = new File("./javademo/src/main/resources/demoWithParams.js");
             Reader reader = Files.newBufferedReader(file.toPath(), Charset.defaultCharset());
-
 
             Object obj1 = engine.eval(reader);
 
@@ -96,7 +94,6 @@ public class JavaJSListDemo {
             log.info("Current dir={}", System.getProperty("user.dir"));
             File file = new File("./javademo/src/main/resources/demoWithListParams.js");
             Reader reader = Files.newBufferedReader(file.toPath(), Charset.defaultCharset());
-
 
             Object obj1 = engine.eval(reader);
 
@@ -125,9 +122,12 @@ public class JavaJSListDemo {
             dataList.add((short)0x1B);
 
 
-            Object obj2 = jsInvoke.invokeFunction("myFunc", Arrays.toString(dataList.toArray()), 3);
+            Object obj2 = jsInvoke.invokeFunction("myFunc", Arrays.toString(dataList.toArray()), "device1234");
+            Object obj3 = null;
+            //obj3 = jsInvoke.invokeFunction("myFunc", "[123]", 3);
 
-            log.info("function={}, result={}", obj1, obj2);
+            log.info("function={}, result={}, {}", obj1, obj2, obj3);
+            log.info("result={}, {}", obj2, obj3);
         }
         catch(Exception ex) {
             log.warn("exception", ex);
