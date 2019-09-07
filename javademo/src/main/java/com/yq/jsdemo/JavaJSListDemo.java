@@ -41,29 +41,8 @@ public class JavaJSListDemo {
     public static void main(String[] args) {
         JavaJSListDemo demo = new JavaJSListDemo();
 
-        demo.invokeFunctionByFileDemo();
         demo.invokeFunctionByFileWithParams();
         demo.invokeFunctionByFileWithListParams();
-    }
-
-    private void invokeFunctionByFileDemo() {
-        log.info("---          invokeFunction         ---" );
-        try {
-            log.info("current dir={}", System.getProperty("user.dir"));
-            File file = new File("./javademo/src/main/resources/demo.js");
-            Reader reader = Files.newBufferedReader(file.toPath(), Charset.defaultCharset());
-
-            engine.put("user", "{name:'张三',age:18,city:['陕西','台湾']};");
-            Object obj1 = engine.eval(reader);
-
-            Invocable jsInvoke = (Invocable) engine;
-            Object obj2 = jsInvoke.invokeFunction("myFunc");
-
-            log.info("function={}, result={}", obj1, obj2);
-        }
-        catch(Exception ex) {
-            log.warn("exception={}", ex.getMessage(), ex);
-        }
     }
 
     private void invokeFunctionByFileWithParams() {
@@ -121,13 +100,10 @@ public class JavaJSListDemo {
             dataList.add((short)0xEA);
             dataList.add((short)0x1B);
 
-
             Object obj2 = jsInvoke.invokeFunction("myFunc", Arrays.toString(dataList.toArray()), "device1234");
-            Object obj3 = null;
-            //obj3 = jsInvoke.invokeFunction("myFunc", "[123]", 3);
 
-            log.info("function={}, result={}, {}", obj1, obj2, obj3);
-            log.info("result={}, {}", obj2, obj3);
+            log.info("function={}", obj1);
+            log.info("result={}", obj2);
         }
         catch(Exception ex) {
             log.warn("exception", ex);
