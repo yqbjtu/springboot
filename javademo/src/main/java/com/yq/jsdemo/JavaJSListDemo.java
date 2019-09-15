@@ -35,7 +35,7 @@ public class JavaJSListDemo {
         JavaJSListDemo demo = new JavaJSListDemo();
 
         demo.invokeFunctionByFileWithParams();
-        demo.invokeFunctionByFileWithListParams();
+        //demo.invokeFunctionByFileWithListParams();
     }
 
     private void invokeFunctionByFileWithParams() {
@@ -51,9 +51,10 @@ public class JavaJSListDemo {
             JSONObject user = new JSONObject();
             user.put("name", "张三");
             user.put("age", 18);
-            Object obj2 = jsInvoke.invokeFunction("myFunc", user,3);
-
-            log.info("function={}, result={}", obj1, obj2);
+            Object obj2 = jsInvoke.invokeFunction("myFunc", user, 3);
+            //Object getUpdatedUser = engine.eval("print(user)");
+            //脚本中修改了user对象，可以在java中直接体现
+            log.info("script={}, result={}, user={}", obj1, obj2, user);
         }
         catch(Exception ex) {
             log.warn("exception", ex);
