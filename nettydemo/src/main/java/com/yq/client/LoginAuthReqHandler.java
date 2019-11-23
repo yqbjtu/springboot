@@ -36,7 +36,6 @@ public class LoginAuthReqHandler extends ChannelHandlerAdapter {
         ctx.writeAndFlush(buildLoginReq());
     }
 
-
     public void channelRead(ChannelHandlerContext ctx, Object msg)
             throws Exception {
         NettyMessage message = (NettyMessage) msg;
