@@ -30,5 +30,4 @@ public class ServerStringHandler extends SimpleChannelInboundHandler<String> {
 
         ctx.writeAndFlush("reply\r\n");
     }
-
 }

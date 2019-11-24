@@ -56,5 +56,4 @@ public class StringClient {
     public static void main(String[] args) throws Exception {
         new StringClient().connect("127.0.0.1", 3000);
     }
-
 }

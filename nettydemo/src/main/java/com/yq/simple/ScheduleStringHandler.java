@@ -20,7 +20,7 @@ public class ScheduleStringHandler extends SimpleChannelInboundHandler<String> {
 
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
-        Future future = executor.scheduleAtFixedRate(new Runnable() {
+         future = executor.scheduleAtFixedRate(new Runnable() {
             @Override
             public void run() {
                 ctx.writeAndFlush(count + "th" + "\r\n");
@@ -43,8 +43,8 @@ public class ScheduleStringHandler extends SimpleChannelInboundHandler<String> {
     }
 
     @Override
-    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
-        log.info("ctx exception", cause);
+    public void channelInactive(final ChannelHandlerContext ctx) {
+        log.info("ctx inactive.");
         ctx.close();
         if (future != null) {
             future.cancel(true);
