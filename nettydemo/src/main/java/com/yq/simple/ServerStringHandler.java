@@ -6,6 +6,8 @@ import io.netty.channel.SimpleChannelInboundHandler;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
+import java.net.InetSocketAddress;
+import java.net.SocketAddress;
 import java.util.List;
 
 /**
@@ -21,8 +23,12 @@ public class ServerStringHandler extends SimpleChannelInboundHandler<String> {
 
     @Override
     public void channelRead0(ChannelHandlerContext ctx, String msgStr) throws Exception {
-        log.info("ip:{}--- msg:{}", ctx.channel().remoteAddress(), msgStr);
-        log.info("msgStr={}, packetLength={}", msgStr, msgStr.length());
+        SocketAddress remoteAddress = ctx.channel().remoteAddress();
+        String host = ((InetSocketAddress) remoteAddress).getHostString();
+        int port = ((InetSocketAddress) remoteAddress).getPort();
+        log.info("ip:port={}:{},  msg={}", host, port, msgStr);
+
+        ctx.writeAndFlush("reply\r\n");
     }
 
 }
