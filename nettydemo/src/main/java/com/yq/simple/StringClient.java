@@ -54,6 +54,22 @@ public class StringClient {
      * @throws Exception
      */
     public static void main(String[] args) throws Exception {
-        new StringClient().connect("127.0.0.1", 3000);
+        int connCount = 110;
+        for(int i=0; i < connCount; i++) {
+            Thread thread = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        StringClient client = new StringClient();
+                        client.connect("127.0.0.1", 5000);
+                    } catch (Exception ex) {
+                        log.error("connException", ex);
+                    }
+                }
+            });
+
+            thread.start();
+            log.info("ThreadId={}, state={}", thread.getId(), thread.getState());
+        }
     }
 }

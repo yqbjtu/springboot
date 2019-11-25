@@ -20,18 +20,18 @@ public class ScheduleStringHandler extends SimpleChannelInboundHandler<String> {
 
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
-         future = executor.scheduleAtFixedRate(new Runnable() {
-            @Override
-            public void run() {
-                ctx.writeAndFlush(count + "th" + "\r\n");
-                count++;
-                SocketAddress remoteAddress = ctx.channel().remoteAddress();
-                String host = ((InetSocketAddress) remoteAddress).getHostString();
-                int port = ((InetSocketAddress) remoteAddress).getPort();
-                log.info("send msg at fixed rate to ip:prot={}:{}", host, port);
-            }
-        },
-                0, 1, TimeUnit.SECONDS);
+//         future = executor.scheduleAtFixedRate(new Runnable() {
+//            @Override
+//            public void run() {
+//                ctx.writeAndFlush(count + "th" + "\r\n");
+//                count++;
+//                SocketAddress remoteAddress = ctx.channel().remoteAddress();
+//                String host = ((InetSocketAddress) remoteAddress).getHostString();
+//                int port = ((InetSocketAddress) remoteAddress).getPort();
+//                log.info("send msg at fixed rate to ip:prot={}:{}", host, port);
+//            }
+//        },
+//                0, 1, TimeUnit.SECONDS);
     }
 
     @Override
