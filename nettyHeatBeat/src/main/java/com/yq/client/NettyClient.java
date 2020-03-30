@@ -44,9 +44,10 @@ public class NettyClient {
 
                             log.info("client current dir:{}", System.getProperty("user.dir"));
                             ch.pipeline().addLast(new LoggingHandler(LogLevel.INFO));
-                            ch.pipeline().addLast(new LineBasedFrameDecoder(1024));
-                            ch.pipeline().addLast(new StringDecoder());
+                            //ch.pipeline().addLast(new LineBasedFrameDecoder(1024));
                             ch.pipeline().addLast( new IdleStateHandler(0, 5, 0, TimeUnit.SECONDS));
+                            ch.pipeline().addLast(new StringDecoder());
+
                             ch.pipeline().addLast("processMsg", new ClientSideHandler());
                         }
                     });
