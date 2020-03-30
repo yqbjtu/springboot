@@ -22,7 +22,7 @@
         <fastjson.version>1.2.31</fastjson.version>
         <akka.version>2.5.21</akka.version>
         <curator.version>4.0.0</curator.version>
-        <zookeeper.version>3.4.9</zookeeper.version>
+        <zookeeper.version>3.4.14</zookeeper.version>
     </properties>
 
 
