@@ -21,7 +21,7 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
         <fastjson.version>1.2.31</fastjson.version>
-        <paho.version>1.2.0</paho.version>
+        <paho.version>1.2.1</paho.version>
 
     </properties>
 
